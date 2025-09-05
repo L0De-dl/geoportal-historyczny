@@ -19,6 +19,16 @@
       width: 100vw;
       height: 100vh;
     }
+    .map-title {
+  background: white;
+  padding: 8px 12px;
+  margin: 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
   </style>
 </head>
 <body>
@@ -195,6 +205,17 @@ marker4.on('click', () => {
   window.location.href = "https://l0de-dl.github.io/scena4";
 });
 
+  // Niestandardowy kontroler z tytułem
+const titleControl = L.control({ position: "topleft" });
+
+titleControl.onAdd = function(map) {
+  const div = L.DomUtil.create("div", "map-title");
+  div.innerHTML = "Geoportal historyczny Gołańcz";
+  return div;
+};
+
+titleControl.addTo(map);
+
 
 </script>
 
@@ -203,5 +224,6 @@ marker4.on('click', () => {
 
 </body>
 </html>
+
 
 
