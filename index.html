@@ -29,6 +29,26 @@
       font-weight: bold;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
+    .map-title {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* odstęp między logo a tekstem */
+  background: white;
+  padding: 8px 12px;
+  margin: 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.map-title img {
+  width: 32px; /* szerokość logo */
+  height: 32px; /* wysokość logo, kwadrat */
+  object-fit: cover; /* aby zachować proporcje w kwadracie */
+  border-radius: 4px; /* lekko zaokrąglone rogi jeśli chcesz */
+}
+
   </style>
 </head>
 <body>
@@ -56,14 +76,22 @@
   // Usuń domyślny zoom control
   map.zoomControl.remove();
 
-  // Dodaj tytuł nad zoomem
-  const titleControl = L.control({ position: "topleft" });
-  titleControl.onAdd = function(map) {
-    const div = L.DomUtil.create("div", "map-title");
-    div.innerHTML = "Gołańcz - geoportal historyczny";
-    return div;
-  };
-  titleControl.addTo(map);
+titleControl.onAdd = function(map) {
+  const div = L.DomUtil.create("div", "map-title");
+
+  // dodaj logo
+  const logo = document.createElement("img");
+  logo.src = "logo.png"; // podmień na ścieżkę do swojego logo
+  div.appendChild(logo);
+
+  // dodaj tekst tytułu
+  const text = document.createElement("span");
+  text.innerHTML = "Geoportal historyczny Gołańcz";
+  div.appendChild(text);
+
+  return div;
+};
+
 
   // Dodaj ponownie zoom control pod tytułem
   L.control.zoom({ position: "topleft" }).addTo(map);
@@ -213,5 +241,6 @@
 </script>
 </body>
 </html>
+
 
 
