@@ -19,16 +19,16 @@
       width: 100vw;
       height: 100vh;
     }
-    .map-title {
-  background: white;
-  padding: 8px 12px;
-  margin: 10px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: bold;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-}
 
+    .map-title {
+      background: white;
+      padding: 8px 12px;
+      margin: 10px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
   </style>
 </head>
 <body>
@@ -37,9 +37,6 @@
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
- <!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
   const map = L.map('map').setView([52.943501705388755, 17.30028687048696], 17);
@@ -56,6 +53,20 @@
     [52.9381943661129881, 17.3122189892486809]
   ]));
 
+  // Usuń domyślny zoom control
+  map.zoomControl.remove();
+
+  // Dodaj tytuł nad zoomem
+  const titleControl = L.control({ position: "topleft" });
+  titleControl.onAdd = function(map) {
+    const div = L.DomUtil.create("div", "map-title");
+    div.innerHTML = "Geoportal historyczny Gołańcz";
+    return div;
+  };
+  titleControl.addTo(map);
+
+  // Dodaj ponownie zoom control pod tytułem
+  L.control.zoom({ position: "topleft" }).addTo(map);
 
   const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -102,7 +113,6 @@
     attribution: 'Mapa 2002 (skan)'
   });
   
-  // Tymczasowe puste warstwy do testów
   const mapa2025 = L.tileLayer('', { attribution: 'Mapa 2025' });
 
   const baseMaps = {
@@ -119,111 +129,87 @@
 
   const layerControl = L.control.layers(baseMaps, null, { collapsed: false }).addTo(map);
 
-const layerContainer = layerControl.getContainer();
-const title = document.createElement("div");
-title.innerHTML = "<strong>WYBÓR PODKŁADU</strong>";
-title.style.textAlign = "center";
-title.style.padding = "4px";
-layerContainer.insertBefore(title, layerContainer.firstChild);
+  const layerContainer = layerControl.getContainer();
+  const title = document.createElement("div");
+  title.innerHTML = "<strong>WYBÓR PODKŁADU</strong>";
+  title.style.textAlign = "center";
+  title.style.padding = "4px";
+  layerContainer.insertBefore(title, layerContainer.firstChild);
 
-// Ikony normalne
-const yellowIcon = L.icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
+  // --- MARKERY ---
+  const yellowIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
 
-const redIcon = L.icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
+  const redIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
 
-const blueIcon = L.icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
+  const blueIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
 
   const greenIcon = L.icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
 
-// Ikony „highlight” (jaśniejsze kolory)
-const IconHighlight = L.icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
+  const IconHighlight = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
 
-// Marker 1 – żółty
-const marker1 = L.marker([52.944121, 17.299716], { icon: yellowIcon }).addTo(map);
-marker1.on('mouseover', () => marker1.setIcon(IconHighlight));
-marker1.on('mouseout', () => marker1.setIcon(yellowIcon));
-marker1.on('click', () => {
-  window.location.href = "https://l0de-dl.github.io/scena1";
-});
+  const marker1 = L.marker([52.944121, 17.299716], { icon: yellowIcon }).addTo(map);
+  marker1.on('mouseover', () => marker1.setIcon(IconHighlight));
+  marker1.on('mouseout', () => marker1.setIcon(yellowIcon));
+  marker1.on('click', () => {
+    window.location.href = "https://l0de-dl.github.io/scena1";
+  });
 
-// Marker 2 – czerwony
-const marker2 = L.marker([52.9438975384663, 17.299514730251893], { icon: redIcon }).addTo(map);
-marker2.on('mouseover', () => marker2.setIcon(IconHighlight));
-marker2.on('mouseout', () => marker2.setIcon(redIcon));
-marker2.on('click', () => {
-  window.location.href = "https://l0de-dl.github.io/scena2";
-});
+  const marker2 = L.marker([52.9438975384663, 17.299514730251893], { icon: redIcon }).addTo(map);
+  marker2.on('mouseover', () => marker2.setIcon(IconHighlight));
+  marker2.on('mouseout', () => marker2.setIcon(redIcon));
+  marker2.on('click', () => {
+    window.location.href = "https://l0de-dl.github.io/scena2";
+  });
 
-// Marker 3 – niebieski
-const marker3 = L.marker([52.942454, 17.300135], { icon: blueIcon }).addTo(map);
-marker3.on('mouseover', () => marker3.setIcon(IconHighlight));
-marker3.on('mouseout', () => marker3.setIcon(blueIcon));
-marker3.on('click', () => {
-  window.location.href = "https://l0de-dl.github.io/scena3";
-});
+  const marker3 = L.marker([52.942454, 17.300135], { icon: blueIcon }).addTo(map);
+  marker3.on('mouseover', () => marker3.setIcon(IconHighlight));
+  marker3.on('mouseout', () => marker3.setIcon(blueIcon));
+  marker3.on('click', () => {
+    window.location.href = "https://l0de-dl.github.io/scena3";
+  });
 
-  // Marker 4 – zielony
-const marker4 = L.marker([52.943862, 17.299997], { icon: greenIcon }).addTo(map);
-marker4.on('mouseover', () => marker4.setIcon(IconHighlight));
-marker4.on('mouseout', () => marker4.setIcon(greenIcon));
-marker4.on('click', () => {
-  window.location.href = "https://l0de-dl.github.io/scena4";
-});
-
-  // Niestandardowy kontroler z tytułem
-const titleControl = L.control({ position: "topleft" });
-
-titleControl.onAdd = function(map) {
-  const div = L.DomUtil.create("div", "map-title");
-  div.innerHTML = "Geoportal historyczny Gołańcz";
-  return div;
-};
-
-titleControl.addTo(map);
-
+  const marker4 = L.marker([52.943862, 17.299997], { icon: greenIcon }).addTo(map);
+  marker4.on('mouseover', () => marker4.setIcon(IconHighlight));
+  marker4.on('mouseout', () => marker4.setIcon(greenIcon));
+  marker4.on('click', () => {
+    window.location.href = "https://l0de-dl.github.io/scena4";
+  });
 
 </script>
-
-
-
-
 </body>
 </html>
-
-
-
