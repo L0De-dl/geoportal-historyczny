@@ -1,9 +1,8 @@
-Powiedziałeś(-aś):
 <!DOCTYPE html>
 <html lang="pl">
 <head>
   <meta charset="utf-8" />
-  <title>Geoportal historyczny Gołańcz</title>
+  <title>Gołańcz wczoraj i dziś – interaktywny przegląd zmian przestrzennych</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Leaflet CSS -->
@@ -61,7 +60,7 @@ Powiedziałeś(-aś):
   const titleControl = L.control({ position: "topleft" });
   titleControl.onAdd = function(map) {
     const div = L.DomUtil.create("div", "map-title");
-    div.innerHTML = "Geoportal historyczny Gołańcz";
+    div.innerHTML = "Gołańcz wczoraj i dziś – interaktywny przegląd zmian przestrzennych";
     return div;
   };
   titleControl.addTo(map);
@@ -214,3 +213,4 @@ Powiedziałeś(-aś):
 </script>
 </body>
 </html>
+
