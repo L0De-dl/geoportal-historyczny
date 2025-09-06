@@ -194,10 +194,16 @@
   marker3.on('click', () => {
     window.location.href = "https://l0de-dl.github.io/scena3";
   });
-  L.control.scale().addTo(map);
+  L.control.scale({
+    imperial: false,
+    metric: true,
+    position: 'bottomleft'
+  }).addTo(map);
+    
 </script>
 </body>
 </html>
+
 
 
 
