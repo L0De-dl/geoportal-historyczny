@@ -7,6 +7,11 @@
 
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet-mouse-position@1.0.2/L.Control.MousePosition.css" />
+<script src="https://unpkg.com/leaflet-mouse-position@1.0.2/L.Control.MousePosition.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-measure/dist/leaflet-measure.css" />
+<script src="https://unpkg.com/leaflet-measure/dist/leaflet-measure.js"></script>
+
 
   <style>
     html, body {
@@ -215,24 +220,35 @@ L.control.scale({
   metric: true,    // włącz metry
   position: 'bottomleft' // pozycja na mapie
 }).addTo(map);
-  L.control.mousePosition().addTo(map);
-  L.control.measure({
-  primaryLengthUnit: 'meters',
-  primaryAreaUnit: 'sqmeters'
-}).addTo(map);
-  map.locate({ setView: true, maxZoom: 16 });
+// Geolokalizacja użytkownika
+map.locate({ setView: true, maxZoom: 17 });
 
 map.on('locationfound', function(e) {
-  L.marker(e.latlng).addTo(map)
-    .bindPopup("Jesteś tutaj").openPopup();
+  const userMarker = L.marker(e.latlng).addTo(map)
+    .bindPopup("📍 Jesteś tutaj").openPopup();
 });
 
 map.on('locationerror', function() {
-  alert("Nie udało się ustalić lokalizacji.");
+  alert("❌ Nie udało się ustalić Twojej lokalizacji.");
 });
+  // Pokazywanie współrzędnych kursora
+L.control.mousePosition({
+  position: 'bottomright',
+  prefix: "Współrzędne"
+}).addTo(map);
+  // Miarka odległości i powierzchni
+L.control.measure({
+  primaryLengthUnit: 'meters',
+  secondaryLengthUnit: 'kilometers',
+  primaryAreaUnit: 'sqmeters',
+  secondaryAreaUnit: 'hectares',
+  position: 'topleft'
+}).addTo(map);
+
 </script>
 </body>
 </html>
+
 
 
 
