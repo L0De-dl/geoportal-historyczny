@@ -215,8 +215,24 @@ L.control.scale({
   metric: true,    // włącz metry
   position: 'bottomleft' // pozycja na mapie
 }).addTo(map);
+  L.control.mousePosition().addTo(map);
+  L.control.measure({
+  primaryLengthUnit: 'meters',
+  primaryAreaUnit: 'sqmeters'
+}).addTo(map);
+  map.locate({ setView: true, maxZoom: 16 });
+
+map.on('locationfound', function(e) {
+  L.marker(e.latlng).addTo(map)
+    .bindPopup("Jesteś tutaj").openPopup();
+});
+
+map.on('locationerror', function() {
+  alert("Nie udało się ustalić lokalizacji.");
+});
 </script>
 </body>
 </html>
+
 
 
