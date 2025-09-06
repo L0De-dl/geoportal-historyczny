@@ -209,8 +209,14 @@
   marker4.on('click', () => {
     window.location.href = "https://l0de-dl.github.io/scena4";
   });
-
+// Dodaj podziałkę liniową (skala)
+L.control.scale({
+  imperial: false, // wyłącz mile/jardy
+  metric: true,    // włącz metry
+  position: 'bottomleft' // pozycja na mapie
+}).addTo(map);
 </script>
 </body>
 </html>
+
 
