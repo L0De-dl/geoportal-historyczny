@@ -68,7 +68,7 @@
   // Dodaj ponownie zoom control pod tytułem
   L.control.zoom({ position: "topleft" }).addTo(map);
 
-  const osm = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  const osm = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     maxZoom: 19,
     attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
     subdomains: 'abcd',
@@ -198,5 +198,6 @@
 </script>
 </body>
 </html>
+
 
 
