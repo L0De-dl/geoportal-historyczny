@@ -203,7 +203,7 @@ function startAutoSwitch() {
     map.addLayer(baseMaps[key]);
 
     currentIndex = (currentIndex + 1) % basemapKeys.length;
-  }, 2000); // 2000 ms = 2 sekundy
+  }, 500); // 1000 ms = 1s
 }
 
 function stopAutoSwitch() {
@@ -241,6 +241,7 @@ layerContainer.appendChild(autoBtn);
 </script>
 </body>
 </html>
+
 
 
 
