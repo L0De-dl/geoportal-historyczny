@@ -186,10 +186,62 @@
     metric: true,
     position: 'bottomleft'
   }).addTo(map);
-    
+
+  // --- AUTOMATYCZNE PRZEWIJANIE PODKŁADÓW ---
+const basemapKeys = Object.keys(baseMaps);
+let currentIndex = 0;
+let autoSwitchInterval = null;
+
+function startAutoSwitch() {
+  if (autoSwitchInterval) return; // już działa
+
+  autoSwitchInterval = setInterval(() => {
+    // usuń wszystkie podkłady
+    basemapKeys.forEach(k => map.removeLayer(baseMaps[k]));
+    // dodaj następny podkład
+    const key = basemapKeys[currentIndex];
+    map.addLayer(baseMaps[key]);
+
+    currentIndex = (currentIndex + 1) % basemapKeys.length;
+  }, 2000); // 2000 ms = 2 sekundy
+}
+
+function stopAutoSwitch() {
+  clearInterval(autoSwitchInterval);
+  autoSwitchInterval = null;
+}
+
+// --- DODANIE PRZYCISKU ---
+const autoBtn = L.DomUtil.create("button", "");
+autoBtn.innerHTML = "Auto-przewijanie";
+autoBtn.style.display = "block";
+autoBtn.style.margin = "6px auto";
+autoBtn.style.padding = "4px 8px";
+autoBtn.style.cursor = "pointer";
+autoBtn.style.border = "1px solid #666";
+autoBtn.style.borderRadius = "6px";
+autoBtn.style.background = "white";
+
+let running = false;
+autoBtn.onclick = () => {
+  if (!running) {
+    startAutoSwitch();
+    autoBtn.innerHTML = "Stop";
+    running = true;
+  } else {
+    stopAutoSwitch();
+    autoBtn.innerHTML = "Auto-przewijanie";
+    running = false;
+  }
+};
+
+// wstaw guzik na sam dół panelu warstw
+layerContainer.appendChild(autoBtn);
+
 </script>
 </body>
 </html>
+
 
 
 
