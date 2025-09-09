@@ -68,9 +68,10 @@
   // Dodaj ponownie zoom control pod tytułem
   L.control.zoom({ position: "topleft" }).addTo(map);
 
-  const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  const osm = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     maxZoom: 19,
-    attribution: '&copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
+    attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+    subdomains: 'abcd',
   }).addTo(map);
 
   const mapa1890 = L.imageOverlay('1890.jpg', [[52.9490319716061961, 17.3121943444194670], [52.9382133521388596, 17.2852466604198938]], {
@@ -197,4 +198,5 @@
 </script>
 </body>
 </html>
+
 
