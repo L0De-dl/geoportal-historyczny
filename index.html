@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8" />
-  <title>Gołańcz wczoraj i dziś</title>
+  <title>HGIS - Gołańcz</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Leaflet CSS -->
@@ -60,7 +60,7 @@
   const titleControl = L.control({ position: "topleft" });
   titleControl.onAdd = function(map) {
     const div = L.DomUtil.create("div", "map-title");
-    div.innerHTML = "Gołańcz wczoraj i dziś – interaktywny przegląd zmian przestrzennych";
+    div.innerHTML = "Gołańcz – interaktywny przegląd zmian przestrzennych";
     return div;
   };
   titleControl.addTo(map);
@@ -197,3 +197,4 @@
 </script>
 </body>
 </html>
+
