@@ -76,6 +76,33 @@
     .leaflet-control-layers, .scenes-panel { 
       touch-action: manipulation;
     }
+
+    .leaflet-control-layers-base label {
+  font-size: 13px;
+  font-family: 'Verdana', sans-serif;
+  color: #444;
+}
+
+    .layer-title {
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  color: #222;
+}
+
+    .scene-title-header {
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 4px;
+  color: #222;
+}
+
+.scene-title {
+  font-size: 13px;
+  font-family: 'Tahoma', sans-serif;
+  color: #333;
+}
   </style>
 </head>
 <body>
@@ -153,6 +180,7 @@
   layerTitle.style.textAlign = "center";
   layerTitle.style.padding = "4px";
   layerContainer.insertBefore(layerTitle, layerContainer.firstChild);
+  layerTitle.className = "layer-title";
 
   // --- IKONY I MARKERY (tworzone, ale NIE dodawane wszystkie na start) ---
   const yellowIcon = L.icon({ iconUrl: '1.png', iconSize: [25,25] });
@@ -235,6 +263,7 @@ sceneTitle.innerHTML = "<strong>WYBÓR SCENY</strong>";
 sceneTitle.style.textAlign = "center";
 sceneTitle.style.padding = "4px";
 scenesWrapper.appendChild(sceneTitle);
+sceneTitle.className = "scene-title-header";
   
   scenesWrapper.appendChild(s1);
   scenesWrapper.appendChild(s2);
@@ -257,6 +286,7 @@ scenesWrapper.appendChild(sceneTitle);
 </script>
 </body>
 </html>
+
 
 
 
