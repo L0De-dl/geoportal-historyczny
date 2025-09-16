@@ -13,6 +13,7 @@
       margin: 0;
       padding: 0;
       height: 100%;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
 
     #map {
@@ -29,6 +30,52 @@
       font-weight: bold;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
+
+    /* STYL DLA PANELU SCEN */
+    .scenes-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 6px;
+      margin: 6px auto 8px;
+      width: 160px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    }
+
+    .scene-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      user-select: none;
+    }
+
+    .scene-btn img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .scene-btn.active {
+      background: #f0f0f0;
+      border-color: #bbb;
+    }
+
+    .scene-title {
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    /* Zapobiegamy kliknięciom mapy przy interakcji z panelem */
+    .leaflet-control-layers, .scenes-panel { 
+      touch-action: manipulation;
+    }
   </style>
 </head>
 <body>
@@ -39,7 +86,8 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-  const map = L.map('map').setView([52.943501705388755, 17.30028687048696], 18);
+  // === INICJALIZACJA MAPY ===
+  const map = L.map('map', {zoomControl: false}).setView([52.943501705388755, 17.30028687048696], 18);
 
   // OGRANICZENIE DO OBSZARU MAPY
   map.setMaxBounds([
@@ -53,9 +101,6 @@
     [52.9381943661129881, 17.3122189892486809]
   ]));
 
-  // Usuń domyślny zoom control
-  map.zoomControl.remove();
-
   // Dodaj tytuł nad zoomem
   const titleControl = L.control({ position: "topleft" });
   titleControl.onAdd = function(map) {
@@ -65,47 +110,25 @@
   };
   titleControl.addTo(map);
 
-  // Dodaj ponownie zoom control pod tytułem
+  // Dodaj kontrolę zoom
   L.control.zoom({ position: "topleft" }).addTo(map);
 
+  // Podkład bazowy
   const osm = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     maxZoom: 19,
     attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
     subdomains: 'abcd',
   }).addTo(map);
 
-  const mapa1890 = L.imageOverlay('1890.jpg', [[52.9490319716061961, 17.3121943444194670], [52.9382133521388596, 17.2852466604198938]], {
-    attribution: 'Mapa 1890 (skan)'
-  });
-
-  const mapa1911 = L.imageOverlay('1911.jpg', [[52.9490257748037507, 17.3122210314079545], [52.9381925505287754, 17.2852721501606830]], {
-    attribution: 'Mapa 1911 (skan)'
-  });
-
-  const mapa1934 = L.imageOverlay('1934.jpg', [[52.9490222422049257, 17.3122162618504909], [52.9382042911077733, 17.2852771658980089]], {
-    attribution: 'Mapa 1934 (skan)'
-  });
-
-  const mapa1940 = L.imageOverlay('1940.jpg', [[52.9490216086510159, 17.3122245266494161], [52.9381925605774271, 17.2852719154727694]], {
-    attribution: 'Mapa 1940 (skan)'
-  });
-
-  const mapa1941 = L.imageOverlay('1941.jpg', [[52.9490186551461193, 17.3122318260598220], [52.9381960899114787, 17.2852748328638199]], {
-    attribution: 'Mapa 1941 (skan)'
-  });
-
-  const mapa1966 = L.imageOverlay('1966.jpg', [[52.9490219811969567, 17.3122117097856005], [52.9381881385526967, 17.2852638409947374]], {
-    attribution: 'Mapa 1966 (skan)'
-  });
-
-  const mapa1981 = L.imageOverlay('1981.jpg', [[52.9490213992517695, 17.3122149942634245], [52.9381963831744287, 17.2852654500625249]], {
-    attribution: 'Mapa 1981 (skan)'
-  });
-
-  const mapa2002 = L.imageOverlay('2002.jpg', [[52.9490239042419972, 17.3122189892486809], [52.9381943661129881, 17.2852683033793824]], {
-    attribution: 'Mapa 2002 (skan)'
-  });
-
+  // --- NAKŁADKI MAPOWE (IMAGEOVERLAY) ---
+  const mapa1890 = L.imageOverlay('1890.jpg', [[52.9490319716061961, 17.3121943444194670], [52.9382133521388596, 17.2852466604198938]], { attribution: 'Mapa 1890 (skan)'});
+  const mapa1911 = L.imageOverlay('1911.jpg', [[52.9490257748037507, 17.3122210314079545], [52.9381925505287754, 17.2852721501606830]], { attribution: 'Mapa 1911 (skan)'});
+  const mapa1934 = L.imageOverlay('1934.jpg', [[52.9490222422049257, 17.3122162618504909], [52.9382042911077733, 17.2852771658980089]], { attribution: 'Mapa 1934 (skan)'});
+  const mapa1940 = L.imageOverlay('1940.jpg', [[52.9490216086510159, 17.3122245266494161], [52.9381925605774271, 17.2852719154727694]], { attribution: 'Mapa 1940 (skan)'});
+  const mapa1941 = L.imageOverlay('1941.jpg', [[52.9490186551461193, 17.3122318260598220], [52.9381960899114787, 17.2852748328638199]], { attribution: 'Mapa 1941 (skan)'});
+  const mapa1966 = L.imageOverlay('1966.jpg', [[52.9490219811969567, 17.3122117097856005], [52.9381881385526967, 17.2852638409947374]], { attribution: 'Mapa 1966 (skan)'});
+  const mapa1981 = L.imageOverlay('1981.jpg', [[52.9490213992517695, 17.3122149942634245], [52.9381963831744287, 17.2852654500625249]], { attribution: 'Mapa 1981 (skan)'});
+  const mapa2002 = L.imageOverlay('2002.jpg', [[52.9490239042419972, 17.3122189892486809], [52.9381943661129881, 17.2852683033793824]], { attribution: 'Mapa 2002 (skan)'});
   const mapa2025 = L.tileLayer('', { attribution: 'Mapa 2025' });
 
   const baseMaps = {
@@ -120,72 +143,110 @@
     "Mapa z 2025 roku": mapa2025
   };
 
+  // Kontrola warstw (rozłożona)
   const layerControl = L.control.layers(baseMaps, null, { collapsed: false }).addTo(map);
 
+  // DODANIE TŁA "WYBÓR PODKŁADU" w panelu
   const layerContainer = layerControl.getContainer();
-  const title = document.createElement("div");
-  title.innerHTML = "<strong>WYBÓR PODKŁADU</strong>";
-  title.style.textAlign = "center";
-  title.style.padding = "4px";
-  layerContainer.insertBefore(title, layerContainer.firstChild);
+  const layerTitle = document.createElement("div");
+  layerTitle.innerHTML = "<strong>WYBÓR PODKŁADU</strong>";
+  layerTitle.style.textAlign = "center";
+  layerTitle.style.padding = "4px";
+  layerContainer.insertBefore(layerTitle, layerContainer.firstChild);
 
-  // --- MARKERY ---
-  const yellowIcon = L.icon({
-    iconUrl: '1.png',
-    iconSize: [25, 25],
-  });
+  // --- IKONY I MARKERY (tworzone, ale NIE dodawane wszystkie na start) ---
+  const yellowIcon = L.icon({ iconUrl: '1.png', iconSize: [25,25] });
+  const yellowIconBlack = L.icon({ iconUrl: '1c.png', iconSize: [25,25] });
+  const redIcon = L.icon({ iconUrl: '2.png', iconSize: [25,25] });
+  const redIconBlack = L.icon({ iconUrl: '2c.png', iconSize: [25,25] });
+  const blueIcon = L.icon({ iconUrl: '3.png', iconSize: [25,25] });
+  const blueIconBlack = L.icon({ iconUrl: '3c.png', iconSize: [25,25] });
 
-  const yellowIconBlack = L.icon({
-    iconUrl: '1c.png',
-    iconSize: [25, 25],
-  });
-
-  const redIcon = L.icon({
-    iconUrl: '2.png',
-    iconSize: [25, 25],
-  });
-
-  const redIconBlack = L.icon({
-    iconUrl: '2c.png',
-    iconSize: [25, 25],
-  });
-
-  const blueIcon = L.icon({
-    iconUrl: '3.png',
-    iconSize: [25, 25],
-  });
-
-  const blueIconBlack = L.icon({
-    iconUrl: '3c.png',
-    iconSize: [25, 25],
-  });
-
-  const marker1 = L.marker([52.944121, 17.299716], { icon: yellowIcon }).addTo(map);
+  // tworzymy markery, ale nie dodajemy ich wszystkich jednocześnie
+  const marker1 = L.marker([52.944121, 17.299716], { icon: yellowIcon });
   marker1.on('mouseover', () => marker1.setIcon(yellowIconBlack));
   marker1.on('mouseout', () => marker1.setIcon(yellowIcon));
-  marker1.on('click', () => {
-    window.location.href = "https://l0de-dl.github.io/scena1";
-  });
+  marker1.on('click', () => { window.location.href = "https://l0de-dl.github.io/scena1"; });
 
-  const marker2 = L.marker([52.9438975384663, 17.299514730251893], { icon: redIcon }).addTo(map);
+  const marker2 = L.marker([52.9438975384663, 17.299514730251893], { icon: redIcon });
   marker2.on('mouseover', () => marker2.setIcon(redIconBlack));
   marker2.on('mouseout', () => marker2.setIcon(redIcon));
-  marker2.on('click', () => {
-    window.location.href = "https://l0de-dl.github.io/scena2";
-  });
+  marker2.on('click', () => { window.location.href = "https://l0de-dl.github.io/scena2"; });
 
-  const marker3 = L.marker([52.942454, 17.300135], { icon: blueIcon }).addTo(map);
+  const marker3 = L.marker([52.942454, 17.300135], { icon: blueIcon });
   marker3.on('mouseover', () => marker3.setIcon(blueIconBlack));
   marker3.on('mouseout', () => marker3.setIcon(blueIcon));
-  marker3.on('click', () => {
-    window.location.href = "https://l0de-dl.github.io/scena3";
-  });
+  marker3.on('click', () => { window.location.href = "https://l0de-dl.github.io/scena3"; });
 
-  L.control.scale({
-    imperial: false,
-    metric: true,
-    position: 'bottomleft'
-  }).addTo(map);
+  const allMarkers = [marker1, marker2, marker3];
+
+  // Funkcja usuwa wszystkie markery z mapy
+  function removeAllMarkers() {
+    allMarkers.forEach(m => { if (map.hasLayer(m)) map.removeLayer(m); });
+  }
+
+  // Funkcja pokazuje jedynie wybraną scenę (1..3)
+  function showScene(n) {
+    removeAllMarkers();
+    if (n === 1) map.addLayer(marker1);
+    if (n === 2) map.addLayer(marker2);
+    if (n === 3) map.addLayer(marker3);
+
+    // aktualizacja klasy aktywnej w panelu scen
+    document.querySelectorAll('.scene-btn').forEach((btn, idx) => {
+      btn.classList.toggle('active', (idx + 1) === n);
+    });
+  }
+
+  // --- PANEL SCEN (umieszczony pod panelem warstw) ---
+  const scenesWrapper = document.createElement('div');
+  scenesWrapper.className = 'scenes-panel';
+
+  function makeSceneButton(number, title, imgUrl) {
+    const btn = document.createElement('div');
+    btn.className = 'scene-btn';
+    btn.setAttribute('role', 'button');
+    btn.setAttribute('tabindex', '0');
+
+    const img = document.createElement('img');
+    img.src = imgUrl;
+    img.alt = title;
+
+    const t = document.createElement('div');
+    t.className = 'scene-title';
+    t.textContent = title;
+
+    btn.appendChild(img);
+    btn.appendChild(t);
+
+    btn.addEventListener('click', () => showScene(number));
+    btn.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showScene(number); } });
+
+    return btn;
+  }
+
+  const s1 = makeSceneButton(1, 'Scena 1', '1.png');
+  const s2 = makeSceneButton(2, 'Scena 2', '2.png');
+  const s3 = makeSceneButton(3, 'Scena 3', '3.png');
+
+  scenesWrapper.appendChild(s1);
+  scenesWrapper.appendChild(s2);
+  scenesWrapper.appendChild(s3);
+
+  // Wstaw panel scen pod zawartością panelu warstw
+  layerContainer.appendChild(scenesWrapper);
+
+  // --- POCZĄTKOWE USTAWIENIE: wczytaj Scenę 1 na starcie ---
+  // Upewnij się, że tło (osm) jest dodane (już jest), a scena 1 widoczna
+  showScene(1);
+
+  // Dodaj scale control
+  L.control.scale({ imperial: false, metric: true, position: 'bottomleft' }).addTo(map);
+
+  // PRZYSZŁOŚĆ: łatwe przypięcie warstw wektorowych do scen
+  // Gdy będziesz dodawać warstwy wektorowe, możesz trzymać je w tablicy scenesVectors = {1: [layerA,layerB], 2: [...], 3: [...]}
+  // i w showScene() iterować po tej strukturze, dodając/usuwając warstwy odpowiednio do wybranej sceny.
+
 </script>
 </body>
 </html>
