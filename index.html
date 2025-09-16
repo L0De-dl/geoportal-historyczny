@@ -35,18 +35,6 @@
     }
 
     /* === PANEL WYBORU SCEN === */
-    .panel-scen {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      padding: 6px;
-      margin: 6px auto 8px;
-      width: 160px;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
-    }
-
     .przycisk-sceny {
       display: flex;
       align-items: center;
@@ -81,12 +69,12 @@
       font-size: 14px;
       font-weight: bold;
       text-align: center;
-      margin-bottom: 4px;
+      margin: 4px 0;
       color: #222;
     }
 
     /* === STYL KONTROLKI WARSTW === */
-    .leaflet-control-layers, .panel-scen { 
+    .leaflet-control-layers { 
       touch-action: manipulation;
     }
 
@@ -101,6 +89,7 @@
       font-weight: bold;
       text-align: center;
       color: #222;
+      margin-bottom: 4px;
     }
   </style>
 </head>
@@ -151,7 +140,6 @@
     subdomains: 'abcd',
   }).addTo(mapa);
 
-  // Usunięte "attribution" z obrazów
   const podklad1890 = L.imageOverlay('1890.jpg', [[52.9490319, 17.3121943], [52.9382133, 17.2852466]]);
   const podklad1911 = L.imageOverlay('1911.jpg', [[52.9490257, 17.3122210], [52.9381925, 17.2852721]]);
   const podklad1934 = L.imageOverlay('1934.jpg', [[52.9490222, 17.3122162], [52.9382042, 17.2852771]]);
@@ -183,7 +171,7 @@
   naglowekWarstw.className = "naglowek-warstw";
   kontenerWarstw.insertBefore(naglowekWarstw, kontenerWarstw.firstChild);
 
-  // === IKONY I MARKERY ===
+  // === MARKERY SCEN ===
   const ikonaZolta     = L.icon({ iconUrl: '1.png',  iconSize: [25,25] });
   const ikonaZoltaCiemna = L.icon({ iconUrl: '1c.png', iconSize: [25,25] });
   const ikonaCzerwona  = L.icon({ iconUrl: '2.png',  iconSize: [25,25] });
@@ -225,14 +213,17 @@
     });
   }
 
-  // === PANEL SCEN ===
-  const panelScen = document.createElement('div');
-  panelScen.className = 'panel-scen';
+  // === WYBÓR SCENY W TYM SAMYM PANELU ===
+  const separator = document.createElement('hr');
+  separator.style.margin = "6px 0";
+  separator.style.border = "none";
+  separator.style.borderTop = "1px solid #ccc";
+  kontenerWarstw.appendChild(separator);
 
   const naglowekScen = document.createElement('div');
   naglowekScen.innerHTML = "<strong>WYBÓR SCENY</strong>";
   naglowekScen.className = "naglowek-scen";
-  panelScen.appendChild(naglowekScen);
+  kontenerWarstw.appendChild(naglowekScen);
 
   function utworzPrzyciskSceny(nr, opis, ikonaUrl) {
     const przycisk = document.createElement('div');
@@ -262,13 +253,11 @@
     return przycisk;
   }
 
-  panelScen.appendChild(utworzPrzyciskSceny(1, 'Scena 1', '1.png'));
-  panelScen.appendChild(utworzPrzyciskSceny(2, 'Scena 2', '2.png'));
-  panelScen.appendChild(utworzPrzyciskSceny(3, 'Scena 3', '3.png'));
+  kontenerWarstw.appendChild(utworzPrzyciskSceny(1, 'Scena 1', '1.png'));
+  kontenerWarstw.appendChild(utworzPrzyciskSceny(2, 'Scena 2', '2.png'));
+  kontenerWarstw.appendChild(utworzPrzyciskSceny(3, 'Scena 3', '3.png'));
 
-  kontenerWarstw.appendChild(panelScen);
-
-  // === POCZĄTEK: włącz Scenę 1 ===
+  // === POCZĄTEK: Scena 1 ===
   pokazScene(1);
 
 </script>
