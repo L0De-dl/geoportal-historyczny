@@ -87,7 +87,7 @@
 
 <script>
   // === INICJALIZACJA MAPY ===
-  const map = L.map('map', {zoomControl: false}).setView([52.943501705388755, 17.30028687048696], 18);
+  const map = L.map('map', {zoomControl: false, zoomSnap: 0.5}).setView([52.943501705388755, 17.30028687048696], 17.5);
 
   // OGRANICZENIE DO OBSZARU MAPY
   map.setMaxBounds([
@@ -250,3 +250,4 @@
 </script>
 </body>
 </html>
+
