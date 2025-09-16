@@ -229,6 +229,13 @@
   const s2 = makeSceneButton(2, 'Scena 2', '2.png');
   const s3 = makeSceneButton(3, 'Scena 3', '3.png');
 
+// dodanie tytułu
+const sceneTitle = document.createElement('div');
+sceneTitle.innerHTML = "<strong>WYBÓR SCENY</strong>";
+sceneTitle.style.textAlign = "center";
+sceneTitle.style.padding = "4px";
+scenesWrapper.appendChild(sceneTitle);
+  
   scenesWrapper.appendChild(s1);
   scenesWrapper.appendChild(s2);
   scenesWrapper.appendChild(s3);
@@ -250,4 +257,5 @@
 </script>
 </body>
 </html>
+
 
