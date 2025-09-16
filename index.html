@@ -105,7 +105,7 @@
   const mapa2002 = L.imageOverlay('2002.jpg', [[52.9490239042419972, 17.3122189892486809], [52.9381943661129881, 17.2852683033793824]], {
     attribution: 'Mapa 2002 (skan)'
   });
-  
+
   const mapa2025 = L.tileLayer('', { attribution: 'Mapa 2025' });
 
   const baseMaps = {
@@ -135,7 +135,7 @@
     iconSize: [25, 25],
   });
 
-    const yellowIconBlack = L.icon({
+  const yellowIconBlack = L.icon({
     iconUrl: '1c.png',
     iconSize: [25, 25],
   });
@@ -145,7 +145,7 @@
     iconSize: [25, 25],
   });
 
-    const redIconBlack = L.icon({
+  const redIconBlack = L.icon({
     iconUrl: '2c.png',
     iconSize: [25, 25],
   });
@@ -155,11 +155,10 @@
     iconSize: [25, 25],
   });
 
-    const blueIconBlack = L.icon({
+  const blueIconBlack = L.icon({
     iconUrl: '3c.png',
     iconSize: [25, 25],
   });
-
 
   const marker1 = L.marker([52.944121, 17.299716], { icon: yellowIcon }).addTo(map);
   marker1.on('mouseover', () => marker1.setIcon(yellowIconBlack));
@@ -181,73 +180,12 @@
   marker3.on('click', () => {
     window.location.href = "https://l0de-dl.github.io/scena3";
   });
+
   L.control.scale({
     imperial: false,
     metric: true,
     position: 'bottomleft'
   }).addTo(map);
-
-  // --- AUTOMATYCZNE PRZEWIJANIE PODKŁADÓW ---
-const basemapKeys = Object.keys(baseMaps);
-let currentIndex = 0;
-let autoSwitchInterval = null;
-
-function startAutoSwitch() {
-  if (autoSwitchInterval) return; // już działa
-
-  autoSwitchInterval = setInterval(() => {
-    // usuń wszystkie podkłady
-    basemapKeys.forEach(k => map.removeLayer(baseMaps[k]));
-    // dodaj następny podkład
-    const key = basemapKeys[currentIndex];
-    map.addLayer(baseMaps[key]);
-
-    currentIndex = (currentIndex + 1) % basemapKeys.length;
-  }, 500); // 1000 ms = 1s
-}
-
-function stopAutoSwitch() {
-  clearInterval(autoSwitchInterval);
-  autoSwitchInterval = null;
-}
-
-// --- DODANIE PRZYCISKU ---
-const autoBtn = L.DomUtil.create("button", "");
-autoBtn.innerHTML = "Auto-przewijanie";
-autoBtn.style.display = "block";
-autoBtn.style.margin = "6px auto";
-autoBtn.style.padding = "4px 8px";
-autoBtn.style.cursor = "pointer";
-autoBtn.style.border = "1px solid #666";
-autoBtn.style.borderRadius = "6px";
-autoBtn.style.background = "white";
-
-let running = false;
-autoBtn.onclick = () => {
-  if (!running) {
-    startAutoSwitch();
-    autoBtn.innerHTML = "Stop";
-    running = true;
-  } else {
-    stopAutoSwitch();
-    autoBtn.innerHTML = "Auto-przewijanie";
-    running = false;
-  }
-};
-
-// wstaw guzik na sam dół panelu warstw
-layerContainer.appendChild(autoBtn);
-
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
