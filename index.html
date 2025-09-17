@@ -277,10 +277,69 @@
         }
       }
     }).addTo(mapa);
-  
+
+  const drzewa2 = {
+"type": "FeatureCollection",
+"name": "punkty istniejące",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 17.29963327356284, 52.944127152627658 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 17.299719985755683, 52.944155333584114 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 17.299797604535044, 52.94418057900868 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 17.299959662153881, 52.944233418221714 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 17.300047998170559, 52.94426101200731 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 17.300133086539567, 52.944285278868051 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 17.300263966740751, 52.944329702843966 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 17.300192843256731, 52.944305436008165 ] } }
+]
+}
+
+    L.geoJSON(drzewa2, {
+      onEachFeature: function (feature, layer) {
+        if (feature.properties && feature.properties.nazwa) {
+          layer.bindPopup(feature.properties.nazwa);
+        }
+      }
+    }).addTo(mapa);
+
+  const drzewa3 = {
+"type": "FeatureCollection",
+"name": "nieistniej",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "id": null }, "geometry": null },
+{ "type": "Feature", "properties": { "id": null }, "geometry": null },
+{ "type": "Feature", "properties": { "id": null }, "geometry": null },
+{ "type": "Feature", "properties": { "id": null }, "geometry": null },
+{ "type": "Feature", "properties": { "id": null }, "geometry": null },
+{ "type": "Feature", "properties": { "id": null }, "geometry": null },
+{ "type": "Feature", "properties": { "id": null }, "geometry": null },
+{ "type": "Feature", "properties": { "id": null }, "geometry": null },
+{ "type": "Feature", "properties": { "id": null }, "geometry": null },
+{ "type": "Feature", "properties": { "id": null }, "geometry": null },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 17.299608916205294, 52.944028127732317 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 17.299624504914117, 52.943877828643856 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 17.299889512964157, 52.943630460257239 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 17.300190894668127, 52.943674297795951 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 17.300440314009339, 52.943727529033254 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 17.300679340878006, 52.943780760205058 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 17.300840424202541, 52.943971765635325 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 17.300809246784887, 52.944147114140371 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 17.300720910768206, 52.944344380359041 ] } }
+]
+}
+
+      L.geoJSON(drzewa3, {
+      onEachFeature: function (feature, layer) {
+        if (feature.properties && feature.properties.nazwa) {
+          layer.bindPopup(feature.properties.nazwa);
+        }
+      }
+    }).addTo(mapa);
 </script>
 </body>
 </html>
+
 
 
 
