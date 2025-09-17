@@ -178,7 +178,7 @@
   const ikonaNiebieska = L.icon({ iconUrl: '3.png',  iconSize: [25,25] });
   const ikonaNiebieskaCiemna = L.icon({ iconUrl: '3c.png', iconSize: [25,25] });
 
-  const znacznik1 = L.marker([52.944121, 17.299716], { icon: ikonaZolta });
+  const znacznik1 = L.marker([52.944121, 17.299726], { icon: ikonaZolta });
   znacznik1.on('mouseover', () => znacznik1.setIcon(ikonaZoltaCiemna));
   znacznik1.on('mouseout',  () => znacznik1.setIcon(ikonaZolta));
   znacznik1.on('click',     () => { window.location.href = "https://l0de-dl.github.io/scena1"; });
@@ -304,6 +304,7 @@ L.geoJSON(drzewa2, {
 </script>
 </body>
 </html>
+
 
 
 
