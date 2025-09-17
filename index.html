@@ -259,7 +259,33 @@
   // === POCZĄTEK: Scena 1 ===
   pokazScene(1);
 
+// === Geojson ===
+  const drzewa1 = {
+"type": "FeatureCollection",
+"name": "zadrzewienia_punkty_1",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3857" } },
+"features": [
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 1925786.366923387860879, 6972669.635635637678206 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 1925796.01968054077588, 6972674.841617023572326 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 1925804.660163535038009, 6972679.505308682098985 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 1925822.700335143133998, 6972689.266523779369891 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 1925832.533855538582429, 6972694.36404721904546 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 1925842.005849448964, 6972698.846975634805858 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 1925856.575366799719632, 6972707.053626847453415 ] } },
+{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 1925848.657936775125563, 6972702.570698433555663 ] } }
+]
+}
+
+    L.geoJSON(drzewa1, {
+      onEachFeature: function (feature, layer) {
+        if (feature.properties && feature.properties.nazwa) {
+          layer.bindPopup(feature.properties.nazwa);
+        }
+      }
+    }).addTo(mapa);
+  
 </script>
 </body>
 </html>
+
 
