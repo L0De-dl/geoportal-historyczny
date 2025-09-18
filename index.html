@@ -259,121 +259,85 @@
   // === POCZĄTEK: Scena 1 ===
   pokazScene(1);
 
-// === Geojson ===
-  const drzewa_now = {
-"type": "FeatureCollection",
-"name": "scena1_powierzchnia",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-"features": [
-{ "type": "Feature", "properties": { }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ 17.3005556, 52.9443292 ], [ 17.2998073, 52.9439817 ], [ 17.2997376, 52.943889599999984 ], [ 17.2997242, 52.9438459 ], [ 17.2997268, 52.9437587 ], [ 17.2997564, 52.9437118 ], [ 17.2997897, 52.943685 ], [ 17.2998127, 52.9436665 ], [ 17.2999119, 52.9436374 ], [ 17.2999843, 52.943631 ], [ 17.300068, 52.9436403 ], [ 17.3003464, 52.9436876 ], [ 17.3007085, 52.9437587 ], [ 17.3007939, 52.9437898 ], [ 17.3008477, 52.9438188 ], [ 17.3008453, 52.9438783 ], [ 17.3007836, 52.9438961 ], [ 17.3006924, 52.9442339 ], [ 17.3007246, 52.9442646 ], [ 17.3007112, 52.9442904 ], [ 17.300679, 52.9443131 ], [ 17.3006281, 52.9443276 ], [ 17.3005905, 52.94433080000001 ], [ 17.3005556, 52.9443292 ] ] ] ] } }
-]
+// === GRUPY GEOJSON ===
+const warstwaDrzewaNow = L.geoJSON(drzewa_now, {
+  style: { color: "#398e3c", weight: 0.5, fillColor: "#79dc7d", fillOpacity: 0.5 }
+});
+const warstwaDrzewaThen = L.geoJSON(drzewa_then, {
+  pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+    radius: 6, color: "#4d4d4d", weight: 1, fillColor: "#a6a6a6", fillOpacity: 0.5
+  })
+});
+
+const warstwaPomnikNow = L.geoJSON(pomnik_now, {
+  pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+    radius: 6, color: "#bb2a2a", weight: 1, fillColor: "#d95959", fillOpacity: 0.5
+  })
+});
+const warstwaPomnikThen = L.geoJSON(pomnik_then, {
+  pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+    radius: 6, color: "#4d4d4d", weight: 1, fillColor: "#a6a6a6", fillOpacity: 0.5
+  })
+});
+
+const warstwaKosciolNow = L.geoJSON(kosciol_now, {
+  pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+    radius: 6, color: "#002db3", weight: 1, fillColor: "#668cff", fillOpacity: 0.5
+  })
+});
+const warstwaKosciolThen = L.geoJSON(kosciol_then, {
+  pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+    radius: 6, color: "#4d4d4d", weight: 1, fillColor: "#a6a6a6", fillOpacity: 0.5
+  })
+});
+
+// === ZBIORY GEOJSON DO SCEN ===
+const warstwyScen = {
+  1: [warstwaDrzewaNow, warstwaDrzewaThen],
+  2: [warstwaPomnikNow, warstwaPomnikThen],
+  3: [warstwaKosciolNow, warstwaKosciolThen]
 };
 
-L.geoJSON(drzewa_now, {
-  style: {
-    color: "#398e3c",      // kolor linii / obrysu
-    weight: 0.5,         // grubość linii
-    fillColor: "#79dc7d", // kolor wypełnienia (dla poligonów)
-    fillOpacity: 0.5   // przezroczystość wypełnienia
-  }
-}).addTo(mapa);
+function usunWarstwy() {
+  Object.values(warstwyScen).flat().forEach(w => { if (mapa.hasLayer(w)) mapa.removeLayer(w); });
+}
 
-const drzewa_then = {
-"type": "FeatureCollection",
-"name": "scena1_punkty",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-"features": [
-{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 17.299588131260194, 52.944023430893701 ], [ 17.299624504914117, 52.943877828643856 ], [ 17.299889512964157, 52.943630460257239 ], [ 17.300190894668127, 52.943674297795951 ], [ 17.300440314009339, 52.943727529033254 ], [ 17.300679340878006, 52.943780760205058 ], [ 17.300840424202541, 52.943971765635325 ], [ 17.300809246784887, 52.944147114140371 ], [ 17.300720910768206, 52.944344380359041 ], [ 17.29954656136999, 52.944189385548654 ], [ 17.299811569420033, 52.944258272199598 ], [ 17.300092166178899, 52.944345945960336 ], [ 17.300325996811285, 52.944424225953718 ] ] } }
-]
-};
+// Dodajemy obsługę GeoJSON do funkcji pokazScene
+function pokazScene(nr) {
+  usunZnaczniki();
+  usunWarstwy();
 
-L.geoJSON(drzewa_then, {
-  pointToLayer: function (feature, latlng) {
-    return L.circleMarker(latlng, {
-      radius: 6,
-      color: "#4d4d4d",
-      weight: 1,
-      fillColor: "#a6a6a6",
-      fillOpacity: 0.5
-    });
-  }
-}).addTo(mapa);
+  if (nr === 1) { mapa.addLayer(znacznik1); warstwyScen[1].forEach(w => mapa.addLayer(w)); }
+  if (nr === 2) { mapa.addLayer(znacznik2); warstwyScen[2].forEach(w => mapa.addLayer(w)); }
+  if (nr === 3) { mapa.addLayer(znacznik3); warstwyScen[3].forEach(w => mapa.addLayer(w)); }
 
-const pomnik_now = {
-"type": "FeatureCollection",
-"name": "scena2_now",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-"features": [{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 17.30018829654998, 52.943831642881598 ] } }]};
+  document.querySelectorAll('.przycisk-sceny').forEach((btn, idx) => {
+    btn.classList.toggle('aktywna', (idx + 1) === nr);
+  });
 
-L.geoJSON(pomnik_now, {
-  pointToLayer: function (feature, latlng) {
-    return L.circleMarker(latlng, {
-      radius: 6,
-      color: "#bb2a2a",
-      weight: 1,
-      fillColor: "#d95959",
-      fillOpacity: 0.5
-    });
-  }
-}).addTo(mapa);
+  // aktualizacja legendy
+  aktualizujLegende(nr);
+}
 
-const pomnik_then = {
-"type": "FeatureCollection",
-"name": "scena2_then",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-"features": [{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 17.299703747517317, 52.944082924145107 ] } }]};
+// === LEGENDA ===
+const legenda = document.createElement("div");
+legenda.style.fontSize = "12px";
+legenda.style.margin = "4px 0";
+kontenerWarstw.appendChild(legenda);
 
-L.geoJSON(pomnik_then, {
-  pointToLayer: function (feature, latlng) {
-    return L.circleMarker(latlng, {
-      radius: 6,
-      color: "#4d4d4d",
-      weight: 1,
-      fillColor: "#a6a6a6",
-      fillOpacity: 0.5
-    });
-  }
-}).addTo(mapa);
+function aktualizujLegende(nr) {
+  if (nr === 1) legenda.innerHTML = "Legenda: <br>1 – Drzewa obecne<br>2 – Drzewa dawne";
+  if (nr === 2) legenda.innerHTML = "Legenda: <br>1 – Pomnik obecny<br>2 – Pomnik dawny";
+  if (nr === 3) legenda.innerHTML = "Legenda: <br>1 – Kościół obecny<br>2 – Kościół dawny";
+}
 
-const kosciol_now = {
-"type": "FeatureCollection",
-"name": "scena3_now",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-"features": [{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 17.300941750809901, 52.942282434258189 ] } }]};
+// Start od sceny 1
+pokazScene(1);
 
-L.geoJSON(kosciol_now, {
-  pointToLayer: function (feature, latlng) {
-    return L.circleMarker(latlng, {
-      radius: 6,
-      color: "#002db3",
-      weight: 1,
-      fillColor: "#668cff",
-      fillOpacity: 0.5
-    });
-  }
-}).addTo(mapa);
-
-const kosciol_then = {
-"type": "FeatureCollection",
-"name": "scena3_then",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-"features": [
-{ "type": "Feature", "properties": { "id": null }, "geometry": { "type": "Point", "coordinates": [ 17.300172707841153, 52.943059002563928 ] } }]};
-
- L.geoJSON(kosciol_then, {
-  pointToLayer: function (feature, latlng) {
-    return L.circleMarker(latlng, {
-      radius: 6,
-      color: "#4d4d4d",
-      weight: 1,
-      fillColor: "#a6a6a6",
-      fillOpacity: 0.5
-    });
-  } 
-}).addTo(mapa);
 </script>
 </body>
 </html>
+
 
 
 
