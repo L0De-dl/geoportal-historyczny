@@ -175,23 +175,23 @@
   const ikonaNiebieska = L.icon({ iconUrl: '3.png',  iconSize: [25,25] });
   const ikonaNiebieskaCiemna = L.icon({ iconUrl: '3c.png', iconSize: [25,25] });
 
-  const znacznik1 = L.marker([52.944121, 17.299766], { icon: ikonaZolta });
-  .bindTooltip("Kliknij aby przejść do sceny nr 1", {permanent: false, direction: "top"});
-  znacznik1.on('mouseover', () => znacznik1.setIcon(ikonaZoltaCiemna));
-  znacznik1.on('mouseout',  () => znacznik1.setIcon(ikonaZolta));
-  znacznik1.on('click',     () => { window.location.href = "https://l0de-dl.github.io/scena1"; });
+const znacznik1 = L.marker([52.944121, 17.299766], { icon: ikonaZolta })
+  .bindTooltip("Kliknij żeby przejść do sceny", {permanent: false, direction: "top"});
+znacznik1.on('mouseover', () => znacznik1.setIcon(ikonaZoltaCiemna));
+znacznik1.on('mouseout',  () => znacznik1.setIcon(ikonaZolta));
+znacznik1.on('click',     () => { window.location.href = "https://l0de-dl.github.io/scena1"; });
 
-  const znacznik2 = L.marker([52.9438975, 17.2995147], { icon: ikonaCzerwona });
-  .bindTooltip("Kliknij aby przejść do sceny nr 2", {permanent: false, direction: "top"});
-  znacznik2.on('mouseover', () => znacznik2.setIcon(ikonaCzerwonaCiemna));
-  znacznik2.on('mouseout',  () => znacznik2.setIcon(ikonaCzerwona));
-  znacznik2.on('click',     () => { window.location.href = "https://l0de-dl.github.io/scena2"; });
+const znacznik2 = L.marker([52.9438975, 17.2995147], { icon: ikonaCzerwona })
+  .bindTooltip("Kliknij żeby przejść do sceny", {permanent: false, direction: "top"});
+znacznik2.on('mouseover', () => znacznik2.setIcon(ikonaCzerwonaCiemna));
+znacznik2.on('mouseout',  () => znacznik2.setIcon(ikonaCzerwona));
+znacznik2.on('click',     () => { window.location.href = "https://l0de-dl.github.io/scena2"; });
 
-  const znacznik3 = L.marker([52.942454, 17.300135], { icon: ikonaNiebieska });
-  .bindTooltip("Kliknij aby przejść do sceny nr 3", {permanent: false, direction: "top"});
-  znacznik3.on('mouseover', () => znacznik3.setIcon(ikonaNiebieskaCiemna));
-  znacznik3.on('mouseout',  () => znacznik3.setIcon(ikonaNiebieska));
-  znacznik3.on('click',     () => { window.location.href = "https://l0de-dl.github.io/scena3"; });
+const znacznik3 = L.marker([52.942454, 17.300135], { icon: ikonaNiebieska })
+  .bindTooltip("Kliknij żeby przejść do sceny", {permanent: false, direction: "top"});
+znacznik3.on('mouseover', () => znacznik3.setIcon(ikonaNiebieskaCiemna));
+znacznik3.on('mouseout',  () => znacznik3.setIcon(ikonaNiebieska));
+znacznik3.on('click',     () => { window.location.href = "https://l0de-dl.github.io/scena3"; });
 
   const wszystkieZnaczniki = [znacznik1, znacznik2, znacznik3];
 
@@ -409,4 +409,5 @@
 </script>
 </body>
 </html>
+
 
