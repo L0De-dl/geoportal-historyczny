@@ -89,6 +89,20 @@
       color: #222;
       margin-bottom: 4px;
     }
+
+    /* === ŻÓŁTE TOOLTIPY === */
+.leaflet-tooltip {
+  background-color: yellow !important;
+  color: black !important;
+  border: 1px solid #666;
+  font-size: 13px;
+  font-family: 'Tahoma', sans-serif;
+  font-weight: bold;
+  padding: 4px 6px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
   </style>
 </head>
 <body>
@@ -176,19 +190,19 @@
   const ikonaNiebieskaCiemna = L.icon({ iconUrl: '3c.png', iconSize: [25,25] });
 
 const znacznik1 = L.marker([52.944121, 17.299766], { icon: ikonaZolta })
-  .bindTooltip("Kliknij żeby przejść do sceny", {permanent: false, direction: "top"});
+  .bindTooltip("Kliknij aby przejść do sceny nr 1", {permanent: false, direction: "top"});
 znacznik1.on('mouseover', () => znacznik1.setIcon(ikonaZoltaCiemna));
 znacznik1.on('mouseout',  () => znacznik1.setIcon(ikonaZolta));
 znacznik1.on('click',     () => { window.location.href = "https://l0de-dl.github.io/scena1"; });
 
 const znacznik2 = L.marker([52.9438975, 17.2995147], { icon: ikonaCzerwona })
-  .bindTooltip("Kliknij żeby przejść do sceny", {permanent: false, direction: "top"});
+  .bindTooltip("Kliknij aby przejść do sceny nr 2", {permanent: false, direction: "top"});
 znacznik2.on('mouseover', () => znacznik2.setIcon(ikonaCzerwonaCiemna));
 znacznik2.on('mouseout',  () => znacznik2.setIcon(ikonaCzerwona));
 znacznik2.on('click',     () => { window.location.href = "https://l0de-dl.github.io/scena2"; });
 
 const znacznik3 = L.marker([52.942454, 17.300135], { icon: ikonaNiebieska })
-  .bindTooltip("Kliknij żeby przejść do sceny", {permanent: false, direction: "top"});
+  .bindTooltip("Kliknij aby przejść do sceny nr 3", {permanent: false, direction: "top"});
 znacznik3.on('mouseover', () => znacznik3.setIcon(ikonaNiebieskaCiemna));
 znacznik3.on('mouseout',  () => znacznik3.setIcon(ikonaNiebieska));
 znacznik3.on('click',     () => { window.location.href = "https://l0de-dl.github.io/scena3"; });
@@ -409,5 +423,6 @@ znacznik3.on('click',     () => { window.location.href = "https://l0de-dl.github
 </script>
 </body>
 </html>
+
 
 
