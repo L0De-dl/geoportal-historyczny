@@ -243,24 +243,17 @@ znacznik3.on('click',     () => { window.location.href = "https://l0de-dl.github
     }
   });
 
-  const warstwaDrzewaThen = L.geoJSON(drzewa_then, {
-    pointToLayer: function (feature, latlng) {
-      return L.circleMarker(latlng, {
-        radius: 6,
-        color: "#4d4d4d",
-        weight: 1,
-        fillColor: "#a6a6a6",
-        fillOpacity: 0.5
-      }
-            icon: L.icon({
-        iconUrl: 'drzewa_szare.png',   // ścieżka do twojej ikonki
-        iconSize: [25, 25],          // rozmiar ikonki
-      })                     
-                           
-                           
-      );
-    }
-  });
+const warstwaDrzewaThen = L.geoJSON(drzewa_then, {
+  pointToLayer: function (feature, latlng) {
+    return L.marker(latlng, {
+      icon: L.icon({
+        iconUrl: 'drzewa_szare.png',   // ścieżka do ikonki
+        iconSize: [25, 25],           // rozmiar
+        iconAnchor: [12, 12]          // punkt zakotwiczenia (środek)
+      })
+    });
+  }
+});
 
   // Scena 2 - Pomnik
   const pomnik_now = {
@@ -430,6 +423,7 @@ znacznik3.on('click',     () => { window.location.href = "https://l0de-dl.github
 </script>
 </body>
 </html>
+
 
 
 
