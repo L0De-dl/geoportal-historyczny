@@ -311,12 +311,12 @@
   const warstwaDrzewaThen = L.geoJSON(drzewa_then, {
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'drzewa_szare.png', iconSize: [18,18], iconAnchor: [9,9] })
-    })
+    }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
   });
 
   const warstwaDrzewaNow = L.geoJSON(drzewa_now, {
     style: { color: "#398e3c", weight: 0.5, fillColor: "#79dc7d", fillOpacity: 0.5 }
-  });
+  }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
 
 
   // === SCENA 2 – POMNIK ===
@@ -339,13 +339,13 @@
   const warstwaPomnikThen = L.geoJSON(pomnik_then, {
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'pomnik_szary.png', iconSize: [12,22], iconAnchor: [6,11] })
-    })
+    }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
   });
 
   const warstwaPomnikNow = L.geoJSON(pomnik_now, {
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'pomnik_czerwony.png', iconSize: [12,22], iconAnchor: [6,11] })
-    })
+    }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
   });
 
 
@@ -369,13 +369,13 @@
   const warstwaKosciolThen = L.geoJSON(kosciol_then, {
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'kosciol_szary.png', iconSize: [18,22], iconAnchor: [9,11] })
-    })
+    }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
   });
 
   const warstwaKosciolNow = L.geoJSON(kosciol_now, {
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'kosciol_niebieski.png', iconSize: [18,22], iconAnchor: [9,11] })
-    })
+    }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
   });
 
   // === WYBÓR SCENY W TYM SAMYM PANELU ===
@@ -525,3 +525,4 @@
 </script>
 </body>
 </html>
+
