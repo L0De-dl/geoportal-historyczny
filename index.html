@@ -60,7 +60,8 @@
       font-size: 13px;
       font-family: 'Tahoma', sans-serif;
       color: #333;
-      line-height: 1;
+      line-height: 1.4;
+      padding: 5px;
     }
 
     .naglowek-scen {
@@ -140,6 +141,18 @@
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
+    }
+
+    /* === NOWY STYL DLA PANELU Z OPISEM === */
+    .panel-opisu {
+        background: white;
+        padding: 8px;
+        margin: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        max-width: 400px;
+        font-family: 'Tahoma', sans-serif;
+        line-height: 1.4;
     }
   </style>
 </head>
@@ -436,6 +449,20 @@
     kontenerLegendy.style.display = 'block';
   }
 
+  // === NOWA KONTROLKA DLA OPISU SCENY ===
+  const kontrolkaOpisu = L.control({ position: 'bottomright' });
+  let kontenerOpisu = null;
+
+  kontrolkaOpisu.onAdd = function() {
+    kontenerOpisu = L.DomUtil.create('div', 'panel-opisu');
+    kontenerOpisu.innerHTML = `
+      <div id="opis-tresc" class="opis-sceny" style="display: none;"></div>
+    `;
+    return kontenerOpisu;
+  };
+  kontrolkaOpisu.addTo(mapa);
+  const opisTresc = document.getElementById('opis-tresc');
+  
   // Pokazywanie wybranej sceny
   function pokazScene(nr) {
     usunZnaczniki();
@@ -448,8 +475,9 @@
     if (mapa.hasLayer(warstwaKosciolNow)) mapa.removeLayer(warstwaKosciolNow);
     if (mapa.hasLayer(warstwaKosciolThen)) mapa.removeLayer(warstwaKosciolThen);
     
-    // Ukrycie legendy przed jej aktualizacją
+    // Ukrycie legendy i opisu przed ich aktualizacją
     kontenerLegendy.style.display = 'none';
+    opisTresc.style.display = 'none';
 
     if (nr === 1) {
       mapa.addLayer(znacznik1);
@@ -459,6 +487,9 @@
         { typ: 'ikona', ikona: 'drzewa_szare.png', opis: 'Drzewa dawniej' },
         { typ: 'kolor', kolor: '#79dc7d', ramka: '#398e3c', opis: 'Drzewa obecnie' }
       ]);
+      opisTresc.innerHTML = "W scenie 1 prezentowane są drzewa z terenu starego cmentarza ewangelickiego w Gołańczy. Po wojnie cmentarz został zdewastowany, a jedynymi pozostałościami są stare drzewa i fragment muru cmentarnego. Na przestrzeni lat teren ten uległ znaczącym przeobrażeniom, a obecnie jest parkiem publicznym. Obszar dawnego cmentarza został przekształcony w park, a jego układ i zagospodarowanie uległy zmianie. Stare drzewa zostały otoczone nową infrastrukturą, a ich rola uległa zmianie z elementu cmentarza na element parku.";
+      opisTresc.style.display = 'block';
+
     } else if (nr === 2) {
       mapa.addLayer(znacznik2);
       warstwaPomnikNow.addTo(mapa);
@@ -467,6 +498,9 @@
         { typ: 'ikona', ikona: 'pomnik_szary.png', opis: 'Pomnik dawniej' },
         { typ: 'ikona', ikona: 'pomnik_czerwony.png', opis: 'Pomnik obecnie' }
       ]);
+      opisTresc.innerHTML = "W scenie 2 prezentowana jest lokalizacja dawnego pomnika, który został przeniesiony. Pierwotnie znajdował się on w okolicy obecnego budynku Gminnego Ośrodka Kultury, a obecnie stoi przed nowym Urzędem Miasta i Gminy. Przeniesienie pomnika było wynikiem przebudowy centrum miasta i zmian w układzie komunikacyjnym. Nowa lokalizacja pomnika miała na celu nadanie mu bardziej reprezentacyjnego charakteru, a także podkreślenie jego roli w historii miasta.";
+      opisTresc.style.display = 'block';
+
     } else if (nr === 3) {
       mapa.addLayer(znacznik3);
       warstwaKosciolNow.addTo(mapa);
@@ -475,6 +509,9 @@
         { typ: 'ikona', ikona: 'kosciol_szary.png', opis: 'Kościół dawniej' },
         { typ: 'ikona', ikona: 'kosciol_niebieski.png', opis: 'Kościół obecnie' }
       ]);
+      opisTresc.innerHTML = "W scenie 3 prezentowana jest zmiana lokalizacji kościoła. Stary kościół znajdował się na terenie obecnego placu zabaw. Został zburzony po wojnie, a na jego miejscu wybudowano nowy, większy kościół. Nowy kościół został wybudowany w innym miejscu, aby zaspokoić potrzeby rosnącej liczby wiernych. Stary kościół został rozebrany, a jego miejsce zajęła nowa, bardziej funkcjonalna przestrzeń.";
+      opisTresc.style.display = 'block';
+
     }
 
     document.querySelectorAll('.przycisk-sceny').forEach((btn, idx) => {
@@ -488,6 +525,3 @@
 </script>
 </body>
 </html>
-
-
-
