@@ -259,7 +259,7 @@ const drzewa_now = {
 
 const warstwaDrzewaThen = L.geoJSON(drzewa_then, {
   pointToLayer: (f, latlng) => L.marker(latlng, {
-    icon: L.icon({ iconUrl: 'drzewa_szare.png', iconSize: [16,18], iconAnchor: [8,9] })
+    icon: L.icon({ iconUrl: 'drzewa_szare.png', iconSize: [18,18], iconAnchor: [9,9] })
   })
 });
 
@@ -287,13 +287,13 @@ const pomnik_now = {
 
 const warstwaPomnikThen = L.geoJSON(pomnik_then, {
   pointToLayer: (f, latlng) => L.marker(latlng, {
-    icon: L.icon({ iconUrl: 'pomnik_szary.png', iconSize: [14,22], iconAnchor: [7,11] })
+    icon: L.icon({ iconUrl: 'pomnik_szary.png', iconSize: [12,22], iconAnchor: [6,11] })
   })
 });
 
 const warstwaPomnikNow = L.geoJSON(pomnik_now, {
   pointToLayer: (f, latlng) => L.marker(latlng, {
-    icon: L.icon({ iconUrl: 'pomnik_czerwony.png', iconSize: [14,22], iconAnchor: [7,11] })
+    icon: L.icon({ iconUrl: 'pomnik_czerwony.png', iconSize: [12,22], iconAnchor: [6,11] })
   })
 });
 
@@ -409,6 +409,7 @@ function pokazScene(nr) {
 </script>
 </body>
 </html>
+
 
 
 
