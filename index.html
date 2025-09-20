@@ -259,7 +259,7 @@ const drzewa_now = {
 
 const warstwaDrzewaThen = L.geoJSON(drzewa_then, {
   pointToLayer: (f, latlng) => L.marker(latlng, {
-    icon: L.icon({ iconUrl: 'drzewa_szare.png', iconSize: [25,25], iconAnchor: [12,12] })
+    icon: L.icon({ iconUrl: 'drzewa_szare.png', iconSize: [20,20], iconAnchor: [10,10] })
   })
 });
 
@@ -287,13 +287,13 @@ const pomnik_now = {
 
 const warstwaPomnikThen = L.geoJSON(pomnik_then, {
   pointToLayer: (f, latlng) => L.marker(latlng, {
-    icon: L.icon({ iconUrl: 'pomnik_szary.png', iconSize: [25,25], iconAnchor: [12,12] })
+    icon: L.icon({ iconUrl: 'pomnik_szary.png', iconSize: [12,20], iconAnchor: [6,10] })
   })
 });
 
 const warstwaPomnikNow = L.geoJSON(pomnik_now, {
   pointToLayer: (f, latlng) => L.marker(latlng, {
-    icon: L.icon({ iconUrl: 'pomnik_czerwony.png', iconSize: [25,25], iconAnchor: [12,12] })
+    icon: L.icon({ iconUrl: 'pomnik_czerwony.png', iconSize: [12,20], iconAnchor: [6,10] })
   })
 });
 
@@ -317,13 +317,13 @@ const kosciol_now = {
 
 const warstwaKosciolThen = L.geoJSON(kosciol_then, {
   pointToLayer: (f, latlng) => L.marker(latlng, {
-    icon: L.icon({ iconUrl: 'kosciol_szary.png', iconSize: [25,25], iconAnchor: [12,12] })
+    icon: L.icon({ iconUrl: 'kosciol_szary.png', iconSize: [16,20], iconAnchor: [8,10] })
   })
 });
 
 const warstwaKosciolNow = L.geoJSON(kosciol_now, {
   pointToLayer: (f, latlng) => L.marker(latlng, {
-    icon: L.icon({ iconUrl: 'kosciol_niebieski.png', iconSize: [25,25], iconAnchor: [12,12] })
+    icon: L.icon({ iconUrl: 'kosciol_niebieski.png', iconSize: [16,20], iconAnchor: [8,10] })
   })
 });
 
@@ -409,6 +409,7 @@ function pokazScene(nr) {
 </script>
 </body>
 </html>
+
 
 
 
