@@ -244,7 +244,7 @@ const drzewa_now = {
   "name": "scena1_now",
   "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
   "features": [
-    { "type": "Feature", "properties": {}, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ 
+    { "type": "Feature", "properties": {}, "geometry": { "type": "MultiPolygon", "coordinates": [ [ 
       [17.3005556, 52.9443292], [17.2998073, 52.9439817], [17.2997376, 52.9438896],
       [17.2997242, 52.9438459], [17.2997268, 52.9437587], [17.2997564, 52.9437118],
       [17.2997897, 52.9436850], [17.2998127, 52.9436665], [17.2999119, 52.9436374],
@@ -253,7 +253,7 @@ const drzewa_now = {
       [17.3008453, 52.9438783], [17.3007836, 52.9438961], [17.3006924, 52.9442339],
       [17.3007246, 52.9442646], [17.3007112, 52.9442904], [17.3006790, 52.9443131],
       [17.3006281, 52.9443276], [17.3005905, 52.9443308], [17.3005556, 52.9443292]
-    ] ] ]}}
+    ] ]}}
   ]
 };
 
@@ -436,24 +436,28 @@ function pokazScene(nr) {
   // kontener na elementy legendy
   const legendaContainer = document.createElement('div');
   kontenerWarstw.appendChild(legendaContainer);
-
   
+function wyczyscLegende() {
+  legendaContainer.innerHTML = '';
+}
+
+function dodajElementLegend(tekst, ikonaUrl) {
+  const element = document.createElement('div');
+  element.className = 'przycisk-sceny'; // Re-use the existing style
+  
+  const obrazek = document.createElement('img');
+  obrazek.src = ikonaUrl;
+  obrazek.style.width = '18px'; // adjust size for legend
+  obrazek.style.height = '18px';
+  
+  const tekstElement = document.createElement('div');
+  tekstElement.className = 'opis-sceny'; // Re-use the existing style
+  tekstElement.textContent = tekst;
+  
+  element.appendChild(obrazek);
+  element.appendChild(tekstElement);
+  legendaContainer.appendChild(element);
+}
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
