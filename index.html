@@ -374,49 +374,6 @@ function pokazScene(nr) {
   });
 }
 
-  // === WYBÓR SCENY W TYM SAMYM PANELU ===
-  const separator = document.createElement('hr');
-  separator.style.margin = "6px 0";
-  separator.style.border = "none";
-  separator.style.borderTop = "1px solid #ccc";
-  kontenerWarstw.appendChild(separator);
-
-  const naglowekScen = document.createElement('div');
-  naglowekScen.innerHTML = "<strong>WYBÓR SCENY</strong>";
-  naglowekScen.className = "naglowek-scen";
-  kontenerWarstw.appendChild(naglowekScen);
-
-  function utworzPrzyciskSceny(nr, opis, ikonaUrl) {
-    const przycisk = document.createElement('div');
-    przycisk.className = 'przycisk-sceny';
-    przycisk.setAttribute('role', 'button');
-    przycisk.setAttribute('tabindex', '0');
-
-    const obrazek = document.createElement('img');
-    obrazek.src = ikonaUrl;
-    obrazek.alt = opis;
-
-    const t = document.createElement('div');
-    t.className = 'opis-sceny';
-    t.textContent = opis;
-
-    przycisk.appendChild(obrazek);
-    przycisk.appendChild(t);
-
-    przycisk.addEventListener('click', () => pokazScene(nr));
-    przycisk.addEventListener('keydown', (e) => { 
-      if (e.key === 'Enter' || e.key === ' ') { 
-        e.preventDefault(); 
-        pokazScene(nr); 
-      } 
-    });
-
-    return przycisk;
-  }
-
-  kontenerWarstw.appendChild(utworzPrzyciskSceny(1, 'Scena 1', '1.png'));
-  kontenerWarstw.appendChild(utworzPrzyciskSceny(2, 'Scena 2', '2.png'));
-  kontenerWarstw.appendChild(utworzPrzyciskSceny(3, 'Scena 3', '3.png'));
 
   // === POCZĄTEK: Scena 1 ===
   pokazScene(1);
@@ -456,6 +413,7 @@ function pokazScene(nr) {
 </script>
 </body>
 </html>
+
 
 
 
