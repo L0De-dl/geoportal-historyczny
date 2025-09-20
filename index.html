@@ -341,39 +341,24 @@ function pokazScene(nr) {
   if (mapa.hasLayer(warstwaKosciolNow)) mapa.removeLayer(warstwaKosciolNow);
   if (mapa.hasLayer(warstwaKosciolThen)) mapa.removeLayer(warstwaKosciolThen);
 
-  wyczyscLegende(); // czyścimy legendę
-
   if (nr === 1) {
     mapa.addLayer(znacznik1);
     warstwaDrzewaNow.addTo(mapa);
     warstwaDrzewaThen.addTo(mapa);
-
-    dodajElementLegend('Drzewa historyczne', 'drzewa_szare.png');
-    dodajElementLegend('Drzewa obecne', 'zielony.png'); // podmień na swoją ikonkę
-  } 
-  else if (nr === 2) {
+  } else if (nr === 2) {
     mapa.addLayer(znacznik2);
     warstwaPomnikNow.addTo(mapa);
     warstwaPomnikThen.addTo(mapa);
-
-    dodajElementLegend('Pomnik historyczny', 'pomnik_szary.png');
-    dodajElementLegend('Pomnik obecny', 'pomnik_czerwony.png');
-  } 
-  else if (nr === 3) {
+  } else if (nr === 3) {
     mapa.addLayer(znacznik3);
     warstwaKosciolNow.addTo(mapa);
     warstwaKosciolThen.addTo(mapa);
-
-    dodajElementLegend('Kościół historyczny', 'kosciol_szary.png');
-    dodajElementLegend('Kościół obecny', 'kosciol_niebieski.png');
   }
 
-  // podświetlenie aktywnego przycisku
   document.querySelectorAll('.przycisk-sceny').forEach((btn, idx) => {
     btn.classList.toggle('aktywna', (idx + 1) === nr);
   });
 }
-
   // === WYBÓR SCENY W TYM SAMYM PANELU ===
   const separator = document.createElement('hr');
   separator.style.margin = "6px 0";
@@ -421,27 +406,9 @@ function pokazScene(nr) {
   // === POCZĄTEK: Scena 1 ===
   pokazScene(1);
 
-  // === LEGENDA WARSTW GEOJSON ===
-  const separatorLegend = document.createElement('hr');
-  separatorLegend.style.margin = "6px 0";
-  separatorLegend.style.border = "none";
-  separatorLegend.style.borderTop = "1px solid #ccc";
-  kontenerWarstw.appendChild(separatorLegend);
-
-  const naglowekLegend = document.createElement('div');
-  naglowekLegend.innerHTML = "<strong>LEGENDA WARSTW</strong>";
-  naglowekLegend.className = "naglowek-scen";
-  kontenerWarstw.appendChild(naglowekLegend);
-
-  // kontener na elementy legendy
-  const legendaContainer = document.createElement('div');
-  kontenerWarstw.appendChild(legendaContainer);
-
-  
 </script>
 </body>
 </html>
-
 
 
 
