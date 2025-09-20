@@ -104,19 +104,15 @@
     }
     
     /* === STYL LEGENDY === */
-    .legenda {
-      background: white;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    .legenda-w-panelu {
+      padding-top: 10px;
       font-family: 'Tahoma', sans-serif;
       font-size: 13px;
       line-height: 1.4;
       display: none; /* Domyślnie ukryta */
     }
 
-    .legenda h4 {
+    .legenda-w-panelu h4 {
       margin: 0 0 8px;
       text-align: center;
       font-size: 14px;
@@ -369,17 +365,61 @@
     })
   });
 
-  // === KONTROLKA LEGENDY ===
-  const kontrolkaLegendy = L.control({ position: "bottomright" });
-  kontrolkaLegendy.onAdd = function(map) {
-    const div = L.DomUtil.create('div', 'legenda');
-    L.DomEvent.disableClickPropagation(div);
-    L.DomEvent.disableScrollPropagation(div);
-    return div;
-  };
-  kontrolkaLegendy.addTo(mapa);
-  const kontenerLegendy = kontrolkaLegendy.getContainer();
+  // === WYBÓR SCENY W TYM SAMYM PANELU ===
+  const separator1 = document.createElement('hr');
+  separator1.style.margin = "6px 0";
+  separator1.style.border = "none";
+  separator1.style.borderTop = "1px solid #ccc";
+  kontenerWarstw.appendChild(separator1);
 
+  const naglowekScen = document.createElement('div');
+  naglowekScen.innerHTML = "<strong>WYBÓR SCENY</strong>";
+  naglowekScen.className = "naglowek-scen";
+  kontenerWarstw.appendChild(naglowekScen);
+
+  function utworzPrzyciskSceny(nr, opis, ikonaUrl) {
+    const przycisk = document.createElement('div');
+    przycisk.className = 'przycisk-sceny';
+    przycisk.setAttribute('role', 'button');
+    przycisk.setAttribute('tabindex', '0');
+
+    const obrazek = document.createElement('img');
+    obrazek.src = ikonaUrl;
+    obrazek.alt = opis;
+
+    const t = document.createElement('div');
+    t.className = 'opis-sceny';
+    t.textContent = opis;
+
+    przycisk.appendChild(obrazek);
+    przycisk.appendChild(t);
+
+    przycisk.addEventListener('click', () => pokazScene(nr));
+    przycisk.addEventListener('keydown', (e) => { 
+      if (e.key === 'Enter' || e.key === ' ') { 
+        e.preventDefault(); 
+        pokazScene(nr); 
+      } 
+    });
+
+    return przycisk;
+  }
+
+  kontenerWarstw.appendChild(utworzPrzyciskSceny(1, 'Scena 1', '1.png'));
+  kontenerWarstw.appendChild(utworzPrzyciskSceny(2, 'Scena 2', '2.png'));
+  kontenerWarstw.appendChild(utworzPrzyciskSceny(3, 'Scena 3', '3.png'));
+
+  // === NOWA SEKCJA LEGENDY W PANELU ===
+  const separator2 = document.createElement('hr');
+  separator2.style.margin = "6px 0";
+  separator2.style.border = "none";
+  separator2.style.borderTop = "1px solid #ccc";
+  kontenerWarstw.appendChild(separator2);
+
+  const kontenerLegendy = document.createElement('div');
+  kontenerLegendy.className = 'legenda-w-panelu';
+  kontenerWarstw.appendChild(kontenerLegendy);
+  
   function stworzLegende(tytul, items) {
     kontenerLegendy.innerHTML = `<h4>${tytul}</h4>`;
     items.forEach(item => {
@@ -442,50 +482,6 @@
     });
   }
   
-  // === WYBÓR SCENY W TYM SAMYM PANELU ===
-  const separator = document.createElement('hr');
-  separator.style.margin = "6px 0";
-  separator.style.border = "none";
-  separator.style.borderTop = "1px solid #ccc";
-  kontenerWarstw.appendChild(separator);
-
-  const naglowekScen = document.createElement('div');
-  naglowekScen.innerHTML = "<strong>WYBÓR SCENY</strong>";
-  naglowekScen.className = "naglowek-scen";
-  kontenerWarstw.appendChild(naglowekScen);
-
-  function utworzPrzyciskSceny(nr, opis, ikonaUrl) {
-    const przycisk = document.createElement('div');
-    przycisk.className = 'przycisk-sceny';
-    przycisk.setAttribute('role', 'button');
-    przycisk.setAttribute('tabindex', '0');
-
-    const obrazek = document.createElement('img');
-    obrazek.src = ikonaUrl;
-    obrazek.alt = opis;
-
-    const t = document.createElement('div');
-    t.className = 'opis-sceny';
-    t.textContent = opis;
-
-    przycisk.appendChild(obrazek);
-    przycisk.appendChild(t);
-
-    przycisk.addEventListener('click', () => pokazScene(nr));
-    przycisk.addEventListener('keydown', (e) => { 
-      if (e.key === 'Enter' || e.key === ' ') { 
-        e.preventDefault(); 
-        pokazScene(nr); 
-      } 
-    });
-
-    return przycisk;
-  }
-
-  kontenerWarstw.appendChild(utworzPrzyciskSceny(1, 'Scena 1', '1.png'));
-  kontenerWarstw.appendChild(utworzPrzyciskSceny(2, 'Scena 2', '2.png'));
-  kontenerWarstw.appendChild(utworzPrzyciskSceny(3, 'Scena 3', '3.png'));
-
   // === POCZĄTEK: Scena 1 ===
   pokazScene(1);
 
