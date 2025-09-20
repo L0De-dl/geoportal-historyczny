@@ -329,37 +329,36 @@ const warstwaKosciolNow = L.geoJSON(kosciol_now, {
 
 
 
-  // Pokazywanie wybranej sceny
-  function pokazScene(nr) {
-    usunZnaczniki();
+ // Pokazywanie wybranej sceny
+function pokazScene(nr) {
+  usunZnaczniki();
 
-    // Usuwanie wszystkich warstw GeoJSON
-    if (mapa.hasLayer(warstwaDrzewa)) mapa.removeLayer(warstwaDrzewa);
-    if (mapa.hasLayer(warstwaDrzewaThen)) mapa.removeLayer(warstwaDrzewaThen);
-    if (mapa.hasLayer(warstwaPomnikNow)) mapa.removeLayer(warstwaPomnikNow);
-    if (mapa.hasLayer(warstwaPomnikThen)) mapa.removeLayer(warstwaPomnikThen);
-    if (mapa.hasLayer(warstwaKosciolNow)) mapa.removeLayer(warstwaKosciolNow);
-    if (mapa.hasLayer(warstwaKosciolThen)) mapa.removeLayer(warstwaKosciolThen);
+  // Usuwanie wszystkich warstw GeoJSON
+  if (mapa.hasLayer(warstwaDrzewaThen)) mapa.removeLayer(warstwaDrzewaThen);
+  if (mapa.hasLayer(warstwaDrzewaNow)) mapa.removeLayer(warstwaDrzewaNow);
+  if (mapa.hasLayer(warstwaPomnikNow)) mapa.removeLayer(warstwaPomnikNow);
+  if (mapa.hasLayer(warstwaPomnikThen)) mapa.removeLayer(warstwaPomnikThen);
+  if (mapa.hasLayer(warstwaKosciolNow)) mapa.removeLayer(warstwaKosciolNow);
+  if (mapa.hasLayer(warstwaKosciolThen)) mapa.removeLayer(warstwaKosciolThen);
 
-    if (nr === 1) {
-      mapa.addLayer(znacznik1);
-      warstwaDrzewa.addTo(mapa);
-      warstwaDrzewaThen.addTo(mapa);
-    } else if (nr === 2) {
-      mapa.addLayer(znacznik2);
-      warstwaPomnikNow.addTo(mapa);
-      warstwaPomnikThen.addTo(mapa);
-    } else if (nr === 3) {
-      mapa.addLayer(znacznik3);
-      warstwaKosciolNow.addTo(mapa);
-      warstwaKosciolThen.addTo(mapa);
-    }
-
-    document.querySelectorAll('.przycisk-sceny').forEach((btn, idx) => {
-      btn.classList.toggle('aktywna', (idx + 1) === nr);
-    });
+  if (nr === 1) {
+    mapa.addLayer(znacznik1);
+    warstwaDrzewaNow.addTo(mapa);
+    warstwaDrzewaThen.addTo(mapa);
+  } else if (nr === 2) {
+    mapa.addLayer(znacznik2);
+    warstwaPomnikNow.addTo(mapa);
+    warstwaPomnikThen.addTo(mapa);
+  } else if (nr === 3) {
+    mapa.addLayer(znacznik3);
+    warstwaKosciolNow.addTo(mapa);
+    warstwaKosciolThen.addTo(mapa);
   }
 
+  document.querySelectorAll('.przycisk-sceny').forEach((btn, idx) => {
+    btn.classList.toggle('aktywna', (idx + 1) === nr);
+  });
+}
   // === WYBÓR SCENY W TYM SAMYM PANELU ===
   const separator = document.createElement('hr');
   separator.style.margin = "6px 0";
@@ -410,6 +409,7 @@ const warstwaKosciolNow = L.geoJSON(kosciol_now, {
 </script>
 </body>
 </html>
+
 
 
 
