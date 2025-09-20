@@ -405,10 +405,38 @@ function pokazScene(nr) {
 
   // === POCZĄTEK: Scena 1 ===
   pokazScene(1);
+  // === LEGENDA WARSTW GEOJSON ===
+  const naglowekLegend = document.createElement('div');
+  naglowekLegend.innerHTML = "<strong>LEGENDA WARSTW</strong>";
+  naglowekLegend.className = "naglowek-scen"; // używamy stylu nagłówka scen
+  kontenerWarstw.appendChild(naglowekLegend);
+
+  function dodajElementLegend(opis, ikonaUrl) {
+    const el = document.createElement('div');
+    el.className = 'przycisk-sceny'; // korzystamy z tego samego wyglądu
+    const img = document.createElement('img');
+    img.src = ikonaUrl;
+    img.alt = opis;
+    const txt = document.createElement('div');
+    txt.className = 'opis-sceny';
+    txt.textContent = opis;
+    el.appendChild(img);
+    el.appendChild(txt);
+    kontenerWarstw.appendChild(el);
+  }
+
+  // Dodanie ikon do legendy
+  dodajElementLegend('Drzewa historyczne', 'drzewa_szare.png');
+  dodajElementLegend('Drzewa obecne', 'zielony.png'); // zmień na swoją ikonę/piktogram
+  dodajElementLegend('Pomnik historyczny', 'pomnik_szary.png');
+  dodajElementLegend('Pomnik obecny', 'pomnik_czerwony.png');
+  dodajElementLegend('Kościół historyczny', 'kosciol_szary.png');
+  dodajElementLegend('Kościół obecny', 'kosciol_niebieski.png');
 
 </script>
 </body>
 </html>
+
 
 
 
