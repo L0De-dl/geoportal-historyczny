@@ -341,81 +341,74 @@ function pokazScene(nr) {
   if (mapa.hasLayer(warstwaKosciolNow)) mapa.removeLayer(warstwaKosciolNow);
   if (mapa.hasLayer(warstwaKosciolThen)) mapa.removeLayer(warstwaKosciolThen);
 
-  wyczyscLegende(); // czyścimy legendę
-
   if (nr === 1) {
     mapa.addLayer(znacznik1);
     warstwaDrzewaNow.addTo(mapa);
     warstwaDrzewaThen.addTo(mapa);
-
-    dodajElementLegend('Drzewa historyczne', 'drzewa_szare.png');
-    dodajElementLegend('Drzewa obecne', 'zielony.png'); // podmień na swoją ikonkę
-  } 
-  else if (nr === 2) {
+  } else if (nr === 2) {
     mapa.addLayer(znacznik2);
     warstwaPomnikNow.addTo(mapa);
     warstwaPomnikThen.addTo(mapa);
-
-    dodajElementLegend('Pomnik historyczny', 'pomnik_szary.png');
-    dodajElementLegend('Pomnik obecny', 'pomnik_czerwony.png');
-  } 
-  else if (nr === 3) {
+  } else if (nr === 3) {
     mapa.addLayer(znacznik3);
     warstwaKosciolNow.addTo(mapa);
     warstwaKosciolThen.addTo(mapa);
-
-    dodajElementLegend('Kościół historyczny', 'kosciol_szary.png');
-    dodajElementLegend('Kościół obecny', 'kosciol_niebieski.png');
   }
 
-  // podświetlenie aktywnego przycisku
   document.querySelectorAll('.przycisk-sceny').forEach((btn, idx) => {
     btn.classList.toggle('aktywna', (idx + 1) === nr);
   });
 }
+  // === WYBÓR SCENY W TYM SAMYM PANELU ===
+  const separator = document.createElement('hr');
+  separator.style.margin = "6px 0";
+  separator.style.border = "none";
+  separator.style.borderTop = "1px solid #ccc";
+  kontenerWarstw.appendChild(separator);
 
+  const naglowekScen = document.createElement('div');
+  naglowekScen.innerHTML = "<strong>WYBÓR SCENY</strong>";
+  naglowekScen.className = "naglowek-scen";
+  kontenerWarstw.appendChild(naglowekScen);
+
+  function utworzPrzyciskSceny(nr, opis, ikonaUrl) {
+    const przycisk = document.createElement('div');
+    przycisk.className = 'przycisk-sceny';
+    przycisk.setAttribute('role', 'button');
+    przycisk.setAttribute('tabindex', '0');
+
+    const obrazek = document.createElement('img');
+    obrazek.src = ikonaUrl;
+    obrazek.alt = opis;
+
+    const t = document.createElement('div');
+    t.className = 'opis-sceny';
+    t.textContent = opis;
+
+    przycisk.appendChild(obrazek);
+    przycisk.appendChild(t);
+
+    przycisk.addEventListener('click', () => pokazScene(nr));
+    przycisk.addEventListener('keydown', (e) => { 
+      if (e.key === 'Enter' || e.key === ' ') { 
+        e.preventDefault(); 
+        pokazScene(nr); 
+      } 
+    });
+
+    return przycisk;
+  }
+
+  kontenerWarstw.appendChild(utworzPrzyciskSceny(1, 'Scena 1', '1.png'));
+  kontenerWarstw.appendChild(utworzPrzyciskSceny(2, 'Scena 2', '2.png'));
+  kontenerWarstw.appendChild(utworzPrzyciskSceny(3, 'Scena 3', '3.png'));
 
   // === POCZĄTEK: Scena 1 ===
   pokazScene(1);
-  // === LEGENDA WARSTW GEOJSON ===
-  const separatorLegend = document.createElement('hr');
-  separatorLegend.style.margin = "6px 0";
-  separatorLegend.style.border = "none";
-  separatorLegend.style.borderTop = "1px solid #ccc";
-  kontenerWarstw.appendChild(separatorLegend);
-
-  const naglowekLegend = document.createElement('div');
-  naglowekLegend.innerHTML = "<strong>LEGENDA WARSTW</strong>";
-  naglowekLegend.className = "naglowek-scen";
-  kontenerWarstw.appendChild(naglowekLegend);
-
-  const legendaContainer = document.createElement('div');
-  kontenerWarstw.appendChild(legendaContainer);
-
-  function dodajElementLegend(opis, ikonaUrl) {
-    const el = document.createElement('div');
-    el.className = 'przycisk-sceny';
-    const img = document.createElement('img');
-    img.src = ikonaUrl;
-    img.alt = opis;
-    const txt = document.createElement('div');
-    txt.className = 'opis-sceny';
-    txt.textContent = opis;
-    el.appendChild(img);
-    el.appendChild(txt);
-    legendaContainer.appendChild(el);
-  }
-
-  function wyczyscLegende() {
-    legendaContainer.innerHTML = "";
-  }
 
 </script>
 </body>
 </html>
-
-
-
 
 
 
