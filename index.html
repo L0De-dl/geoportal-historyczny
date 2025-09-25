@@ -154,11 +154,57 @@
         font-family: 'Tahoma', sans-serif;
         line-height: 1.4;
     }
+
+    /* === MODAL ZE ZDJĘCIEM === */
+#modal-zdjecie {
+  display: none; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+#modal-zdjecie .okno {
+  position: relative;
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+#modal-zdjecie img {
+  max-width: 100%;
+  max-height: 80vh; 
+  object-fit: contain;
+}
+
+#modal-zdjecie .zamknij {
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
   </style>
 </head>
 <body>
 
   <div id="mapa"></div>
+  <div id="modal-zdjecie">
+  <div class="okno">
+    <div class="zamknij" onclick="zamknijModal()">✖</div>
+    <img id="modal-img" src="" alt="Zdjęcie obiektu">
+  </div>
+</div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -312,11 +358,14 @@
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'drzewa_szare.png', iconSize: [18,18], iconAnchor: [9,9] })
     }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
+      .on("click", () => pokazModal("drzewa.jpg"))  // <- tu dodane
   });
 
   const warstwaDrzewaNow = L.geoJSON(drzewa_now, {
     style: { color: "#398e3c", weight: 0.5, fillColor: "#79dc7d", fillOpacity: 0.5 }
-  }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
+  }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
+      .on("click", () => pokazModal("drzewa.jpg"))  // <- tu dodane
+    ;
 
 
   // === SCENA 2 – POMNIK ===
@@ -340,12 +389,14 @@
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'pomnik_szary.png', iconSize: [12,22], iconAnchor: [6,11] })
     }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
+      .on("click", () => pokazModal("drzewa.jpg"))  // <- tu dodane
   });
 
   const warstwaPomnikNow = L.geoJSON(pomnik_now, {
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'pomnik_czerwony.png', iconSize: [12,22], iconAnchor: [6,11] })
     }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
+      .on("click", () => pokazModal("drzewa.jpg"))  // <- tu dodane
   });
 
 
@@ -370,12 +421,14 @@
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'kosciol_szary.png', iconSize: [18,22], iconAnchor: [9,11] })
     }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
+      .on("click", () => pokazModal("drzewa.jpg"))  // <- tu dodane
   });
 
   const warstwaKosciolNow = L.geoJSON(kosciol_now, {
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'kosciol_niebieski.png', iconSize: [18,22], iconAnchor: [9,11] })
     }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
+      .on("click", () => pokazModal("drzewa.jpg"))  // <- tu dodane
   });
 
   // === WYBÓR SCENY W TYM SAMYM PANELU ===
@@ -522,9 +575,20 @@
   // === POCZĄTEK: Scena 1 ===
   pokazScene(1);
 
+  // === modal===
+  function pokazModal(src) {
+  document.getElementById('modal-img').src = src;
+  document.getElementById('modal-zdjecie').style.display = 'flex';
+}
+
+function zamknijModal() {
+  document.getElementById('modal-zdjecie').style.display = 'none';
+}
+
 </script>
 </body>
 </html>
+
 
 
 
