@@ -358,7 +358,7 @@
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'drzewa_szare.png', iconSize: [18,18], iconAnchor: [9,9] })
     }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
-      .on("click", () => pokazModal("drzewa.jpg"))  // <- tu dodane
+      .on("click", () => pokazModal("then1.jpg"))  // <- tu dodane
   });
 
   const warstwaDrzewaNow = L.geoJSON(drzewa_now, {
@@ -389,7 +389,7 @@
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'pomnik_szary.png', iconSize: [12,22], iconAnchor: [6,11] })
     }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
-      .on("click", () => pokazModal("drzewa.jpg"))  // <- tu dodane
+      .on("click", () => pokazModal("then2.jpg"))  // <- tu dodane
   });
 
   const warstwaPomnikNow = L.geoJSON(pomnik_now, {
@@ -421,7 +421,7 @@
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'kosciol_szary.png', iconSize: [18,22], iconAnchor: [9,11] })
     }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
-      .on("click", () => pokazModal("drzewa.jpg"))  // <- tu dodane
+      .on("click", () => pokazModal("then3.jpg"))  // <- tu dodane
   });
 
   const warstwaKosciolNow = L.geoJSON(kosciol_now, {
@@ -588,6 +588,7 @@ function zamknijModal() {
 </script>
 </body>
 </html>
+
 
 
 
