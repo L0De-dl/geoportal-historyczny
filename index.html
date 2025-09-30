@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css">
+<script src="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
+
 
   <style>
     /* === PODSTAWY STRONY === */
@@ -585,9 +588,15 @@ function zamknijModal() {
   document.getElementById('modal-zdjecie').style.display = 'none';
 }
 
+// === pluginy===
+  
+L.control.locate().addTo(map);
+
+  
 </script>
 </body>
 </html>
+
 
 
 
