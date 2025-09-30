@@ -7,8 +7,9 @@
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css">
-
-
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-measure/dist/leaflet-measure.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css">
+  
   <style>
     /* === PODSTAWY STRONY === */
     html, body {
@@ -210,6 +211,10 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
+<script src="https://unpkg.com/leaflet-measure/dist/leaflet-measure.min.js"></script>
+<script src="https://unpkg.com/leaflet.browser.print/dist/leaflet.browser.print.min.js"></script>
+<script src="https://unpkg.com/leaflet-easyprint/dist/bundle.js"></script>
+<script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
 
 <script>
   // === INICJALIZACJA MAPY ===
@@ -591,11 +596,48 @@ function zamknijModal() {
 // === pluginy===
   
 L.control.locate().addTo(mapa);
+  
+L.control.measure({
+    position: 'topleft',
+    primaryLengthUnit: 'meters',
+    secondaryLengthUnit: 'kilometers',
+    primaryAreaUnit: 'sqmeters',
+    secondaryAreaUnit: 'hectares'
+  }).addTo(mapa);
 
+  L.control.browserPrint({
+    position: 'topleft',
+    title: 'Drukuj mapę'
+  }).addTo(mapa);
+
+    const printer = L.easyPrint({
+    title: 'Zapisz mapę jako PNG',
+    position: 'topleft',
+    filename: 'moja_mapa'
+  }).addTo(mapa);
+
+    const drawControl = new L.Control.Draw({
+    draw: {
+      polyline: true,
+      polygon: true,
+      rectangle: true,
+      circle: true,
+      marker: true
+    }
+  });
+  mapa.addControl(drawControl);
+
+  // Obsługa narysowanych obiektów
+  mapa.on(L.Draw.Event.CREATED, function (e) {
+    const layer = e.layer;
+    mapa.addLayer(layer);
+  });
+  
   
 </script>
 </body>
 </html>
+
 
 
 
