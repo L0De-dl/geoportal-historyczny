@@ -7,7 +7,6 @@
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.print/1.0.4/leaflet.print.min.css" />
   
   <style>
     /* === PODSTAWY STRONY === */
@@ -221,7 +220,6 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.print/1.0.4/leaflet.print.min.js"></script>
   
 <script>
   // === INICJALIZACJA MAPY ===
@@ -604,14 +602,10 @@ function zamknijModal() {
   
 L.control.locate().addTo(mapa);
 
-function printMap() {
-    window.print();
-}
-  
 </script>
-  <button class="print-button" onclick="printMap()">Print Map</button>
 </body>
 </html>
+
 
 
 
