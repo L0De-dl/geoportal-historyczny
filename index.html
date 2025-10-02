@@ -211,7 +211,6 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
 <script src="https://unpkg.com/leaflet.browser.print/dist/leaflet.browser.print.min.js"></script>
-<script src="https://unpkg.com/leaflet-easyprint/dist/bundle.js"></script>
 <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
 
 <script>
@@ -601,11 +600,7 @@ L.control.locate().addTo(mapa);
     title: 'Drukuj mapę'
   }).addTo(mapa);
 
-    const printer = L.easyPrint({
-    title: 'Zapisz mapę jako PNG',
-    position: 'topleft',
-    filename: 'moja_mapa'
-  }).addTo(mapa);
+
 
     const drawControl = new L.Control.Draw({
     draw: {
@@ -628,6 +623,7 @@ L.control.locate().addTo(mapa);
 </script>
 </body>
 </html>
+
 
 
 
