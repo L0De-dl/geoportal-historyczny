@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css">
   
   <style>
     /* === PODSTAWY STRONY === */
@@ -209,7 +208,6 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
-<script src="dist/leaflet.browser.print.min.js"></script>
 
 <script>
   // === INICJALIZACJA MAPY ===
@@ -590,11 +588,8 @@ function zamknijModal() {
 
 // === pluginy===
   
-L.control.locate().addTo(mapa);
-var browserControl = L.control.browserPrint(options).addTo(map);
-</script>
-</body>
-</html>
+
+
 
 
 
