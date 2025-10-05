@@ -369,7 +369,7 @@
   const warstwaDrzewaNow = L.geoJSON(drzewa_now, {
     style: { color: "#398e3c", weight: 0.5, fillColor: "#79dc7d", fillOpacity: 0.5 }
   }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
-      .on("click", () => pokazModal("drzewa.jpg"))  // <- tu dodane
+      .on("click", () => pokazModal("now10.jpg"))  // <- tu dodane
     ;
 
 
@@ -401,7 +401,7 @@
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'pomnik_czerwony.png', iconSize: [12,22], iconAnchor: [6,11] })
     }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
-      .on("click", () => pokazModal("drzewa.jpg"))  // <- tu dodane
+      .on("click", () => pokazModal("now20.jpg"))  // <- tu dodane
   });
 
 
@@ -433,7 +433,7 @@
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'kosciol_niebieski.png', iconSize: [18,22], iconAnchor: [9,11] })
     }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
-      .on("click", () => pokazModal("drzewa.jpg"))  // <- tu dodane
+      .on("click", () => pokazModal("now30.jpg"))  // <- tu dodane
   });
 
   // === WYBÓR SCENY W TYM SAMYM PANELU ===
@@ -622,6 +622,7 @@ L.control.locate().addTo(mapa);
 </script>
 </body>
 </html>
+
 
 
 
