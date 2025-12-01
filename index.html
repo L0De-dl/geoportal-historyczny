@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8" />
-  <title>HGIS - Gołańcz</title>
+  <title>Geoportal Historyczny</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -234,7 +234,7 @@
   const kontrolkaTytulu = L.control({ position: "topleft" });
   kontrolkaTytulu.onAdd = function() {
     const div = L.DomUtil.create("div", "tytul-mapy");
-    div.innerHTML = "Gołańcz – interaktywny przegląd zmian przestrzennych";
+    div.innerHTML = "Geoportal historyczny ukazujący zmiany zagospodarowania przestrzennego wybranych obiektów miasta Gołańcz";
     return div;
   };
   kontrolkaTytulu.addTo(mapa);
@@ -622,6 +622,7 @@ L.control.locate().addTo(mapa);
 </script>
 </body>
 </html>
+
 
 
 
