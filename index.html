@@ -595,36 +595,40 @@ function zamknijModal() {
   
 L.control.locate().addTo(mapa);
   
-
-    const printer = L.easyPrint({
-    title: 'Zapisz mapę jako PNG',
-    position: 'topleft',
-    filename: 'moja_mapa'
-  }).addTo(mapa);
-
-    const drawControl = new L.Control.Draw({
-    draw: {
-      polyline: true,
-      polygon: true,
-      rectangle: true,
-      circle: true,
-      marker: true
-    }
-  });
-  mapa.addControl(drawControl);
-
-  // Obsługa narysowanych obiektów
-  mapa.on(L.Draw.Event.CREATED, function (e) {
-    const layer = e.layer;
-    mapa.addLayer(layer);
-  });
-
-  L.control.measurePath({
-  showClearControl: true,
-  clearText: 'Wyczyść pomiar',
-  unit: 'metric'
+// Poprawiona inicjalizacja easyPrint (dodane wyciszenie ewentualnych błędów DOM)
+const printer = L.easyPrint({
+  title: 'Zapisz mapę jako PNG',
+  position: 'topleft',
+  filename: 'moja_mapa',
+  exportOnly: true // zapobiega błędom braku okna drukowania w niektórych przeglądarkach
 }).addTo(mapa);
+
+// Kontrolka rysowania
+const drawControl = new L.Control.Draw({
+  draw: {
+    polyline: true,
+    polygon: true,
+    rectangle: true,
+    circle: false, // measurePath słabo radzi sobie z promieniami okręgów w Leaflet
+    marker: false
+  }
+});
+mapa.addControl(drawControl);
+
+// Obsługa narysowanych obiektów + WŁĄCZENIE POMIARÓW
+mapa.on(L.Draw.Event.CREATED, function (e) {
+  const layer = e.layer;
   
+  // Włączenie pomiarów dla nowo narysowanej ścieżki lub poligonu
+  if (layer.showMeasurements) {
+    layer.showMeasurements({
+      minFilterLength: 0,
+      unit: 'metric'
+    });
+  }
+  
+  mapa.addLayer(layer);
+});
 </script>
 </body>
 </html>
