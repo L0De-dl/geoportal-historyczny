@@ -596,7 +596,7 @@ function zamknijModal() {
 // 1. Lokalizacja użytkownika
 L.control.locate().addTo(mapa);
   
-// 2. Drukowanie / Zapis do PNG (z zabezpieczeniem przed błędami DOM)
+// 2. Drukowanie / Zapis do PNG
 const printer = L.easyPrint({
   title: 'Zapisz mapę jako PNG',
   position: 'topleft',
@@ -604,31 +604,41 @@ const printer = L.easyPrint({
   exportOnly: true
 }).addTo(mapa);
 
-// 3. Kontrolka rysowania (PRZYWRÓCONE WSZYSTKIE OPCJE)
+// 3. Kontrolka rysowania z włączoną obsługą pomiarów bezpośrednio w konfiguracji
 const drawControl = new L.Control.Draw({
   draw: {
-    polyline: true,   // Rysowanie linii (np. tras)
-    polygon: true,    // Rysowanie nieregularnych powierzchni/poligonów
-    rectangle: true,  // Rysowanie prostokątów
-    circle: true,     // Rysowanie okręgów
-    marker: true      // PRZYWRÓCONO: Stawianie zwykłych markerów Leaflet
+    polyline: {
+      showMeasurements: true,
+      measurementOptions: { unit: 'metric' }
+    },
+    polygon: {
+      showMeasurements: true,
+      measurementOptions: { unit: 'metric' }
+    },
+    rectangle: {
+      showMeasurements: true,
+      measurementOptions: { unit: 'metric' }
+    },
+    circle: true,     // Zwykły okrąg
+    marker: true      // Zwykły marker/pinezka
   }
 });
 mapa.addControl(drawControl);
 
-// 4. Obsługa narysowanych obiektów + automatyczny pomiar dla linii i poligonów
+// 4. Obsługa narysowanych obiektów - ODPOWIEDNIA KOLEJNOŚĆ WYWOŁANIA
 mapa.on(L.Draw.Event.CREATED, function (e) {
   const layer = e.layer;
   const type = e.layerType;
 
-  // Sprawdzamy, czy narysowany obiekt to poligon (nieregularna powierzchnia), prostokąt lub linia
+  // KROK 1: Najpierw BEZWZGLĘDNIE dodajemy warstwę do mapy
+  mapa.addLayer(layer);
+
+  // KROK 2: Dopiero gdy warstwa jest na mapie, aktywujemy i wyświetlamy pomiary
   if (type === 'polygon' || type === 'rectangle' || type === 'polyline') {
-    // Upewniamy się, że plugin jest dostępny na obiekcie
     if (typeof layer.showMeasurements === 'function') {
       layer.showMeasurements({
         minFilterLength: 0,
         unit: 'metric',
-        // Opcjonalne formatowanie (metry kwadratowe dla powierzchni, metry/kilometry dla linii)
         formatArea: function (area) {
           if (area >= 1000000) return (area / 1000000).toFixed(2) + ' km²';
           return area.toFixed(2) + ' m²';
@@ -640,9 +650,6 @@ mapa.on(L.Draw.Event.CREATED, function (e) {
       });
     }
   }
-
-  // Dodanie obiektu (niezależnie czy to marker, okrąg, czy poligon) do mapy
-  mapa.addLayer(layer);
 });
 </script>
 </body>
