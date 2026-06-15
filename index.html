@@ -593,40 +593,55 @@ function zamknijModal() {
 
 // === pluginy===
   
+// 1. Lokalizacja użytkownika
 L.control.locate().addTo(mapa);
   
-// Poprawiona inicjalizacja easyPrint (dodane wyciszenie ewentualnych błędów DOM)
+// 2. Drukowanie / Zapis do PNG (z zabezpieczeniem przed błędami DOM)
 const printer = L.easyPrint({
   title: 'Zapisz mapę jako PNG',
   position: 'topleft',
   filename: 'moja_mapa',
-  exportOnly: true // zapobiega błędom braku okna drukowania w niektórych przeglądarkach
+  exportOnly: true
 }).addTo(mapa);
 
-// Kontrolka rysowania
+// 3. Kontrolka rysowania (PRZYWRÓCONE WSZYSTKIE OPCJE)
 const drawControl = new L.Control.Draw({
   draw: {
-    polyline: true,
-    polygon: true,
-    rectangle: true,
-    circle: false, // measurePath słabo radzi sobie z promieniami okręgów w Leaflet
-    marker: false
+    polyline: true,   // Rysowanie linii (np. tras)
+    polygon: true,    // Rysowanie nieregularnych powierzchni/poligonów
+    rectangle: true,  // Rysowanie prostokątów
+    circle: true,     // Rysowanie okręgów
+    marker: true      // PRZYWRÓCONO: Stawianie zwykłych markerów Leaflet
   }
 });
 mapa.addControl(drawControl);
 
-// Obsługa narysowanych obiektów + WŁĄCZENIE POMIARÓW
+// 4. Obsługa narysowanych obiektów + automatyczny pomiar dla linii i poligonów
 mapa.on(L.Draw.Event.CREATED, function (e) {
   const layer = e.layer;
-  
-  // Włączenie pomiarów dla nowo narysowanej ścieżki lub poligonu
-  if (layer.showMeasurements) {
-    layer.showMeasurements({
-      minFilterLength: 0,
-      unit: 'metric'
-    });
+  const type = e.layerType;
+
+  // Sprawdzamy, czy narysowany obiekt to poligon (nieregularna powierzchnia), prostokąt lub linia
+  if (type === 'polygon' || type === 'rectangle' || type === 'polyline') {
+    // Upewniamy się, że plugin jest dostępny na obiekcie
+    if (typeof layer.showMeasurements === 'function') {
+      layer.showMeasurements({
+        minFilterLength: 0,
+        unit: 'metric',
+        // Opcjonalne formatowanie (metry kwadratowe dla powierzchni, metry/kilometry dla linii)
+        formatArea: function (area) {
+          if (area >= 1000000) return (area / 1000000).toFixed(2) + ' km²';
+          return area.toFixed(2) + ' m²';
+        },
+        formatLength: function (distance) {
+          if (distance >= 1000) return (distance / 1000).toFixed(2) + ' km';
+          return distance.toFixed(2) + ' m';
+        }
+      });
+    }
   }
-  
+
+  // Dodanie obiektu (niezależnie czy to marker, okrąg, czy poligon) do mapy
   mapa.addLayer(layer);
 });
 </script>
