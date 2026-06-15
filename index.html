@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet-measure-path/leaflet-measure-path.css" />
-  <script src="https://unpkg.com/leaflet-measure-path/leaflet-measure-path.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-measure-path/1.5.0/leaflet-measure-path.min.js"></script>
   <style>
     /* === PODSTAWY STRONY === */
     html, body {
@@ -596,7 +596,7 @@ function zamknijModal() {
 // 1. Lokalizacja użytkownika
 L.control.locate().addTo(mapa);
   
-// 2. Drukowanie / Zapis do PNG
+// 2. Drukowanie / Zapis do PNG (z opcją exportOnly chroniącą przed błędami)
 const printer = L.easyPrint({
   title: 'Zapisz mapę jako PNG',
   position: 'topleft',
@@ -604,50 +604,55 @@ const printer = L.easyPrint({
   exportOnly: true
 }).addTo(mapa);
 
-// 3. Kontrolka rysowania z włączoną obsługą pomiarów bezpośrednio w konfiguracji
+// 3. Konfiguracja i dodanie kontrolki rysowania
 const drawControl = new L.Control.Draw({
   draw: {
     polyline: {
       showMeasurements: true,
-      measurementOptions: { unit: 'metric' }
+      showLength: true,
+      metric: true
     },
     polygon: {
       showMeasurements: true,
-      measurementOptions: { unit: 'metric' }
+      showArea: true,
+      metric: true,
+      allowIntersection: false // Zapobiega błędom przy nakładaniu się linii poligonu
     },
     rectangle: {
       showMeasurements: true,
-      measurementOptions: { unit: 'metric' }
+      metric: true
     },
-    circle: true,     // Zwykły okrąg
-    marker: true      // Zwykły marker/pinezka
+    circle: true, // Pozostawione zwykłe okręgi
+    marker: true  // Pozostawione standardowe markery (pinezki)
   }
 });
 mapa.addControl(drawControl);
 
-// 4. Obsługa narysowanych obiektów - ODPOWIEDNIA KOLEJNOŚĆ WYWOŁANIA
+// 4. Obsługa zdarzenia po zakończeniu rysowania obiektu
 mapa.on(L.Draw.Event.CREATED, function (e) {
   const layer = e.layer;
   const type = e.layerType;
 
-  // KROK 1: Najpierw BEZWZGLĘDNIE dodajemy warstwę do mapy
+  // Najpierw bezwzględnie dodajemy obiekt na mapę
   mapa.addLayer(layer);
 
-  // KROK 2: Dopiero gdy warstwa jest na mapie, aktywujemy i wyświetlamy pomiary
+  // Wymuszenie odpalenia pomiarów po dodaniu warstwy do mapy dla obiektów liniowych/powierzchniowych
   if (type === 'polygon' || type === 'rectangle' || type === 'polyline') {
     if (typeof layer.showMeasurements === 'function') {
-      layer.showMeasurements({
-        minFilterLength: 0,
-        unit: 'metric',
-        formatArea: function (area) {
-          if (area >= 1000000) return (area / 1000000).toFixed(2) + ' km²';
-          return area.toFixed(2) + ' m²';
-        },
-        formatLength: function (distance) {
-          if (distance >= 1000) return (distance / 1000).toFixed(2) + ' km';
-          return distance.toFixed(2) + ' m';
-        }
-      });
+      setTimeout(function() {
+        layer.showMeasurements({
+          minFilterLength: 0,
+          unit: 'metric',
+          formatArea: function (area) {
+            if (area >= 1000000) return (area / 1000000).toFixed(2) + ' km²';
+            return area.toFixed(2) + ' m²';
+          },
+          formatLength: function (distance) {
+            if (distance >= 1000) return (distance / 1000).toFixed(2) + ' km';
+            return distance.toFixed(2) + ' m';
+          }
+        });
+      }, 50); // Minimalne opóźnienie daje Leafletowi czas na prawidłowe obliczenie współrzędnych w DOM
     }
   }
 });
