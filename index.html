@@ -633,27 +633,41 @@ mapa.on(L.Draw.Event.CREATED, function (e) {
   const layer = e.layer;
   const type = e.layerType;
 
-  // Najpierw bezwzględnie dodajemy obiekt na mapę
+  // 1. Najpierw dodajemy obiekt na mapę
   mapa.addLayer(layer);
 
-  // Wymuszenie odpalenia pomiarów po dodaniu warstwy do mapy dla obiektów liniowych/powierzchniowych
+  // 2. Obsługa wyświetlania pomiarów na stałe
   if (type === 'polygon' || type === 'rectangle' || type === 'polyline') {
+    // Standardowe wywołanie dla linii i poligonów z Twoimi ustawieniami formatowania
     if (typeof layer.showMeasurements === 'function') {
-      setTimeout(function() {
-        layer.showMeasurements({
-          minFilterLength: 0,
-          unit: 'metric',
-          formatArea: function (area) {
-            if (area >= 1000000) return (area / 1000000).toFixed(2) + ' km²';
-            return area.toFixed(2) + ' m²';
-          },
-          formatLength: function (distance) {
-            if (distance >= 1000) return (distance / 1000).toFixed(2) + ' km';
-            return distance.toFixed(2) + ' m';
-          }
-        });
-      }, 50); // Minimalne opóźnienie daje Leafletowi czas na prawidłowe obliczenie współrzędnych w DOM
+      layer.showMeasurements({
+        clearOnHide: false, // Zapobiega ukrywaniu
+        showMeasurements: true,
+        unit: 'metric',
+        formatArea: function (area) {
+          if (area >= 1000000) return (area / 1000000).toFixed(2) + ' km²';
+          return area.toFixed(2) + ' m²';
+        },
+        formatLength: function (distance) {
+          if (distance >= 1000) return (distance / 1000).toFixed(2) + ' km';
+          return distance.toFixed(2) + ' m';
+        }
+      });
     }
+  } else if (type === 'circle') {
+    // Specjalna obsługa dla okręgu (promień)
+    const radius = layer.getRadius();
+    let tekstPromienia = radius.toFixed(2) + ' m';
+    if (radius >= 1000) {
+      tekstPromienia = (radius / 1000).toFixed(2) + ' km';
+    }
+
+    // Tworzymy stały tooltip na środku okręgu z informacją o promieniu
+    layer.bindTooltip("Promień: " + tekstPromienia, {
+      permanent: true,
+      direction: "center",
+      className: "etykieta-promienia" // Opcjonalna klasa CSS do ostylowania
+    }).openTooltip();
   }
 });
 </script>
