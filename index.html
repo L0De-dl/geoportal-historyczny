@@ -655,19 +655,37 @@ mapa.on(L.Draw.Event.CREATED, function (e) {
   }
 
   // 2. Obsługa wyświetlania pomiarów za pomocą stałych tooltipów
-  if (type === 'polyline') {
-    // Obliczanie długości linii (suma odległości między punktami)
+if (type === 'polyline') {
     const latlngs = layer.getLatLngs();
-    let dlugosc = 0;
+    
+    // Pętla przechodząca przez każdy odcinek łamanej
     for (let i = 0; i < latlngs.length - 1; i++) {
-      dlugosc += latlngs[i].distanceTo(latlngs[i+1]);
+      const p1 = latlngs[i];
+      const p2 = latlngs[i+1];
+      
+      // 1. Obliczanie długości danego odcinka
+      const dlugoscOdcinka = p1.distanceTo(p2);
+      
+      // 2. Wyznaczanie punktu środkowego odcinka do wyświetlenia etykiety
+      const srodekLat = (p1.lat + p2.lat) / 2;
+      const srodekLng = (p1.lng + p2.lng) / 2;
+      const punktSrodkowy = L.latLng(srodekLat, srodekLng);
+      
+      // 3. Tworzenie przeźroczystego punktu pomocniczego z tooltipem
+      L.circleMarker(punktSrodkowy, {
+        radius: 1,
+        stroke: false,
+        fillColor: 'transparent',
+        interactive: false
+      })
+      .bindTooltip(formatujDlugosc(dlugoscOdcinka), {
+        permanent: true,
+        direction: "center",
+        className: "etykieta-promienia"
+      })
+      .addTo(mapa);
     }
-
-    layer.bindTooltip("Długość: " + formatujDlugosc(dlugosc), {
-      permanent: true,
-      direction: "center",
-      className: "etykieta-promienia"
-    }).openTooltip();
+  }
 
   } else if (type === 'polygon' || type === 'rectangle') {
     // Obliczanie powierzchni dla poligonów i prostokątów
