@@ -640,40 +640,54 @@ mapa.on(L.Draw.Event.CREATED, function (e) {
   const layer = e.layer;
   const type = e.layerType;
 
-  // 1. Najpierw dodajemy obiekt na mapę
+  // 1. Dodajemy obiekt na mapę
   mapa.addLayer(layer);
 
-  // 2. Obsługa wyświetlania pomiarów na stałe
-  if (type === 'polygon' || type === 'rectangle' || type === 'polyline') {
-    // Standardowe wywołanie dla linii i poligonów z Twoimi ustawieniami formatowania
-    if (typeof layer.showMeasurements === 'function') {
-      layer.showMeasurements({
-        clearOnHide: false, // Zapobiega ukrywaniu
-        showMeasurements: true,
-        unit: 'metric',
-        formatArea: function (area) {
-          if (area >= 1000000) return (area / 1000000).toFixed(2) + ' km²';
-          return area.toFixed(2) + ' m²';
-        },
-        formatLength: function (distance) {
-          if (distance >= 1000) return (distance / 1000).toFixed(2) + ' km';
-          return distance.toFixed(2) + ' m';
-        }
-      });
-    }
-  } else if (type === 'circle') {
-    // Specjalna obsługa dla okręgu (promień)
-    const radius = layer.getRadius();
-    let tekstPromienia = radius.toFixed(2) + ' m';
-    if (radius >= 1000) {
-      tekstPromienia = (radius / 1000).toFixed(2) + ' km';
+  // Funkcje pomocnicze do formatowania tekstu (takie same jak miałeś wcześniej)
+  function formatujDlugosc(dystans) {
+    if (dystans >= 1000) return (dystans / 1000).toFixed(2) + ' km';
+    return dystans.toFixed(2) + ' m';
+  }
+
+  function formatujPowierzchnie(pole) {
+    if (pole >= 1000000) return (pole / 1000000).toFixed(2) + ' km²';
+    return pole.toFixed(2) + ' m²';
+  }
+
+  // 2. Obsługa wyświetlania pomiarów za pomocą stałych tooltipów
+  if (type === 'polyline') {
+    // Obliczanie długości linii (suma odległości między punktami)
+    const latlngs = layer.getLatLngs();
+    let dlugosc = 0;
+    for (let i = 0; i < latlngs.length - 1; i++) {
+      dlugosc += latlngs[i].distanceTo(latlngs[i+1]);
     }
 
-    // Tworzymy stały tooltip na środku okręgu z informacją o promieniu
-    layer.bindTooltip("Promień: " + tekstPromienia, {
+    layer.bindTooltip("Długość: " + formatujDlugosc(dlugosc), {
       permanent: true,
       direction: "center",
-      className: "etykieta-promienia" // Opcjonalna klasa CSS do ostylowania
+      className: "etykieta-promienia"
+    }).openTooltip();
+
+  } else if (type === 'polygon' || type === 'rectangle') {
+    // Obliczanie powierzchni dla poligonów i prostokątów
+    const latlngs = layer.getLatLngs()[0];
+    // Leaflet-Geodesy / wbudowana metoda w Leaflet Draw do liczenia powierzchni sferycznej
+    const pole = L.GeometryUtil.geodesicArea(latlngs);
+
+    layer.bindTooltip("Powierzchnia: " + formatujPowierzchnie(pole), {
+      permanent: true,
+      direction: "center",
+      className: "etykieta-promienia"
+    }).openTooltip();
+
+  } else if (type === 'circle') {
+    // Specjalna obsługa dla okręgu (zostaje bez zmian)
+    const radius = layer.getRadius();
+    layer.bindTooltip("Promień: " + formatujDlugosc(radius), {
+      permanent: true,
+      direction: "center",
+      className: "etykieta-promienia"
     }).openTooltip();
   }
 });
