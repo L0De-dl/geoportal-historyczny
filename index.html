@@ -7,7 +7,7 @@
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet-measure-path/leaflet-measure-path.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-measure-path/1.5.0/leaflet-measure-path.min.js"></script>
   <style>
@@ -159,62 +159,63 @@
     }
 
     /* === MODAL ZE ZDJĘCIEM === */
-#modal-zdjecie {
-  display: none; 
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.7);
-  z-index: 9999;
-  justify-content: center;
-  align-items: center;
-}
+    #modal-zdjecie {
+      display: none; 
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+    }
 
-#modal-zdjecie .okno {
-  position: relative;
-  background: white;
-  padding: 10px;
-  border-radius: 10px;
-  max-width: 90%;
-  max-height: 90%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
+    #modal-zdjecie .okno {
+      position: relative;
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 90%;
+      max-height: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
 
-#modal-zdjecie img {
-  max-width: 100%;
-  max-height: 80vh; 
-  object-fit: contain;
-}
+    #modal-zdjecie img {
+      max-width: 100%;
+      max-height: 80vh; 
+      object-fit: contain;
+    }
 
-#modal-zdjecie .zamknij {
-  cursor: pointer;
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
+    #modal-zdjecie .zamknij {
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
     .leaflet-tooltip.etykieta-promienia {
-background: none !important;
-  border: none !important;
-  box-shadow: none !important;
-  color: black !important;
-  font-weight: bold;
-  text-shadow: 1px 1px 0px white, -1px -1px 0px white, 1px -1px 0px white, -1px 1px 0px white;
-}
+      background: none !important;
+      border: none !important;
+      box-shadow: none !important;
+      color: black !important;
+      font-weight: bold;
+      text-shadow: 1px 1px 0px white, -1px -1px 0px white, 1px -1px 0px white, -1px 1px 0px white;
+    }
   </style>
 </head>
 <body>
 
   <div id="mapa"></div>
   <div id="modal-zdjecie">
-  <div class="okno">
-    <div class="zamknij" onclick="zamknijModal()">✖</div>
-    <img id="modal-img" src="" alt="Zdjęcie obiektu">
+    <div class="okno">
+      <div class="zamknij" onclick="zamknijModal()">✖</div>
+      <img id="modal-img" src="" alt="Zdjęcie obiektu">
+    </div>
   </div>
-</div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
@@ -260,7 +261,7 @@ background: none !important;
     subdomains: 'abcd',
   }).addTo(mapa);
 
-  const podklad1890 = L.imageOverlay('1890.jpg', [[52.9490319, 17.3121943], [52.9382133, 17.2852466]]);
+  const podklad1890 = L.imageOverlay('1890.jpg', [[52.9490319, 17.3121943], [52.9381133, 17.2852466]]);
   const podklad1911 = L.imageOverlay('1911.jpg', [[52.9490257, 17.3122210], [52.9381925, 17.2852721]]);
   const podklad1934 = L.imageOverlay('1934.jpg', [[52.9490222, 17.3122162], [52.9382042, 17.2852771]]);
   const podklad1940 = L.imageOverlay('1940.jpg', [[52.9490216, 17.3122245], [52.9381925, 17.2852719]]);
@@ -355,7 +356,7 @@ background: none !important;
     "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
     "features": [
       { "type": "Feature", "properties": {}, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ 
-        [17.3005556, 52.9443292], [17.2998073, 52.9439817], [17.2997376, 52.9438896],
+        [17.3005556, 52.9443292], [17.2998073, 52.944317], [17.2997376, 52.9438896],
         [17.2997242, 52.9438459], [17.2997268, 52.9437587], [17.2997564, 52.9437118],
         [17.2997897, 52.9436850], [17.2998127, 52.9436665], [17.2999119, 52.9436374],
         [17.2999843, 52.9436310], [17.3000680, 52.9436403], [17.3003464, 52.9436876],
@@ -371,14 +372,13 @@ background: none !important;
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'drzewa_szare.png', iconSize: [18,18], iconAnchor: [9,9] })
     }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
-      .on("click", () => pokazModal("then1.jpg"))  // <- tu dodane
+      .on("click", () => pokazModal("then1.jpg"))
   });
 
   const warstwaDrzewaNow = L.geoJSON(drzewa_now, {
     style: { color: "#398e3c", weight: 0.5, fillColor: "#79dc7d", fillOpacity: 0.5 }
   }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
-      .on("click", () => pokazModal("now10.jpg"))  // <- tu dodane
-    ;
+      .on("click", () => pokazModal("now10.jpg"));
 
 
   // === SCENA 2 – POMNIK ===
@@ -402,14 +402,14 @@ background: none !important;
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'pomnik_szary.png', iconSize: [12,22], iconAnchor: [6,11] })
     }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
-      .on("click", () => pokazModal("then2.jpg"))  // <- tu dodane
+      .on("click", () => pokazModal("then2.jpg"))
   });
 
   const warstwaPomnikNow = L.geoJSON(pomnik_now, {
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'pomnik_czerwony.png', iconSize: [12,22], iconAnchor: [6,11] })
     }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
-      .on("click", () => pokazModal("now20.jpg"))  // <- tu dodane
+      .on("click", () => pokazModal("now20.jpg"))
   });
 
 
@@ -434,14 +434,14 @@ background: none !important;
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'kosciol_szary.png', iconSize: [18,22], iconAnchor: [9,11] })
     }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
-      .on("click", () => pokazModal("then3.jpg"))  // <- tu dodane
+      .on("click", () => pokazModal("then3.jpg"))
   });
 
   const warstwaKosciolNow = L.geoJSON(kosciol_now, {
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'kosciol_niebieski.png', iconSize: [18,22], iconAnchor: [9,11] })
     }).bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
-      .on("click", () => pokazModal("now30.jpg"))  // <- tu dodane
+      .on("click", () => pokazModal("now30.jpg"))
   });
 
   // === WYBÓR SCENY W TYM SAMYM PANELU ===
@@ -564,7 +564,7 @@ background: none !important;
         { typ: 'ikona', ikona: 'pomnik_szary.png', opis: 'Pomnik dawniej' },
         { typ: 'ikona', ikona: 'pomnik_czerwony.png', opis: 'Pomnik obecnie' }
       ]);
-      opisTresc.innerHTML = "Monument wzniesiono w 1925 roku z inicjatywy lokalnej społeczności. W czasie II wojny światowej został zniszczony, a w jego miejscu po wojnie ustawiono pomnik ku czci poległych w I i II wojnie światowej. W 1999 roku na poddaszu kościoła odnaleziono fragmenty dawnego pomnika, które poddano rekonstrukcji. Rok później odtworzony monument ponownie stanął na rynku, tym razem w jego centralnej części.";
+      opisTresc.innerHTML = "Monument wzniesiono w 1925 roku z inicjatywy lokalnej społeczności. W czasie II wojny światowej został zniszczony, a w jego miejscu po wojnie ustawiono pomnik ku czci poległych w I i II wojnie światowej. W 1999 roku na poddaszu kościoła odnaleziono fragmenty dawnego pomnika, które poddano rekonstrukcji. Rok profesjonalnie odtworzony monument ponownie stanął na rynku, tym razem w jego centralnej części.";
       opisTresc.style.display = 'block';
 
     } else if (nr === 3) {
@@ -590,143 +590,124 @@ background: none !important;
 
   // === modal===
   function pokazModal(src) {
-  document.getElementById('modal-img').src = src;
-  document.getElementById('modal-zdjecie').style.display = 'flex';
-}
-
-function zamknijModal() {
-  document.getElementById('modal-zdjecie').style.display = 'none';
-}
-
-// === pluginy===
-  
-// 1. Lokalizacja użytkownika
-L.control.locate().addTo(mapa);
-  
-// 2. Drukowanie / Zapis do PNG (z opcją exportOnly chroniącą przed błędami)
-const printer = L.easyPrint({
-  title: 'Zapisz mapę jako PNG',
-  position: 'topleft',
-  filename: 'moja_mapa',
-  exportOnly: true
-}).addTo(mapa);
-
-// 3. Konfiguracja i dodanie kontrolki rysowania
-const drawControl = new L.Control.Draw({
-  draw: {
-    polyline: {
-      showMeasurements: true,
-      showLength: true,
-      metric: true
-    },
-    polygon: {
-      showMeasurements: true,
-      showArea: true,
-      metric: true,
-      allowIntersection: false // Zapobiega błędom przy nakładaniu się linii poligonu
-    },
-    rectangle: {
-      showMeasurements: true,
-      metric: true
-    },
-    circle: true, // Pozostawione zwykłe okręgi
-    marker: true  // Pozostawione standardowe markery (pinezki)
-  }
-});
-mapa.addControl(drawControl);
-
-// 4. Obsługa zdarzenia po zakończeniu rysowania obiektu
-mapa.on(L.Draw.Event.CREATED, function (e) {
-  const layer = e.layer;
-  const type = e.layerType;
-
-  // 1. Dodajemy obiekt na mapę
-  mapa.addLayer(layer);
-
-  // Funkcje pomocnicze do formatowania tekstu (takie same jak miałeś wcześniej)
-  function formatujDlugosc(dystans) {
-    if (dystans >= 1000) return (dystans / 1000).toFixed(2) + ' km';
-    return dystans.toFixed(2) + ' m';
+    document.getElementById('modal-img').src = src;
+    document.getElementById('modal-zdjecie').style.display = 'flex';
   }
 
-  function formatujPowierzchnie(pole) {
-    if (pole >= 1000000) return (pole / 1000000).toFixed(2) + ' km²';
-    return pole.toFixed(2) + ' m²';
+  function zamknijModal() {
+    document.getElementById('modal-zdjecie').style.display = 'none';
   }
 
-  // 2. Obsługa wyświetlania pomiarów za pomocą stałych tooltipów
-if (type === 'polyline') {
-    const latlngs = layer.getLatLngs();
+  // === pluginy===
     
-    // Pętla przechodząca przez każdy odcinek łamanej
-    for (let i = 0; i < latlngs.length - 1; i++) {
-      const p1 = latlngs[i];
-      const p2 = latlngs[i+1];
+  // 1. Lokalizacja użytkownika
+  L.control.locate().addTo(mapa);
+    
+  // 2. Drukowanie / Zapis do PNG (z opcją exportOnly chroniącą przed błędami)
+  const printer = L.easyPrint({
+    title: 'Zapisz mapę jako PNG',
+    position: 'topleft',
+    filename: 'moja_mapa',
+    exportOnly: true
+  }).addTo(mapa);
+
+  // 3. Konfiguracja i dodanie kontrolki rysowania
+  const drawControl = new L.Control.Draw({
+    draw: {
+      polyline: {
+        showMeasurements: true,
+        showLength: true,
+        metric: true
+      },
+      polygon: {
+        showMeasurements: true,
+        showArea: true,
+        metric: true,
+        allowIntersection: false // Zapobiega błędom przy nakładaniu się linii poligonu
+      },
+      rectangle: {
+        showMeasurements: true,
+        metric: true
+      },
+      circle: true, // Pozostawione zwykłe okręgi
+      marker: true  // Pozostawione standardowe markery (pinezki)
+    }
+  });
+  mapa.addControl(drawControl);
+
+  // 4. Obsługa zdarzenia po zakończeniu rysowania obiektu
+  mapa.on(L.Draw.Event.CREATED, function (e) {
+    const layer = e.layer;
+    const type = e.layerType;
+
+    // 1. Dodajemy obiekt na mapę
+    mapa.addLayer(layer);
+
+    // Funkcje pomocnicze do formatowania tekstu
+    function formatujDlugosc(dystans) {
+      if (dystans >= 1000) return (dystans / 1000).toFixed(2) + ' km';
+      return dystans.toFixed(2) + ' m';
+    }
+
+    function formatujPowierzchnie(pole) {
+      if (pole >= 1000000) return (pole / 1000000).toFixed(2) + ' km²';
+      return pole.toFixed(2) + ' m²';
+    }
+
+    // 2. Obsługa wyświetlania pomiarów za pomocą stałych tooltipów
+    if (type === 'polyline') {
+      const latlngs = layer.getLatLngs();
       
-      // 1. Obliczanie długości danego odcinka
-      const dlugoscOdcinka = p1.distanceTo(p2);
-      
-      // 2. Wyznaczanie punktu środkowego odcinka do wyświetlenia etykiety
-      const srodekLat = (p1.lat + p2.lat) / 2;
-      const srodekLng = (p1.lng + p2.lng) / 2;
-      const punktSrodkowy = L.latLng(srodekLat, srodekLng);
-      
-      // 3. Tworzenie przeźroczystego punktu pomocniczego z tooltipem
-      L.circleMarker(punktSrodkowy, {
-        radius: 1,
-        stroke: false,
-        fillColor: 'transparent',
-        interactive: false
-      })
-      .bindTooltip(formatujDlugosc(dlugoscOdcinka), {
+      // Pętla przechodząca przez każdy odcinek łamanej osobno
+      for (let i = 0; i < latlngs.length - 1; i++) {
+        const p1 = latlngs[i];
+        const p2 = latlngs[i+1];
+        
+        // Obliczanie długości tylko tego konkretnego odcinka
+        const dlugoscOdcinka = p1.distanceTo(p2);
+        
+        // Wyznaczanie punktu środkowego bieżącego odcinka
+        const srodekLat = (p1.lat + p2.lat) / 2;
+        const srodekLng = (p1.lng + p2.lng) / 2;
+        const punktSrodkowy = L.latLng(srodekLat, srodekLng);
+        
+        // Tworzenie niewidzialnego znacznika z tooltipem na środku odcinka
+        L.circleMarker(punktSrodkowy, {
+          radius: 1,
+          stroke: false,
+          fillColor: 'transparent',
+          interactive: false
+        })
+        .bindTooltip(formatujDlugosc(dlugoscOdcinka), {
+          permanent: true,
+          direction: "center",
+          className: "etykieta-promienia"
+        })
+        .addTo(mapa);
+      }
+
+    } else if (type === 'polygon' || type === 'rectangle') {
+      // Obliczanie powierzchni dla poligonów i prostokątów
+      const latlngs = layer.getLatLngs()[0];
+      // Leaflet-Geodesy / wbudowana metoda w Leaflet Draw do liczenia powierzchni sferycznej
+      const pole = L.GeometryUtil.geodesicArea(latlngs);
+
+      layer.bindTooltip("Powierzchnia: " + formatujPowierzchnie(pole), {
         permanent: true,
         direction: "center",
         className: "etykieta-promienia"
-      })
-      .addTo(mapa);
+      }).openTooltip();
+
+    } else if (type === 'circle') {
+      // Specjalna obsługa dla okręgu (zostaje bez zmian)
+      const radius = layer.getRadius();
+      layer.bindTooltip("Promień: " + formatujDlugosc(radius), {
+        permanent: true,
+        direction: "center",
+        className: "etykieta-promienia"
+      }).openTooltip();
     }
-  }
-
-  } else if (type === 'polygon' || type === 'rectangle') {
-    // Obliczanie powierzchni dla poligonów i prostokątów
-    const latlngs = layer.getLatLngs()[0];
-    // Leaflet-Geodesy / wbudowana metoda w Leaflet Draw do liczenia powierzchni sferycznej
-    const pole = L.GeometryUtil.geodesicArea(latlngs);
-
-    layer.bindTooltip("Powierzchnia: " + formatujPowierzchnie(pole), {
-      permanent: true,
-      direction: "center",
-      className: "etykieta-promienia"
-    }).openTooltip();
-
-  } else if (type === 'circle') {
-    // Specjalna obsługa dla okręgu (zostaje bez zmian)
-    const radius = layer.getRadius();
-    layer.bindTooltip("Promień: " + formatujDlugosc(radius), {
-      permanent: true,
-      direction: "center",
-      className: "etykieta-promienia"
-    }).openTooltip();
-  }
-});
+  });
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
