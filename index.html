@@ -299,7 +299,7 @@
   const ikonaCzerwonaCiemna = L.icon({ iconUrl: 'scena_sferyczna_szare.png', iconSize: [25,25] });
   const ikonaNiebieska = L.icon({ iconUrl: 'scena_sferyczna.png',  iconSize: [25,25] });
   const ikonaNiebieskaCiemna = L.icon({ iconUrl: 'scena_sferyczna_szare.png', iconSize: [25,25] });
-  const ikonaaparat1 = L.icon({ iconUrl: 'aparat1.png', iconSize: [25,25] });
+  const ikonaaparat = L.icon({ iconUrl: 'aparat.png', iconSize: [25,25] });
   const ikonaaparatszara = L.icon({ iconUrl: 'aparat_szare.png', iconSize: [25,25] });
   
   const znacznik1 = L.marker([52.944121, 17.299766], { icon: ikonaZolta })
@@ -320,16 +320,31 @@
   znacznik3.on('mouseout',  () => znacznik3.setIcon(ikonaNiebieska));
   znacznik3.on('click',     () => { window.location.href = "https://l0de-dl.github.io/scena3"; });
 
-const znacznika11 = L.marker([52.944509720394485, 17.300709796608555], { icon: ikonaaparat1 })
+const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: ikonaaparat })
   .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
   .addTo(mapa);
   znacznika11.on('mouseover', () => znacznika11.setIcon(ikonaaparatszara));
-  znacznika11.on('mouseout',  () => znacznika11.setIcon(ikonaaparat1));
+  znacznika11.on('mouseout',  () => znacznika11.setIcon(ikonaaparat));
   znacznika11.on('click', () => {
   pokazModal("zdjeciedrzewa1.jpg");});
 
+  const znacznika12 = L.marker([52.94421555840046, 17.300320873370165], { icon: ikonaaparat })
+  .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
+  .addTo(mapa);
+  znacznika12.on('mouseover', () => znacznika12.setIcon(ikonaaparatszara));
+  znacznika12.on('mouseout',  () => znacznika12.setIcon(ikonaaparat));
+  znacznika12.on('click', () => {
+  pokazModal("zdjeciedrzewa2.jpg");});
+
+    const znacznika13 = L.marker([52.94362884521579, 17.300476440977068], { icon: ikonaaparat })
+  .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
+  .addTo(mapa);
+  znacznika13.on('mouseover', () => znacznika13.setIcon(ikonaaparatszara));
+  znacznika13.on('mouseout',  () => znacznika13.setIcon(ikonaaparat));
+  znacznika13.on('click', () => {
+  pokazModal("zdjeciedrzewa3.jpg");});
   
-  const wszystkieZnaczniki = [znacznik1, znacznik2, znacznik3, znacznika11];
+  const wszystkieZnaczniki = [znacznik1, znacznik2, znacznik3, znacznika11, znacznika12, znacznika13];
 
   // Usuwanie wszystkich znaczników
   function usunZnaczniki() {
@@ -559,6 +574,8 @@ const znacznika11 = L.marker([52.944509720394485, 17.300709796608555], { icon: i
     if (nr === 1) {
       mapa.addLayer(znacznik1);
       znacznika11.addTo(mapa);
+      znacznika12.addTo(mapa);
+      znacznika13.addTo(mapa);
       warstwaDrzewaNow.addTo(mapa);
       warstwaDrzewaThen.addTo(mapa);
       stworzLegende("Legenda", [
