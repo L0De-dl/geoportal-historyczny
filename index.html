@@ -321,14 +321,15 @@
   znacznik3.on('click',     () => { window.location.href = "https://l0de-dl.github.io/scena3"; });
 
 const znacznika11 = L.marker([52.94443698776026, 17.300731253661702], { icon: ikonaaparat1 })
-  .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
+  .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
+  .addTo(mapa);
   znacznika11.on('mouseover', () => znacznika11.setIcon(ikonaaparatszara));
   znacznika11.on('mouseout',  () => znacznika11.setIcon(ikonaaparat1));
   znacznika11.on('click', () => {
-  znacznika11.bindPopup('<img src="zdjeciedrzewa1.jpg" style="width:250px;">').openPopup(); });
+  pokazModal("zdjeciedrzewa1.jpg");});
 
   
-  const wszystkieZnaczniki = [znacznik1, znacznik2, znacznik3];
+  const wszystkieZnaczniki = [znacznik1, znacznik2, znacznik3, znacznika11];
 
   // Usuwanie wszystkich znaczników
   function usunZnaczniki() {
@@ -557,6 +558,7 @@ const znacznika11 = L.marker([52.94443698776026, 17.300731253661702], { icon: ik
 
     if (nr === 1) {
       mapa.addLayer(znacznik1);
+      znacznika11.addTo(mapa);
       warstwaDrzewaNow.addTo(mapa);
       warstwaDrzewaThen.addTo(mapa);
       stworzLegende("Legenda", [
