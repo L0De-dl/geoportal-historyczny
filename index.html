@@ -336,15 +336,63 @@ const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: i
   znacznika12.on('click', () => {
   pokazModal("zdjeciedrzewa2.jpg");});
 
-    const znacznika13 = L.marker([52.943572275037965, 17.300288686728997], { icon: ikonaaparat })
+  const znacznika13 = L.marker([52.943572275037965, 17.300288686728997], { icon: ikonaaparat })
   .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
   .addTo(mapa);
   znacznika13.on('mouseover', () => znacznika13.setIcon(ikonaaparatszara));
   znacznika13.on('mouseout',  () => znacznika13.setIcon(ikonaaparat));
   znacznika13.on('click', () => {
   pokazModal("zdjeciedrzewa3.jpg");});
+
+  const znacznika21 = L.marker([52.94375814804582, 17.299733469187686], { icon: ikonaaparat })
+  .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
+  .addTo(mapa);
+  znacznika21.on('mouseover', () => znacznika21.setIcon(ikonaaparatszara));
+  znacznika21.on('mouseout',  () => znacznika21.setIcon(ikonaaparat));
+  znacznika21.on('click', () => {
+  pokazModal("zdjeciepomniki1.jpg");});
+
+  const znacznika22 = L.marker([52.94410888433341, 17.299856850204417], { icon: ikonaaparat })
+  .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
+  .addTo(mapa);
+  znacznika22.on('mouseover', () => znacznika22.setIcon(ikonaaparatszara));
+  znacznika22.on('mouseout',  () => znacznika22.setIcon(ikonaaparat));
+  znacznika22.on('click', () => {
+  pokazModal("zdjeciepomniki2.jpg");});
+
+  const znacznika23 = L.marker([52.943572275037965, 17.300288686728997], { icon: ikonaaparat })
+  .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
+  .addTo(mapa);
+  znacznika23.on('mouseover', () => znacznika23.setIcon(ikonaaparatszara));
+  znacznika23.on('mouseout',  () => znacznika23.setIcon(ikonaaparat));
+  znacznika23.on('click', () => {
+  pokazModal("zdjeciepomniki3.jpg");});
+
+  const znacznika31 = L.marker([52.944493557724094, 17.300672245263762], { icon: ikonaaparat })
+  .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
+  .addTo(mapa);
+  znacznika31.on('mouseover', () => znacznika31.setIcon(ikonaaparatszara));
+  znacznika31.on('mouseout',  () => znacznika31.setIcon(ikonaaparat));
+  znacznika31.on('click', () => {
+  pokazModal("zdjeciekosciol1.jpg");});
+
+  const znacznika32 = L.marker([52.94421555840046, 17.300320873370165], { icon: ikonaaparat })
+  .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
+  .addTo(mapa);
+  znacznika32.on('mouseover', () => znacznika32.setIcon(ikonaaparatszara));
+  znacznika32.on('mouseout',  () => znacznika32.setIcon(ikonaaparat));
+  znacznika32.on('click', () => {
+  pokazModal("zdjeciekosciol2.jpg");});
+
+  const znacznika33 = L.marker([52.943572275037965, 17.300288686728997], { icon: ikonaaparat })
+  .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
+  .addTo(mapa);
+  znacznika33.on('mouseover', () => znacznika33.setIcon(ikonaaparatszara));
+  znacznika33.on('mouseout',  () => znacznika33.setIcon(ikonaaparat));
+  znacznika33.on('click', () => {
+  pokazModal("zdjeciekosciol3.jpg");});
   
-  const wszystkieZnaczniki = [znacznik1, znacznik2, znacznik3, znacznika11, znacznika12, znacznika13];
+  const wszystkieZnaczniki = [znacznik1, znacznik2, znacznik3, znacznika11, znacznika12, znacznika13, znacznika21, znacznika22, znacznika23, znacznika31, znacznika32, znacznika33];
 
   // Usuwanie wszystkich znaczników
   function usunZnaczniki() {
@@ -587,6 +635,9 @@ const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: i
 
     } else if (nr === 2) {
       mapa.addLayer(znacznik2);
+      znacznika21.addTo(mapa);
+      znacznika22.addTo(mapa);
+      znacznika23.addTo(mapa);
       warstwaPomnikNow.addTo(mapa);
       warstwaPomnikThen.addTo(mapa);
       stworzLegende("Legenda", [
@@ -598,6 +649,9 @@ const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: i
 
     } else if (nr === 3) {
       mapa.addLayer(znacznik3);
+      znacznika31.addTo(mapa);
+      znacznika32.addTo(mapa);
+      znacznika33.addTo(mapa);
       warstwaKosciolNow.addTo(mapa);
       warstwaKosciolThen.addTo(mapa);
       stworzLegende("Legenda", [
