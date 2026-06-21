@@ -417,9 +417,6 @@ const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: i
         [17.3008092, 52.9441471],
         [17.3007209, 52.9443444],
         [17.2995466, 52.9441894],
-        [17.2998116, 52.9442583],
-        [17.3000922, 52.9443459],
-        [17.3003260, 52.9444242]
       ]}}
     ]
   };
@@ -442,18 +439,34 @@ const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: i
     ]
   };
 
-  // Usunięto bindTooltip i zdarzenie click
+  const drzewa_now2 = {
+    "type": "FeatureCollection",
+    "name": "scena1_now2",
+    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "features": [
+      { "type": "Feature", "properties": {}, "geometry": { "type": "MultiPoint", "coordinates": [
+        [17.2998116, 52.9442583],
+        [17.3000922, 52.9443459],
+        [17.3003260, 52.9444242]
+      ]}}
+    ]
+  };
+  
   const warstwaDrzewaThen = L.geoJSON(drzewa_then, {
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'drzewa_szare.png', iconSize: [18,18], iconAnchor: [9,9] })
     })
   });
 
-  // Usunięto bindTooltip i zdarzenie click
   const warstwaDrzewaNow = L.geoJSON(drzewa_now, {
     style: { color: "#398e3c", weight: 0.5, fillColor: "#79dc7d", fillOpacity: 0.5 }
   });
 
+    const warstwaDrzewaNow2 = L.geoJSON(drzewa_now2, {
+    pointToLayer: (f, latlng) => L.marker(latlng, {
+      icon: L.icon({ iconUrl: 'drzewa_zielone.png', iconSize: [18,18], iconAnchor: [9,9] })
+    })
+  });
 
   // === SCENA 2 – POMNIK ===
   const pomnik_then = {
@@ -610,6 +623,7 @@ const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: i
     // Usuwanie wszystkich warstw GeoJSON
     if (mapa.hasLayer(warstwaDrzewaThen)) mapa.removeLayer(warstwaDrzewaThen);
     if (mapa.hasLayer(warstwaDrzewaNow)) mapa.removeLayer(warstwaDrzewaNow);
+    if (mapa.hasLayer(warstwaDrzewaNow2)) mapa.removeLayer(warstwaDrzewaNow2);
     if (mapa.hasLayer(warstwaPomnikNow)) mapa.removeLayer(warstwaPomnikNow);
     if (mapa.hasLayer(warstwaPomnikThen)) mapa.removeLayer(warstwaPomnikThen);
     if (mapa.hasLayer(warstwaKosciolNow)) mapa.removeLayer(warstwaKosciolNow);
@@ -625,6 +639,7 @@ const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: i
       znacznika12.addTo(mapa);
       znacznika13.addTo(mapa);
       warstwaDrzewaNow.addTo(mapa);
+      warstwaDrzewaNow2.addTo(mapa);
       warstwaDrzewaThen.addTo(mapa);
       stworzLegende("Legenda", [
         { typ: 'ikona', ikona: 'drzewa_szare.png', opis: 'Drzewa dawniej' },
