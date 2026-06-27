@@ -477,6 +477,14 @@ const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: i
     ]
   };
 
+  const pomnik_then1 = {
+    "type": "FeatureCollection",
+    "name": "scena2_then1",
+    "features": [
+      { "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [17.300619400124713, 52.943864852433535] } }
+    ]
+  };
+  
   const pomnik_now = {
     "type": "FeatureCollection",
     "name": "scena2_now",
@@ -492,6 +500,12 @@ const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: i
     })
   });
 
+  const warstwaPomnikThen1 = L.geoJSON(pomnik_then1, {
+    pointToLayer: (f, latlng) => L.marker(latlng, {
+      icon: L.icon({ iconUrl: 'pomnik_zly.png', iconSize: [12,22], iconAnchor: [6,11] })
+    })
+  });
+  
   // Usunięto bindTooltip i zdarzenie click
   const warstwaPomnikNow = L.geoJSON(pomnik_now, {
     pointToLayer: (f, latlng) => L.marker(latlng, {
@@ -626,6 +640,7 @@ const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: i
     if (mapa.hasLayer(warstwaDrzewaNow2)) mapa.removeLayer(warstwaDrzewaNow2);
     if (mapa.hasLayer(warstwaPomnikNow)) mapa.removeLayer(warstwaPomnikNow);
     if (mapa.hasLayer(warstwaPomnikThen)) mapa.removeLayer(warstwaPomnikThen);
+    if (mapa.hasLayer(warstwaPomnikThen1)) mapa.removeLayer(warstwaPomnikThen1);
     if (mapa.hasLayer(warstwaKosciolNow)) mapa.removeLayer(warstwaKosciolNow);
     if (mapa.hasLayer(warstwaKosciolThen)) mapa.removeLayer(warstwaKosciolThen);
     
@@ -655,6 +670,7 @@ const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: i
       znacznika23.addTo(mapa);
       warstwaPomnikNow.addTo(mapa);
       warstwaPomnikThen.addTo(mapa);
+      warstwaPomnikThen1.addTo(mapa);
       stworzLegende("Legenda", [
         { typ: 'ikona', ikona: 'pomnik_szary.png', opis: 'Pomnik dawniej' },
         { typ: 'ikona', ikona: 'pomnik_czerwony.png', opis: 'Pomnik obecnie' }
