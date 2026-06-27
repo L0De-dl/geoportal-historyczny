@@ -531,6 +531,14 @@ const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: i
     ]
   };
 
+  const kosciol_now1 = {
+    "type": "FeatureCollection",
+    "name": "scena3_now",
+    "features": [
+      { "type": "Feature", "properties": {}, "geometry": { "type": "LineString", "coordinates": [17.299711058492424, 52.94320598573448], [17.3016981846792, 52.943698863666256], [17.30253946157706, 52.944044796661366] } }
+    ]
+  };
+  
   // Usunięto bindTooltip i zdarzenie click
   const warstwaKosciolThen = L.geoJSON(kosciol_then, {
     pointToLayer: (f, latlng) => L.marker(latlng, {
@@ -545,6 +553,14 @@ const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: i
     })
   });
 
+const warstwaKosciolNow1 = L.geoJSON(kosciol_now1, {
+  style: {
+    color: '#0147D9',
+    weight: 4,
+    opacity: 0.8
+  }
+});
+  
   // === WYBÓR SCENY W TYM SAMYM PANELU ===
   const separator1 = document.createElement('hr');
   separator1.style.margin = "6px 0";
@@ -642,6 +658,7 @@ const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: i
     if (mapa.hasLayer(warstwaPomnikThen)) mapa.removeLayer(warstwaPomnikThen);
     if (mapa.hasLayer(warstwaPomnikThen1)) mapa.removeLayer(warstwaPomnikThen1);
     if (mapa.hasLayer(warstwaKosciolNow)) mapa.removeLayer(warstwaKosciolNow);
+    if (mapa.hasLayer(warstwaKosciolNow1)) mapa.removeLayer(warstwaKosciolNow1);
     if (mapa.hasLayer(warstwaKosciolThen)) mapa.removeLayer(warstwaKosciolThen);
     
     // Ukrycie legendy i opisu przed ich aktualizacją
@@ -684,6 +701,7 @@ const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: i
       znacznika32.addTo(mapa);
       znacznika33.addTo(mapa);
       warstwaKosciolNow.addTo(mapa);
+      warstwaKosciolNow1.addTo(mapa);
       warstwaKosciolThen.addTo(mapa);
       stworzLegende("Legenda", [
         { typ: 'ikona', ikona: 'kosciol_szary.png', opis: 'Kościół dawniej' },
