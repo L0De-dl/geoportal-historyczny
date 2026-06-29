@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8" />
-  <title>Geoportal Historyczny</title>
+  <title>Geoportal Historyczny Gołańczy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -18,82 +18,167 @@
       height: 100%;
     }
 
+    body {
+      display: flex;
+      font-family: 'Tahoma', sans-serif;
+    }
+
     #mapa {
-      width: 100vw;
+      flex: 1;
       height: 100vh;
     }
 
     /* === TYTUŁ MAPY === */
     .tytul-mapy {
-  background: white;
-  padding: 8px 14px;
-  margin: 10px;
-  border-radius: 8px;
-  font-size: 20px;
-  font-weight: bold;
-  font-family: Tahoma, sans-serif;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  display: flex;
-  align-items: center;
-}
-
-    /* === PANEL WYBORU SCEN === */
-    .przycisk-sceny {
+      background: white;
+      padding: 8px 14px;
+      margin: 10px;
+      border-radius: 8px;
+      font-size: 20px;
+      font-weight: bold;
+      font-family: Tahoma, sans-serif;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
       display: flex;
       align-items: center;
+    }
+
+    /* === GŁÓWNY PANEL BOCZNY === */
+    .panel-boczny {
+      width: 380px;
+      height: 100vh;
+      background: white;
+      box-shadow: -2px 0 10px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      z-index: 1000;
+      overflow-y: auto;
+      box-sizing: border-box;
+      padding: 15px;
+      gap: 20px;
+    }
+
+    .sekcja-panelu {
+      border-bottom: 1px solid #eee;
+      padding-bottom: 15px;
+    }
+
+    .sekcja-panelu h3 {
+      margin: 0 0 10px 0;
+      font-size: 14px;
+      color: #222;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* === 1. SUWAK WARSTW (Poziomy pasek przesuwania) === */
+    .suwak-kontener {
+      display: flex;
+      flex-direction: column;
       gap: 8px;
-      padding: 6px;
+    }
+    .suwak-kontener input[type="range"] {
+      width: 100%;
+    }
+    #nazwa-podkladu {
+      font-size: 13px;
+      font-weight: bold;
+      color: #555;
+      text-align: center;
+    }
+
+    /* === 2. WYBÓR SCEN (Układ poziomy) === */
+    .kontener-scen-poziom {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .przycisk-sceny-nowy {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      padding: 8px;
+      border: 1px solid #ccc;
       border-radius: 6px;
       cursor: pointer;
-      border: 1px solid transparent;
+      background: #f9f9f9;
+      transition: all 0.2s;
       user-select: none;
     }
-
-    .przycisk-sceny img {
-      width: 28px;
-      height: 28px;
+    .przycisk-sceny-nowy img {
+      width: 32px;
+      height: 32px;
       object-fit: contain;
+    }
+    .przycisk-sceny-nowy span {
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .przycisk-sceny-nowy.aktywna {
+      background: #e3f2fd;
+      border-color: #2196f3;
+      color: #1565c0;
+    }
+
+    /* === 3. LEGENDA (Z jednego obrazka) === */
+    #legenda-img {
+      width: 100%;
+      height: auto;
       display: block;
+      border: 1px solid #eee;
+      border-radius: 4px;
     }
 
-    .przycisk-sceny.aktywna {
-      background: #f0f0f0;
-      border-color: #bbb;
-    }
-
-    .opis-sceny {
+    /* === 4. OPIS TEKSTOWY === */
+    #opis-sceny-tekst {
       font-size: 13px;
-      font-family: 'Tahoma', sans-serif;
+      line-height: 1.5;
       color: #333;
-      line-height: 1.4;
-      padding: 5px;
+      text-align: justify;
     }
 
-    .naglowek-scen {
-      font-size: 12px;
+    /* === 5. KARUZELA ZDJĘĆ === */
+    .karuzela-kontener {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    #karuzela-foto {
+      width: 100%;
+      max-height: 220px;
+      object-fit: cover;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 1px solid #ddd;
+    }
+    .karuzela-nawigacja {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .karuzela-btn {
+      background: #2196f3;
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 4px;
+      cursor: pointer;
       font-weight: bold;
-      text-align: center;
-      margin: 4px 0;
-      color: #222;
     }
-
-    /* === STYL KONTROLKI WARSTW === */
-    .leaflet-control-layers { 
-      touch-action: manipulation;
+    .karuzela-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
     }
-
-    .leaflet-control-layers-base label {
-      font-size: 13px;
-      font-family: 'Verdana', sans-serif;
-      color: #444;
-    }
-
-    .naglowek-warstw {
+    #karuzela-licznik {
       font-size: 12px;
-      font-weight: bold;
-      text-align: center;
-      color: #222;
-      margin-bottom: 4px;
+      color: #666;
+    }
+
+    /* Ukrycie starej kontrolki warstw w Leaflet */
+    .leaflet-control-layers {
+      display: none !important;
     }
 
     /* === ŻÓŁTE TOOLTIPY === */
@@ -107,57 +192,6 @@
       padding: 4px 6px;
       border-radius: 4px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-    
-    /* === STYL LEGENDY === */
-    .legenda-w-panelu {
-      padding-top: 10px;
-      font-family: 'Tahoma', sans-serif;
-      font-size: 13px;
-      line-height: 1.4;
-      display: none; /* Domyślnie ukryta */
-    }
-
-    .legenda-w-panelu h4 {
-      margin: 0 0 8px;
-      text-align: center;
-      font-size: 14px;
-      font-weight: bold;
-      color: #222;
-    }
-
-    .legenda-item {
-      display: flex;
-      align-items: center;
-      margin-bottom: 5px;
-    }
-
-    .legenda-kolor {
-      width: 20px;
-      height: 20px;
-      margin-right: 8px;
-      border: 1px solid #ccc;
-    }
-
-    .legenda-ikona {
-      width: 20px;
-      height: 20px;
-      margin-right: 8px;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-    }
-
-    /* === NOWY STYL DLA PANELU Z OPISEM === */
-    .panel-opisu {
-        background: white;
-        padding: 8px;
-        margin: 10px;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        max-width: 400px;
-        font-family: 'Tahoma', sans-serif;
-        line-height: 1.4;
     }
 
     /* === MODAL ZE ZDJĘCIEM === */
@@ -212,6 +246,64 @@
 <body>
 
   <div id="mapa"></div>
+
+  <!-- NOWY PANEL BOCZNY PO PRAWEJ STRONIE -->
+  <div class="panel-boczny">
+    
+    <!-- Sekcja 1: Wybór podkładu (Poziomy suwak) -->
+    <div class="sekcja-panelu suwak-kontener">
+      <h3>Wybór podkładu czasowego</h3>
+      <input type="range" id="suwak-czasu" min="0" max="8" value="0" step="1">
+      <div id="nazwa-podkladu">Mapa z 1890 roku</div>
+    </div>
+
+    <!-- Sekcja 2: Wybór sceny (Układ poziomy) -->
+    <div class="sekcja-panelu">
+      <h3>Wybór Sceny</h3>
+      <div class="kontener-scen-poziom">
+        <div class="przycisk-sceny-nowy" onclick="zmienScene(1)" id="btn-scena-1">
+          <img src="legenda1.png" alt="Scena 1">
+          <span>Scena 1</span>
+        </div>
+        <div class="przycisk-sceny-nowy" onclick="zmienScene(2)" id="btn-scena-2">
+          <img src="legenda2.png" alt="Scena 2">
+          <span>Scena 2</span>
+        </div>
+        <div class="przycisk-sceny-nowy" onclick="zmienScene(3)" id="btn-scena-3">
+          <img src="legenda3.png" alt="Scena 3">
+          <span>Scena 3</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sekcja 3: Legenda z jednego pliku (Inkscape) -->
+    <div class="sekcja-panelu">
+      <h3>Legenda</h3>
+      <img id="legenda-img" src="" alt="Legenda sceny">
+    </div>
+
+    <!-- Sekcja 4: Opis zmian przestrzennych -->
+    <div class="sekcja-panelu">
+      <h3>Opis zmian przestrzennych</h3>
+      <div id="opis-sceny-tekst"></div>
+    </div>
+
+    <!-- Sekcja 5: Zdjęcia obiektów (Karuzela) -->
+    <div class="sekcja-panelu">
+      <h3>Zdjęcia obiektów dla sceny</h3>
+      <div class="karuzela-kontener">
+        <img id="karuzela-foto" src="" alt="Zdjęcie obiektu" onclick="otworzPelneZdjecie()">
+        <div class="karuzela-nawigacja">
+          <button class="karuzela-btn" onclick="poprzednieZdjecie()">◀</button>
+          <span id="karuzela-licznik">0 / 0</span>
+          <button class="karuzela-btn" onclick="nastepneZdjecie()">▶</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Modal ze zdjęciem (Kliknięcie w karuzeli lub na mapie) -->
   <div id="modal-zdjecie">
     <div class="okno">
       <div class="zamknij" onclick="zamknijModal()">✖</div>
@@ -240,24 +332,20 @@
     [52.9381943, 17.3122189]
   ]));
 
-  // === KONTROLKI ===
+  // === KONTROLKI MAPY ===
   // Tytuł mapy
-const kontrolkaTytulu = L.control({ position: "topleft" });
-
-kontrolkaTytulu.onAdd = function() {
-  const div = L.DomUtil.create("div", "tytul-mapy");
-
-  div.innerHTML = `
-    <div style="display:flex; align-items:center; gap:12px;">
-      <img src="logo.png" alt="Logo" style="height:60px;">
-      <span>Geoportal Historyczny Gołańczy</span>
-    </div>
-  `;
-
-  return div;
-};
-
-kontrolkaTytulu.addTo(mapa);
+  const kontrolkaTytulu = L.control({ position: "topleft" });
+  kontrolkaTytulu.onAdd = function() {
+    const div = L.DomUtil.create("div", "tytul-mapy");
+    div.innerHTML = `
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img src="logo.png" alt="Logo" style="height:60px;">
+        <span>Geoportal Historyczny Gołańczy</span>
+      </div>
+    `;
+    return div;
+  };
+  kontrolkaTytulu.addTo(mapa);
 
   // Zoom
   L.control.zoom({ position: "topleft" }).addTo(mapa);
@@ -282,35 +370,43 @@ kontrolkaTytulu.addTo(mapa);
   const podklad2002 = L.imageOverlay('2002.jpg', [[52.9490239, 17.3122189], [52.9381943, 17.2852683]]);
   const podklad2025 = L.tileLayer('');
 
-  const mapaPodklady = {
-    "Mapa z 1890 roku": podklad1890,
-    "Mapa z 1911 roku": podklad1911,
-    "Mapa z 1934 roku": podklad1934,
-    "Mapa z 1940 roku": podklad1940,
-    "Mapa z 1941 roku": podklad1941,
-    "Mapa z 1966 roku": podklad1966,
-    "Mapa z 1981 roku": podklad1981,
-    "Mapa z 2002 roku": podklad2002,
-    "Mapa z 2025 roku": podklad2025
-  };
+  // Słownik/Array dla obsługi suwaka podkładów
+  const tablicaPodkladow = [
+    podklad1890, podklad1911, podklad1934, podklad1940, 
+    podklad1941, podklad1966, podklad1981, podklad2002, podklad2025
+  ];
+  const nazwyPodkladow = [
+    "Mapa z 1890 roku", "Mapa z 1911 roku", "Mapa z 1934 roku", "Mapa z 1940 roku",
+    "Mapa z 1941 roku", "Mapa z 1966 roku", "Mapa z 1981 roku", "Mapa z 2002 roku", "Mapa z 2025 roku"
+  ];
 
-  const kontrolkaWarstw = L.control.layers(mapaPodklady, null, { collapsed: false }).addTo(mapa);
+  // Dodanie domyślnego podkładu z 1890 na start
+  podklad1890.addTo(mapa);
 
-  // Dodanie nagłówka w panelu
-  const kontenerWarstw = kontrolkaWarstw.getContainer();
-  const naglowekWarstw = document.createElement("div");
-  naglowekWarstw.innerHTML = "<strong>WYBÓR PODKŁADU</strong>";
-  naglowekWarstw.className = "naglowek-warstw";
-  kontenerWarstw.insertBefore(naglowekWarstw, kontenerWarstw.firstChild);
+  // Rejestracja zdarzenia dla suwaka podkładów czasowych
+  document.getElementById('suwak-czasu').addEventListener('input', function(e) {
+    const indeks = parseInt(e.target.value);
+    
+    // Usuń wszystkie nałożone podkłady rastrowe
+    tablicaPodkladow.forEach(p => { if (mapa.hasLayer(p)) mapa.removeLayer(p); });
+    
+    // Włącz wybrany podkład
+    if (tablicaPodkladow[indeks]) {
+      tablicaPodkladow[indeks].addTo(mapa);
+    }
+    
+    // Zaktualizuj tekst informacyjny
+    document.getElementById('nazwa-podkladu').textContent = nazwyPodkladow[indeks];
+  });
 
-  // === MARKERY SCEN ===
-  const ikonaZolta     = L.icon({ iconUrl: 'scena_sferyczna.png',  iconSize: [25,25] });
+  // === MARKERY SCEN (IKONY APARATÓW I SFER) ===
+  const ikonaZolta       = L.icon({ iconUrl: 'scena_sferyczna.png',  iconSize: [25,25] });
   const ikonaZoltaCiemna = L.icon({ iconUrl: 'scena_sferyczna_szare.png', iconSize: [25,25] });
-  const ikonaCzerwona  = L.icon({ iconUrl: 'scena_sferyczna.png',  iconSize: [25,25] });
+  const ikonaCzerwona    = L.icon({ iconUrl: 'scena_sferyczna.png',  iconSize: [25,25] });
   const ikonaCzerwonaCiemna = L.icon({ iconUrl: 'scena_sferyczna_szare.png', iconSize: [25,25] });
-  const ikonaNiebieska = L.icon({ iconUrl: 'scena_sferyczna.png',  iconSize: [25,25] });
+  const ikonaNiebieska   = L.icon({ iconUrl: 'scena_sferyczna.png',  iconSize: [25,25] });
   const ikonaNiebieskaCiemna = L.icon({ iconUrl: 'scena_sferyczna_szare.png', iconSize: [25,25] });
-  const ikonaaparat = L.icon({ iconUrl: 'aparat.png', iconSize: [25,25] });
+  const ikonaaparat      = L.icon({ iconUrl: 'aparat.png', iconSize: [25,25] });
   const ikonaaparatszara = L.icon({ iconUrl: 'aparat_szare.png', iconSize: [25,25] });
   
   const znacznik1 = L.marker([52.944121, 17.299766], { icon: ikonaZolta })
@@ -331,103 +427,78 @@ kontrolkaTytulu.addTo(mapa);
   znacznik3.on('mouseout',  () => znacznik3.setIcon(ikonaNiebieska));
   znacznik3.on('click',     () => { window.location.href = "https://l0de-dl.github.io/scena3"; });
 
-const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: ikonaaparat })
-  .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
-  .addTo(mapa);
+  // Markery fotograficzne ze zdarzeniami modalnymi
+  const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: ikonaaparat })
+    .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
   znacznika11.on('mouseover', () => znacznika11.setIcon(ikonaaparatszara));
   znacznika11.on('mouseout',  () => znacznika11.setIcon(ikonaaparat));
-  znacznika11.on('click', () => {
-  pokazModal("zdjeciedrzewa1.jpg");});
+  znacznika11.on('click', () => { pokazModal("zdjeciedrzewa1.jpg"); });
 
   const znacznika12 = L.marker([52.94421555840046, 17.300320873370165], { icon: ikonaaparat })
-  .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
-  .addTo(mapa);
+    .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
   znacznika12.on('mouseover', () => znacznika12.setIcon(ikonaaparatszara));
   znacznika12.on('mouseout',  () => znacznika12.setIcon(ikonaaparat));
-  znacznika12.on('click', () => {
-  pokazModal("zdjeciedrzewa2.jpg");});
+  znacznika12.on('click', () => { pokazModal("zdjeciedrzewa2.jpg"); });
 
   const znacznika13 = L.marker([52.943572275037965, 17.300288686728997], { icon: ikonaaparat })
-  .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
-  .addTo(mapa);
+    .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
   znacznika13.on('mouseover', () => znacznika13.setIcon(ikonaaparatszara));
   znacznika13.on('mouseout',  () => znacznika13.setIcon(ikonaaparat));
-  znacznika13.on('click', () => {
-  pokazModal("zdjeciedrzewa3.jpg");});
+  znacznika13.on('click', () => { pokazModal("zdjeciedrzewa3.jpg"); });
 
   const znacznika21 = L.marker([52.94390523172963, 17.299907813117944], { icon: ikonaaparat })
-  .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
-  .addTo(mapa);
+    .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
   znacznika21.on('mouseover', () => znacznika21.setIcon(ikonaaparatszara));
   znacznika21.on('mouseout',  () => znacznika21.setIcon(ikonaaparat));
-  znacznika21.on('click', () => {
-  pokazModal("zdjeciepomniki1.jpg");});
+  znacznika21.on('click', () => { pokazModal("zdjeciepomniki1.jpg"); });
 
   const znacznika22 = L.marker([52.94410888433341, 17.299856850204417], { icon: ikonaaparat })
-  .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
-  .addTo(mapa);
+    .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
   znacznika22.on('mouseover', () => znacznika22.setIcon(ikonaaparatszara));
   znacznika22.on('mouseout',  () => znacznika22.setIcon(ikonaaparat));
-  znacznika22.on('click', () => {
-  pokazModal("zdjeciepomniki2.jpg");});
+  znacznika22.on('click', () => { pokazModal("zdjeciepomniki2.jpg"); });
 
   const znacznika23 = L.marker([52.94381471645432, 17.300897547333577], { icon: ikonaaparat })
-  .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
-  .addTo(mapa);
+    .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
   znacznika23.on('mouseover', () => znacznika23.setIcon(ikonaaparatszara));
   znacznika23.on('mouseout',  () => znacznika23.setIcon(ikonaaparat));
-  znacznika23.on('click', () => {
-  pokazModal("zdjeciepomniki3.jpg");});
+  znacznika23.on('click', () => { pokazModal("zdjeciepomniki3.jpg"); });
 
   const znacznika31 = L.marker([52.94205599178503, 17.300511080962853], { icon: ikonaaparat })
-  .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
-  .addTo(mapa);
+    .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
   znacznika31.on('mouseover', () => znacznika31.setIcon(ikonaaparatszara));
   znacznika31.on('mouseout',  () => znacznika31.setIcon(ikonaaparat));
-  znacznika31.on('click', () => {
-  pokazModal("zdjeciekosciol1.jpg");});
+  znacznika31.on('click', () => { pokazModal("zdjeciekosciol1.jpg"); });
 
   const znacznika32 = L.marker([52.943216799358325, 17.299816635607232], { icon: ikonaaparat })
-  .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
-  .addTo(mapa);
+    .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
   znacznika32.on('mouseover', () => znacznika32.setIcon(ikonaaparatszara));
   znacznika32.on('mouseout',  () => znacznika32.setIcon(ikonaaparat));
-  znacznika32.on('click', () => {
-  pokazModal("zdjeciekosciol2.jpg");});
+  znacznika32.on('click', () => { pokazModal("zdjeciekosciol2.jpg"); });
 
   const znacznika33 = L.marker([52.942835924868454, 17.30012022506858], { icon: ikonaaparat })
-  .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"})
-  .addTo(mapa);
+    .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
   znacznika33.on('mouseover', () => znacznika33.setIcon(ikonaaparatszara));
   znacznika33.on('mouseout',  () => znacznika33.setIcon(ikonaaparat));
-  znacznika33.on('click', () => {
-  pokazModal("zdjeciekosciol3.jpg");});
+  znacznika33.on('click', () => { pokazModal("zdjeciekosciol3.jpg"); });
   
-  const wszystkieZnaczniki = [znacznik1, znacznik2, znacznik3, znacznika11, znacznika12, znacznika13, znacznika21, znacznika22, znacznika23, znacznika31, znacznika32, znacznika33];
+  const wszystkieZnaczniki = [znacznik1, znacznik2, znacznik3, znacznika11, znacznika12, znacznika13, znacznika21, Residential=znacznika22, znacznika23, znacznika31, znacznika32, znacznika33];
 
-  // Usuwanie wszystkich znaczników
   function usunZnaczniki() {
     wszystkieZnaczniki.forEach(z => { if (mapa.hasLayer(z)) mapa.removeLayer(z); });
   }
 
-  // === Geojson ===
-  // === SCENA 1 – DRZEWA ===
+  // === DANE WEKTOROWE GEOJSON ===
+  // Scena 1
   const drzewa_then = {
     "type": "FeatureCollection",
     "name": "scena1_then",
     "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
     "features": [
       { "type": "Feature", "properties": {}, "geometry": { "type": "MultiPoint", "coordinates": [
-        [17.2995881, 52.9440234],
-        [17.2996245, 52.9438778],
-        [17.2998895, 52.9436305],
-        [17.3001909, 52.9436743],
-        [17.3004403, 52.9437275],
-        [17.3006793, 52.9437808],
-        [17.3008404, 52.9439718],
-        [17.3008092, 52.9441471],
-        [17.3007209, 52.9443444],
-        [17.2995466, 52.9441894],
+        [17.2995881, 52.9440234], [17.2996245, 52.9438778], [17.2998895, 52.9436305], [17.3001909, 52.9436743],
+        [17.3004403, 52.9437275], [17.3006793, 52.9437808], [17.3008404, 52.9439718], [17.3008092, 52.9441471],
+        [17.3007209, 52.9443444], [17.2995466, 52.9441894],
       ]}}
     ]
   };
@@ -438,14 +509,12 @@ const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: i
     "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
     "features": [
       { "type": "Feature", "properties": {}, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ 
-        [17.3005556, 52.9443292], [17.2998073, 52.9439817], [17.2997376, 52.9438896],
-        [17.2997242, 52.9438459], [17.2997268, 52.9437587], [17.2997564, 52.9437118],
-        [17.2997897, 52.9436850], [17.2998127, 52.9436665], [17.2999119, 52.9436374],
-        [17.2999843, 52.9436310], [17.3000680, 52.9436403], [17.3003464, 52.9436876],
-        [17.3007085, 52.9437587], [17.3007939, 52.9437898], [17.3008477, 52.9438188],
-        [17.3008453, 52.9438783], [17.3007836, 52.9438961], [17.3006924, 52.9442339],
-        [17.3007246, 52.9442646], [17.3007112, 52.9442904], [17.3006790, 52.9443131],
-        [17.3006281, 52.9443276], [17.3005905, 52.9443308], [17.3005556, 52.9443292]
+        [17.3005556, 52.9443292], [17.2998073, 52.9439817], [17.2997376, 52.9438896], [17.2997242, 52.9438459],
+        [17.2997268, 52.9437587], [17.2997564, 52.9437118], [17.2997897, 52.9436850], [17.2998127, 52.9436665],
+        [17.2999119, 52.9436374], [17.299843, 52.9436310], [17.3000680, 52.9436403], [17.3003464, 52.9436876],
+        [17.3007085, 52.9437587], [17.3007939, 52.9437898], [17.3008477, 52.9438188], [17.3008453, 52.9438783],
+        [17.3007836, 52.9438961], [17.3006924, 52.9442339], [17.3007246, 52.9442646], [17.3007112, 52.9442904],
+        [17.3006790, 52.9443131], [17.3006281, 52.9443276], [17.3005905, 52.9443308], [17.3005556, 52.9443292]
       ] ] ]}}
     ]
   };
@@ -456,9 +525,7 @@ const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: i
     "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
     "features": [
       { "type": "Feature", "properties": {}, "geometry": { "type": "MultiPoint", "coordinates": [
-        [17.2998116, 52.9442583],
-        [17.3000922, 52.9443459],
-        [17.3003260, 52.9444242]
+        [17.2998116, 52.9442583], [17.3000922, 52.9443459], [17.3003260, 52.9444242]
       ]}}
     ]
   };
@@ -468,200 +535,125 @@ const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: i
       icon: L.icon({ iconUrl: 'drzewa_szare.png', iconSize: [18,18], iconAnchor: [9,9] })
     })
   });
-
   const warstwaDrzewaNow = L.geoJSON(drzewa_now, {
     style: { color: "#398e3c", weight: 0.5, fillColor: "#79dc7d", fillOpacity: 0.5 }
   });
-
-    const warstwaDrzewaNow2 = L.geoJSON(drzewa_now2, {
+  const warstwaDrzewaNow2 = L.geoJSON(drzewa_now2, {
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'drzewa_zielone.png', iconSize: [24,24], iconAnchor: [12,12] })
     })
   });
 
-  // === SCENA 2 – POMNIK ===
+  // Scena 2
   const pomnik_then = {
     "type": "FeatureCollection",
     "name": "scena2_then",
-    "features": [
-      { "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [17.29965560563264, 52.944015004328229] } }
-    ]
+    "features": [{ "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [17.29965560563264, 52.944015004328229] } }]
   };
-
   const pomnik_then1 = {
     "type": "FeatureCollection",
     "name": "scena2_then1",
-    "features": [
-      { "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [17.300619400124713, 52.943864852433535] } }
-    ]
+    "features": [{ "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [17.300619400124713, 52.943864852433535] } }]
   };
-  
   const pomnik_now = {
     "type": "FeatureCollection",
     "name": "scena2_now",
-    "features": [
-      { "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [17.3001883, 52.9438316] } }
-    ]
+    "features": [{ "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [17.3001883, 52.9438316] } }]
   };
 
-  // Usunięto bindTooltip i zdarzenie click
   const warstwaPomnikThen = L.geoJSON(pomnik_then, {
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'pomnik_szary.png', iconSize: [12,22], iconAnchor: [6,11] })
     })
   });
-
   const warstwaPomnikThen1 = L.geoJSON(pomnik_then1, {
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'pomnik_zly.png', iconSize: [12,22], iconAnchor: [6,11] })
     })
   });
-  
-  // Usunięto bindTooltip i zdarzenie click
   const warstwaPomnikNow = L.geoJSON(pomnik_now, {
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'pomnik_czerwony.png', iconSize: [12,22], iconAnchor: [6,11] })
     })
   });
 
-
-  // === SCENA 3 – KOŚCIÓŁ ===
+  // Scena 3
   const kosciol_then = {
     "type": "FeatureCollection",
     "name": "scena3_then",
-    "features": [
-      { "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [17.3001727, 52.9430590] } }
-    ]
+    "features": [{ "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [17.3001727, 52.9430590] } }]
   };
-
   const kosciol_now = {
     "type": "FeatureCollection",
     "name": "scena3_now",
-    "features": [
-      { "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [17.3009418, 52.9422824] } }
-    ]
+    "features": [{ "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [17.3009418, 52.9422824] } }]
   };
-
   const kosciol_now1 = {
     "type": "FeatureCollection",
-    "name": "scena3_now",
-    "features": [
-      { "type": "Feature", "properties": {}, "geometry": { "type": "LineString", "coordinates": [[17.299726431374044, 52.943187951426204], [17.300573180757336, 52.94338093573877], [17.301712277817746, 52.94367984493318], [17.30254766873985, 52.94403240904947]] } }
-    ]
+    "name": "scena3_now1",
+    "features": [{ "type": "Feature", "properties": {}, "geometry": { "type": "LineString", "coordinates": [[17.299726431374044, 52.943187951426204], [17.300573180757336, 52.94338093573877], [17.301712277817746, 52.94367984493318], [17.30254766873985, 52.94403240904947]] } }]
   };
   
-  // Usunięto bindTooltip i zdarzenie click
   const warstwaKosciolThen = L.geoJSON(kosciol_then, {
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'kosciol_szary.png', iconSize: [18,22], iconAnchor: [9,11] })
     })
   });
-
-  // Usunięto bindTooltip i zdarzenie click
   const warstwaKosciolNow = L.geoJSON(kosciol_now, {
     pointToLayer: (f, latlng) => L.marker(latlng, {
       icon: L.icon({ iconUrl: 'kosciol_niebieski.png', iconSize: [18,22], iconAnchor: [9,11] })
     })
   });
+  const warstwaKosciolNow1 = L.geoJSON(kosciol_now1, {
+    style: { color: '#0147D9', weight: 4, opacity: 0.8 }
+  });
 
-const warstwaKosciolNow1 = L.geoJSON(kosciol_now1, {
-  style: {
-    color: '#0147D9',
-    weight: 4,
-    opacity: 0.8
-  }
-});
-  
-  // === WYBÓR SCENY W TYM SAMYM PANELU ===
-  const separator1 = document.createElement('hr');
-  separator1.style.margin = "6px 0";
-  separator1.style.border = "none";
-  separator1.style.borderTop = "1px solid #ccc";
-  kontenerWarstw.appendChild(separator1);
 
-  const naglowekScen = document.createElement('div');
-  naglowekScen.innerHTML = "<strong>WYBÓR SCENY</strong>";
-  naglowekScen.className = "naglowek-scen";
-  kontenerWarstw.appendChild(naglowekScen);
-
-  function utworzPrzyciskSceny(nr, opis, ikonaUrl) {
-    const przycisk = document.createElement('div');
-    przycisk.className = 'przycisk-sceny';
-    przycisk.setAttribute('role', 'button');
-    przycisk.setAttribute('tabindex', '0');
-
-    const obrazek = document.createElement('img');
-    obrazek.src = ikonaUrl;
-    obrazek.alt = opis;
-
-    const t = document.createElement('div');
-    t.className = 'opis-sceny';
-    t.textContent = opis;
-
-    przycisk.appendChild(obrazek);
-    przycisk.appendChild(t);
-
-    przycisk.addEventListener('click', () => pokazScene(nr));
-    przycisk.addEventListener('keydown', (e) => { 
-      if (e.key === 'Enter' || e.key === ' ') { 
-        e.preventDefault(); 
-        pokazScene(nr); 
-      } 
-    });
-
-    return przycisk;
-  }
-
-  kontenerWarstw.appendChild(utworzPrzyciskSceny(1, 'Scena 1', 'legenda1.png'));
-  kontenerWarstw.appendChild(utworzPrzyciskSceny(2, 'Scena 2', 'legenda2.png'));
-  kontenerWarstw.appendChild(utworzPrzyciskSceny(3, 'Scena 3', 'legenda3.png'));
-
-  // === NOWA SEKCJA LEGENDY W PANELU ===
-  const separator2 = document.createElement('hr');
-  separator2.style.margin = "6px 0";
-  separator2.style.border = "none";
-  separator2.style.borderTop = "1px solid #ccc";
-  kontenerWarstw.appendChild(separator2);
-
-  const kontenerLegendy = document.createElement('div');
-  kontenerLegendy.className = 'legenda-w-panelu';
-  kontenerWarstw.appendChild(kontenerLegendy);
-  
-  function stworzLegende(tytul, items) {
-    kontenerLegendy.innerHTML = `<h4>${tytul}</h4>`;
-    items.forEach(item => {
-      const itemDiv = document.createElement('div');
-      itemDiv.className = 'legenda-item';
-
-      if (item.typ === 'kolor') {
-        itemDiv.innerHTML = `<span class="legenda-kolor" style="background-color: ${item.kolor}; border-color: ${item.ramka || 'transparent'};"></span><span>${item.opis}</span>`;
-      } else if (item.typ === 'ikona') {
-        itemDiv.innerHTML = `<span class="legenda-ikona" style="background-image: url('${item.ikona}');"></span><span>${item.opis}</span>`;
+  // === STRUKTURA DANYCH INTERFEJSU DLA PLANSZY (PANELU) ===
+  const daneScen = {
+    1: {
+      legenda: "legenda_atrakcje1.png", // Plik graficzny wyeksportowany z Inkscape dla Sceny 1
+      opis: "Pierwotnie plac rynkowy otaczał pas wysokich drzew. Z czasem, prawdopodobnie w związku z elektryfikacją, stare drzewa zostały usunięte. Po II wojnie światowej, w ramach prac porządkowych oraz modernizacji przeprowadzonych w latach 70., zmieniono koncepcję układu zieleni. W centrum rynku założono pięcioalejkowy park, w którym ustawiono odrestaurowany pomnik św. Wawrzyńca.",
+      zdjecia: ["zdjeciedrzewa1.jpg", "zdjeciedrzewa2.jpg", "zdjeciedrzewa3.jpg"],
+      funkcjaWlaczenia: function() {
+        mapa.addLayer(znacznik1); 
+        znacznika11.addTo(mapa); znacznika12.addTo(mapa); znacznika13.addTo(mapa);
+        warstwaDrzewaNow.addTo(mapa); warstwaDrzewaNow2.addTo(mapa); warstwaDrzewaThen.addTo(mapa);
       }
-      kontenerLegendy.appendChild(itemDiv);
-    });
-    kontenerLegendy.style.display = 'block';
-  }
-
-  // === NOWA KONTROLKA DLA OPISU SCENY ===
-  const kontrolkaOpisu = L.control({ position: 'bottomright' });
-  let kontenerOpisu = null;
-
-  kontrolkaOpisu.onAdd = function() {
-    kontenerOpisu = L.DomUtil.create('div', 'panel-opisu');
-    kontenerOpisu.innerHTML = `
-      <div id="opis-tresc" class="opis-sceny" style="display: none;"></div>
-    `;
-    return kontenerOpisu;
+    },
+    2: {
+      legenda: "legenda_atrakcje2.png", // Plik graficzny wyeksportowany z Inkscape dla Sceny 2
+      opis: "Monument wzniesiono w 1925 roku z inicjatywy lokalnej społeczności. W czasie II wojny światowej został zniszczony, a w jego miejscu po wojnie ustawiono pomnik ku czci poległych w I i II wojnie światowej. W 1999 roku na poddaszu kościoła odnaleziono fragmenty dawnego pomnika, które poddano rekonstrukcji. Rok profesjonalnie odtworzony monument ponownie stanął na rynku, tym razem w jego centralnej części.",
+      zdjecia: ["zdjeciepomniki1.jpg", "zdjeciepomniki2.jpg", "zdjeciepomniki3.jpg"],
+      funkcjaWlaczenia: function() {
+        mapa.addLayer(znacznik2); 
+        znacznika21.addTo(mapa); znacznika22.addTo(mapa); znacznika23.addTo(mapa);
+        warstwaPomnikNow.addTo(mapa); warstwaPomnikThen.addTo(mapa); warstwaPomnikThen1.addTo(mapa);
+      }
+    },
+    3: {
+      legenda: "legenda_atrakcje3.png", // Plik graficzny wyeksportowany z Inkscape dla Sceny 3
+      opis: "Na obecnym placu przy ulicy Kościelnej znajdował się drewniany kościół parafialny zbudowany w latach 1781–1785 na miejscu starszej świątyni. Rozebrano go w pierwszej połowie XX wieku z powodu złego stanu technicznego. W 1934 roku jego funkcję przejął nowy, murowany kościół pw. św. Wawrzyńca, wzniesiony po przeciwnej stronie Strugi Gołanieckiej. Dawne położenie świątyni przypomina nazwa ulicy Kościelnej.",
+      zdjecia: ["zdjeciekosciol1.jpg", "zdjeciekosciol2.jpg", "zdjeciekosciol3.jpg"],
+      funkcjaWlaczenia: function() {
+        mapa.addLayer(znacznik3); 
+        znacznika31.addTo(mapa); znacznika32.addTo(mapa); znacznika33.addTo(mapa);
+        warstwaKosciolNow.addTo(mapa); warstwaKosciolNow1.addTo(mapa); warstwaKosciolThen.addTo(mapa);
+      }
+    }
   };
-  kontrolkaOpisu.addTo(mapa);
-  const opisTresc = document.getElementById('opis-tresc');
-  
-  // Pokazywanie wybranej sceny
-  function pokazScene(nr) {
-    usunZnaczniki();
 
-    // Usuwanie wszystkich warstw GeoJSON
+  // Zmienne zarządzania stanem panelu
+  let aktualnaScena = 1;
+  let indeksZdjecia = 0;
+
+  // === GŁÓWNA FUNKCJA PRZEŁĄCZANIA SCENY ===
+  function zmienScene(nr) {
+    aktualnaScena = nr;
+    indeksZdjecia = 0; // Powrót na początek karuzeli po zmianie sceny
+
+    // Ukrycie wszystkich istniejących warstw i markerów
+    usunZnaczniki();
     if (mapa.hasLayer(warstwaDrzewaThen)) mapa.removeLayer(warstwaDrzewaThen);
     if (mapa.hasLayer(warstwaDrzewaNow)) mapa.removeLayer(warstwaDrzewaNow);
     if (mapa.hasLayer(warstwaDrzewaNow2)) mapa.removeLayer(warstwaDrzewaNow2);
@@ -671,67 +663,68 @@ const warstwaKosciolNow1 = L.geoJSON(kosciol_now1, {
     if (mapa.hasLayer(warstwaKosciolNow)) mapa.removeLayer(warstwaKosciolNow);
     if (mapa.hasLayer(warstwaKosciolNow1)) mapa.removeLayer(warstwaKosciolNow1);
     if (mapa.hasLayer(warstwaKosciolThen)) mapa.removeLayer(warstwaKosciolThen);
-    
-    // Ukrycie legendy i opisu przed ich aktualizacją
-    kontenerLegendy.style.display = 'none';
-    opisTresc.style.display = 'none';
 
-    if (nr === 1) {
-      mapa.addLayer(znacznik1);
-      znacznika11.addTo(mapa);
-      znacznika12.addTo(mapa);
-      znacznika13.addTo(mapa);
-      warstwaDrzewaNow.addTo(mapa);
-      warstwaDrzewaNow2.addTo(mapa);
-      warstwaDrzewaThen.addTo(mapa);
-      stworzLegende("Legenda", [
-        { typ: 'ikona', ikona: 'drzewa_szare.png', opis: 'Drzewa dawniej' },
-        { typ: 'kolor', kolor: '#79dc7d', ramka: '#398e3c', opis: 'Drzewa obecnie' }
-      ]);
-      opisTresc.innerHTML = "Pierwotnie plac rynkowy otaczał pas wysokich drzew. Z czasem, prawdopodobnie w związku z elektryfikacją, stare drzewa zostały usunięte. Po II wojnie światowej, w ramach prac porządkowych oraz modernizacji przeprowadzonych w latach 70., zmieniono koncepcję układu zieleni. W centrum rynku założono pięcioalejkowy park, w którym ustawiono odrestaurowany pomnik św. Wawrzyńca.";
-      opisTresc.style.display = 'block';
+    // Wywołanie specyficznych warstw dla wybranej sceny
+    daneScen[nr].funkcjaWlaczenia();
 
-    } else if (nr === 2) {
-      mapa.addLayer(znacznik2);
-      znacznika21.addTo(mapa);
-      znacznika22.addTo(mapa);
-      znacznika23.addTo(mapa);
-      warstwaPomnikNow.addTo(mapa);
-      warstwaPomnikThen.addTo(mapa);
-      warstwaPomnikThen1.addTo(mapa);
-      stworzLegende("Legenda", [
-        { typ: 'ikona', ikona: 'pomnik_szary.png', opis: 'Pomnik dawniej' },
-        { typ: 'ikona', ikona: 'pomnik_czerwony.png', opis: 'Pomnik obecnie' }
-      ]);
-      opisTresc.innerHTML = "Monument wzniesiono w 1925 roku z inicjatywy lokalnej społeczności. W czasie II wojny światowej został zniszczony, a w jego miejscu po wojnie ustawiono pomnik ku czci poległych w I i II wojnie światowej. W 1999 roku na poddaszu kościoła odnaleziono fragmenty dawnego pomnika, które poddano rekonstrukcji. Rok profesjonalnie odtworzony monument ponownie stanął na rynku, tym razem w jego centralnej części.";
-      opisTresc.style.display = 'block';
+    // Aktualizacja zawartości nowego zunifikowanego prawego panelu
+    document.getElementById('legenda-img').src = daneScen[nr].legenda;
+    document.getElementById('opis-sceny-tekst').innerHTML = daneScen[nr].opis;
 
-    } else if (nr === 3) {
-      mapa.addLayer(znacznik3);
-      znacznika31.addTo(mapa);
-      znacznika32.addTo(mapa);
-      znacznika33.addTo(mapa);
-      warstwaKosciolNow.addTo(mapa);
-      warstwaKosciolNow1.addTo(mapa);
-      warstwaKosciolThen.addTo(mapa);
-      stworzLegende("Legenda", [
-        { typ: 'ikona', ikona: 'kosciol_szary.png', opis: 'Kościół dawniej' },
-        { typ: 'ikona', ikona: 'kosciol_niebieski.png', opis: 'Kościół obecnie' }
-      ]);
-      opisTresc.innerHTML = "Na obecnym placu przy ulicy Kościelnej znajdował się drewniany kościół parafialny zbudowany w latach 1781–1785 na miejscu starszej świątyni. Rozebrano go w pierwszej połowie XX wieku z powodu złego stanu technicznego. W 1934 roku jego funkcję przejął nowy, murowany kościół pw. św. Wawrzyńca, wzniesiony po przeciwnej stronie Strugi Gołanieckiej. Dawne położenie świątyni przypomina nazwa ulicy Kościelnej.";
-      opisTresc.style.display = 'block';
-
-    }
-
-    document.querySelectorAll('.przycisk-sceny').forEach((btn, idx) => {
+    // Przełączenie stylów aktywności poziomych kafelków wyboru sceny
+    document.querySelectorAll('.przycisk-sceny-nowy').forEach((btn, idx) => {
       btn.classList.toggle('aktywna', (idx + 1) === nr);
     });
-  }
-  
-  // === POCZĄTEK: Scena 1 ===
-  pokazScene(1);
 
-  // === modal===
+    // Inicjalizacja i odświeżenie paska przewijania zdjęć (karuzeli)
+    aktualizujKaruzele();
+  }
+
+  // === OBSŁUGA POZIOMEJ KARUZELI ZDJĘĆ ===
+  function aktualizujKaruzele() {
+    const listaZdjec = daneScen[aktualnaScena].zdjecia;
+    const imgEl = document.getElementById('karuzela-foto');
+    const licznikEl = document.getElementById('karuzela-licznik');
+
+    if (listaZdjec && listaZdjec.length > 0) {
+      imgEl.src = listaZdjec[indeksZdjecia];
+      imgEl.style.display = 'block';
+      licznikEl.textContent = `${indeksZdjecia + 1} / ${listaZdjec.length}`;
+    } else {
+      imgEl.style.display = 'none';
+      licznikEl.textContent = "0 / 0";
+    }
+  }
+
+  function nastepneZdjecie() {
+    const listaZdjec = daneScen[aktualnaScena].zdjecia;
+    if (indeksZdjecia < listaZdjec.length - 1) {
+      indeksZdjecia++;
+    } else {
+      indeksZdjecia = 0; // Pętla kołowa (następne z ostatniego wraca na pierwsze)
+    }
+    aktualizujKaruzele();
+  }
+
+  function poprzednieZdjecie() {
+    const listaZdjec = daneScen[aktualnaScena].zdjecia;
+    if (indeksZdjecia > 0) {
+      indeksZdjecia--;
+    } else {
+      indeksZdjecia = listaZdjec.length - 1; // Pętla kołowa (poprzednie z pierwszego skacze na koniec)
+    }
+    aktualizujKaruzele();
+  }
+
+  // Otwarcie dużego okna modalnego z poziomu karuzeli bocznej
+  function otworzPelneZdjecie() {
+    const listaZdjec = daneScen[aktualnaScena].zdjecia;
+    if (listaZdjec && listaZdjec[indeksZdjecia]) {
+      pokazModal(listaZdjec[indeksZdjecia]);
+    }
+  }
+
+  // === MODAL GLOBALNY (DLA MAPY I KARUZELI) ===
   function pokazModal(src) {
     document.getElementById('modal-img').src = src;
     document.getElementById('modal-zdjecie').style.display = 'flex';
@@ -741,12 +734,14 @@ const warstwaKosciolNow1 = L.geoJSON(kosciol_now1, {
     document.getElementById('modal-zdjecie').style.display = 'none';
   }
 
-  // === pluginy===
-    
+  // Uruchomienie domyślnej Sceny 1 na starcie aplikacji
+  zmienScene(1);
+
+  // === PLUGINY DODATKOWE ===
   // 1. Lokalizacja użytkownika
   L.control.locate().addTo(mapa);
     
-  // 2. Drukowanie / Zapis do PNG (z opcją exportOnly chroniącą przed błędami)
+  // 2. Drukowanie / Zapis do PNG
   const printer = L.easyPrint({
     title: 'Zapisz mapę jako PNG',
     position: 'topleft',
@@ -754,39 +749,25 @@ const warstwaKosciolNow1 = L.geoJSON(kosciol_now1, {
     exportOnly: true
   }).addTo(mapa);
 
-  // 3. Konfiguracja i dodanie kontrolki rysowania
+  // 3. Konfiguracja i dodanie kontrolki rysowania (Leaflet Draw)
   const drawControl = new L.Control.Draw({
     draw: {
-      polyline: {
-        showMeasurements: true,
-        showLength: true,
-        metric: true
-      },
-      polygon: {
-        showMeasurements: true,
-        showArea: true,
-        metric: true,
-        allowIntersection: false // Zapobiega błędom przy nakładaniu się linii poligonu
-      },
-      rectangle: {
-        showMeasurements: true,
-        metric: true
-      },
-      circle: true, // Pozostawione zwykłe okręgi
-      marker: true  // Pozostawione standardowe markery (pinezki)
+      polyline: { showMeasurements: true, showLength: true, metric: true },
+      polygon: { showMeasurements: true, showArea: true, metric: true, allowIntersection: false },
+      rectangle: { showMeasurements: true, metric: true },
+      circle: true,
+      marker: true
     }
   });
   mapa.addControl(drawControl);
 
-  // 4. Obsługa zdarzenia po zakończeniu rysowania obiektu
+  // 4. Obsługa zdarzenia po zakończeniu rysowania obiektu i etykietowanie pomiarów
   mapa.on(L.Draw.Event.CREATED, function (e) {
     const layer = e.layer;
     const type = e.layerType;
 
-    // 1. Dodajemy obiekt na mapę
     mapa.addLayer(layer);
 
-    // Funkcje pomocnicze do formatowania tekstu
     function formatujDlugosc(dystans) {
       if (dystans >= 1000) return (dystans / 1000).toFixed(2) + ' km';
       return dystans.toFixed(2) + ' m';
@@ -797,57 +778,32 @@ const warstwaKosciolNow1 = L.geoJSON(kosciol_now1, {
       return pole.toFixed(2) + ' m²';
     }
 
-    // 2. Obsługa wyświetlania pomiarów za pomocą stałych tooltipów
     if (type === 'polyline') {
       const latlngs = layer.getLatLngs();
-      
-      // Pętla przechodząca przez każdy odcinek łamanej osobno
       for (let i = 0; i < latlngs.length - 1; i++) {
         const p1 = latlngs[i];
         const p2 = latlngs[i+1];
-        
-        // Obliczanie długości tylko tego konkretnego odcinka
         const dlugoscOdcinka = p1.distanceTo(p2);
         
-        // Wyznaczanie punktu środkowego bieżącego odcinka
         const srodekLat = (p1.lat + p2.lat) / 2;
         const srodekLng = (p1.lng + p2.lng) / 2;
         const punktSrodkowy = L.latLng(srodekLat, srodekLng);
         
-        // Tworzenie niewidzialnego znacznika z tooltipem na środku odcinka
-        L.circleMarker(punktSrodkowy, {
-          radius: 1,
-          stroke: false,
-          fillColor: 'transparent',
-          interactive: false
-        })
-        .bindTooltip(formatujDlugosc(dlugoscOdcinka), {
-          permanent: true,
-          direction: "center",
-          className: "etykieta-promienia"
-        })
-        .addTo(mapa);
+        L.circleMarker(punktSrodkowy, { radius: 1, stroke: false, fillColor: 'transparent', interactive: false })
+          .bindTooltip(formatujDlugosc(dlugoscOdcinka), { permanent: true, direction: "center", className: "etykieta-promienia" })
+          .addTo(mapa);
       }
-
     } else if (type === 'polygon' || type === 'rectangle') {
-      // Obliczanie powierzchni dla poligonów i prostokątów
       const latlngs = layer.getLatLngs()[0];
-      // Leaflet-Geodesy / wbudowana metoda w Leaflet Draw do liczenia powierzchni sferycznej
       const pole = L.GeometryUtil.geodesicArea(latlngs);
 
       layer.bindTooltip("Powierzchnia: " + formatujPowierzchnie(pole), {
-        permanent: true,
-        direction: "center",
-        className: "etykieta-promienia"
+        permanent: true, direction: "center", className: "etykieta-promienia"
       }).openTooltip();
-
     } else if (type === 'circle') {
-      // Specjalna obsługa dla okręgu (zostaje bez zmian)
       const radius = layer.getRadius();
       layer.bindTooltip("Promień: " + formatujDlugosc(radius), {
-        permanent: true,
-        direction: "center",
-        className: "etykieta-promienia"
+        permanent: true, direction: "center", className: "etykieta-promienia"
       }).openTooltip();
     }
   });
