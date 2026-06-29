@@ -25,15 +25,17 @@
 
     /* === TYTUŁ MAPY === */
     .tytul-mapy {
-      background: white;
-      padding: 8px 12px;
-      margin: 10px;
-      border-radius: 8px;
-      font-size: 20px;
-      font-weight: bold;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      font-family: 'Tahoma', sans-serif;
-    }
+  background: white;
+  padding: 8px 14px;
+  margin: 10px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: Tahoma, sans-serif;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+}
 
     /* === PANEL WYBORU SCEN === */
     .przycisk-sceny {
@@ -240,13 +242,22 @@
 
   // === KONTROLKI ===
   // Tytuł mapy
-  const kontrolkaTytulu = L.control({ position: "topleft" });
-  kontrolkaTytulu.onAdd = function() {
-    const div = L.DomUtil.create("div", "tytul-mapy");
-    div.innerHTML = "Geoportal historyczny ukazujący zmiany zagospodarowania przestrzennego wybranych obiektów miasta Gołańcz";
-    return div;
-  };
-  kontrolkaTytulu.addTo(mapa);
+const kontrolkaTytulu = L.control({ position: "topleft" });
+
+kontrolkaTytulu.onAdd = function() {
+  const div = L.DomUtil.create("div", "tytul-mapy");
+
+  div.innerHTML = `
+    <div style="display:flex; align-items:center; gap:10px;">
+      <img src="logo.png" alt="Logo" style="height:42px;">
+      <span>Geoportal Historyczny Gołańczy</span>
+    </div>
+  `;
+
+  return div;
+};
+
+kontrolkaTytulu.addTo(mapa);
 
   // Zoom
   L.control.zoom({ position: "topleft" }).addTo(mapa);
