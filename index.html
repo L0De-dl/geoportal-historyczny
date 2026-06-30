@@ -331,8 +331,8 @@ const PrintControl = L.Control.extend({
         const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
         const button = L.DomUtil.create('a', 'print-button', container);
         
-        // Możesz tutaj wstawić klasę ikony z FontAwesome lub zostawić ikonę Leafleta
-        button.innerHTML = '<span class="leaflet-draw-draw-marker" style="margin-top: 5px;"></span>'; 
+        // Zmieniono tekst/ikonę na "💾" (lub możesz wpisać "Drukuj"), żeby jednoznacznie kojarzyła się z zapisem/eksportem
+        button.innerHTML = '<span style="font-size: 16px; line-height: 30px;">💾</span>'; 
         button.title = "Eksport mapy";
 
         L.DomEvent.disableClickPropagation(container);
@@ -344,6 +344,8 @@ const PrintControl = L.Control.extend({
         return container;
     }
 });
+
+new PrintControl().addTo(mapa);
   
   // === GRANICE MAPY ===
   mapa.setMaxBounds([
