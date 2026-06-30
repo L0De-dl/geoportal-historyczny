@@ -237,7 +237,22 @@
       border-top: none; /* Nawiązanie do klasycznego wyglądu skali Leafleta */
       background: white;
     }
-  
+  /* Styl dla przycisku drukowania, aby pasował do reszty kontrolek */
+.print-button {
+    background-color: white;
+    width: 30px;
+    height: 30px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 4px;
+    border: 2px solid rgba(0,0,0,0.2);
+    font-size: 18px;
+}
+.print-button:hover {
+    background-color: #f4f4f4;
+}
   </style>
 </head>
 <body>
@@ -310,38 +325,25 @@ const mapa = L.map('mapa', {
   const aktualnyRok = new Date().getFullYear();
 
 const PrintControl = L.Control.extend({
-
-    options: {
-        position: 'topleft'
-    },
+    options: { position: 'topleft' },
 
     onAdd: function () {
-
         const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
-
-        const button = L.DomUtil.create('a', '', container);
-
-        button.innerHTML = "🖨";
-        button.href = "#";
+        const button = L.DomUtil.create('a', 'print-button', container);
+        
+        // Możesz tutaj wstawić klasę ikony z FontAwesome lub zostawić ikonę Leafleta
+        button.innerHTML = '<span class="leaflet-draw-draw-marker" style="margin-top: 5px;"></span>'; 
         button.title = "Eksport mapy";
 
         L.DomEvent.disableClickPropagation(container);
-
-        L.DomEvent.on(button, 'click', function (e) {
-
+        L.DomEvent.on(button, 'click', (e) => {
             L.DomEvent.stop(e);
-
             eksportMapy();
-
         });
 
         return container;
-
     }
-
 });
-
-mapa.addControl(new PrintControl());
   
   // === GRANICE MAPY ===
   mapa.setMaxBounds([
