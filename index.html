@@ -860,7 +860,7 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
   });
   mapa.addControl(drawControl);
 
-  mapa.on(L.Draw.Event.CREATED, function (e) {
+mapa.on(L.Draw.Event.CREATED, function (e) {
     const layer = e.layer;
     const type = e.layerType;
 
@@ -902,6 +902,17 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
       const radius = layer.getRadius();
       layer.bindTooltip("Promień: " + formatujDlugosc(radius), {
         permanent: true, direction: "center", className: "etykieta-promienia"
+      }).openTooltip();
+    } else if (type === 'marker') {
+      // === NOWA SEKCJA DLA MARKERA ===
+      const coords = layer.getLatLng();
+      const tekstWspolrzednych = `Lat: ${coords.lat.toFixed(5)}, Lng: ${coords.lng.toFixed(5)}`;
+      
+      layer.bindTooltip(tekstWspolrzednych, {
+        permanent: true, 
+        direction: "top", 
+        className: "etykieta-promienia",
+        offset: [0, -10] // delikatne przesunięcie w górę, aby etykieta nie nachodziła na ikonę
       }).openTooltip();
     }
   });
