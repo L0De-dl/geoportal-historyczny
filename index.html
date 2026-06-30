@@ -724,14 +724,14 @@ const daneScen = {
   let indeksZdjecia = 0;
 
 // Funkcja animująca pulsowanie (zwiększanie i pomniejszanie) warstwy GeoJSON
+// Funkcja animująca pulsowanie (zwiększanie i pomniejszanie) warstwy GeoJSON oraz markerów
 function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 1500) {
   // Sprawdzamy czy warstwa jest aktualnie wyświetlana na mapie
   if (!mapa.hasLayer(warstwa)) return;
 
   const start = performance.now();
   
-  // Pobieramy bazowy styl (jeśli warstwa ma zdefiniowany domyślny styl, np. weight)
-  // Jeśli nie ma (np. punkty), ustawiamy domyślny startowy punkt odniesienia
+  // Pobieramy bazowy styl dla linii/poligonów
   let bazowyWeight = 3; 
   warstwa.eachLayer(layer => {
     if (layer.options && layer.options.weight) {
@@ -745,16 +745,32 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
     if (progres < 1) {
       // Funkcja sinus tworzy płynną falę góra-dół (0 -> 1 -> 0)
       const fala = Math.sin(progres * Math.PI); 
+      
+      // 1. Animacja dla linii i poligonów (zwiększanie grubości)
       const nowyWeight = bazowyWeight + (fala * maxDodatkowyWeight);
-
-      // Aktualizujemy styl dla linii/poligonów
       warstwa.setStyle({ weight: nowyWeight });
       
-      // Jeśli w GeoJSON są markery/punkty (np. ikony kościoła lub drzew), 
-      // możemy też animować ich przezroczystość dla lepszego efektu:
+      // 2. Animacja dla markerów / ikon (skalowanie szerokości i wysokości)
+      const skala = 1 + (fala * 0.6); // Maksymalne powiększenie ikony o 60% (1.6x)
+      
       warstwa.eachLayer(layer => {
-        if (layer.setOpacity) {
-          layer.setOpacity(1 - (fala * 0.4)); // Lekkie mruganie ikony
+        if (layer.getElement && layer.options && layer.options.icon) {
+          const el = layer.getElement();
+          const iconOpts = layer.options.icon.options;
+          
+          if (el && iconOpts && iconOpts.iconSize) {
+            const bazowySize = iconOpts.iconSize;
+            // Jeśli ikona nie ma zdefiniowanego punktu zakotwiczenia, przyjmujemy środek
+            const bazowyAnchor = iconOpts.iconAnchor || [bazowySize[0] / 2, bazowySize[1] / 2];
+            
+            // Dynamiczne skalowanie wymiarów ikony
+            el.style.width = (bazowySize[0] * skala) + 'px';
+            el.style.height = (bazowySize[1] * skala) + 'px';
+            
+            // Korekta marginesów, aby ikona nie przesuwała się względem szpilki/punktu na mapie
+            el.style.marginLeft = -(bazowyAnchor[0] * skala) + 'px';
+            el.style.marginTop = -(bazowyAnchor[1] * skala) + 'px';
+          }
         }
       });
 
@@ -762,7 +778,24 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
     } else {
       // Przywrócenie domyślnego stylu po zakończeniu animacji
       warstwa.setStyle({ weight: bazowyWeight });
-      warstwa.eachLayer(layer => { if (layer.setOpacity) layer.setOpacity(1); });
+      
+      // Resetowanie wymiarów ikon do stanu początkowego
+      warstwa.eachLayer(layer => {
+        if (layer.getElement && layer.options && layer.options.icon) {
+          const el = layer.getElement();
+          const iconOpts = layer.options.icon.options;
+          
+          if (el && iconOpts && iconOpts.iconSize) {
+            const bazowySize = iconOpts.iconSize;
+            const bazowyAnchor = iconOpts.iconAnchor || [bazowySize[0] / 2, bazowySize[1] / 2];
+            
+            el.style.width = bazowySize[0] + 'px';
+            el.style.height = bazowySize[1] + 'px';
+            el.style.marginLeft = -bazowyAnchor[0] + 'px';
+            el.style.marginTop = -bazowyAnchor[1] + 'px';
+          }
+        }
+      });
     }
   }
 
