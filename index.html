@@ -643,7 +643,7 @@ const mapa = L.map('mapa', {
   const kosciol_now1 = {
     "type": "FeatureCollection",
     "name": "scena3_now1",
-    "features": [{ "type": "Feature", "properties": {}, "geometry": { "type": "Point", "coordinates": [17.299726431374044, 52.943187951426204]} }]
+   "features": [{ "type": "Feature", "properties": {}, "geometry": { "type": "LineString", "coordinates": [[17.299726431374044, 52.943187951426204], [17.300573180757336, 52.94338093573877], [17.301712277817746, 52.94367984493318], [17.30254766873985, 52.94403240904947]] } }]
   };
   
   const warstwaKosciolThen = L.geoJSON(kosciol_then, {
@@ -657,7 +657,7 @@ const mapa = L.map('mapa', {
     })
   });
   const warstwaKosciolNow1 = L.geoJSON(kosciol_now1, {
-    style: { color: '#0147D9', opacity: 0.8 }
+    style: { color: '#0147D9',  weight: 4, opacity: 0.8 }
   });
 
 
