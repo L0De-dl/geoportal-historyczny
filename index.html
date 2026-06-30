@@ -224,6 +224,20 @@
       font-weight: bold;
       text-shadow: 1px 1px 0px white, -1px -1px 0px white, 1px -1px 0px white, -1px 1px 0px white;
     }
+
+/* === STYL WSPÓŁRZĘDNYCH MYSZKI === */
+    .wspolrzedne-myszki {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 2px 6px;
+      margin-left: 10px; /* Odstęp od skali, jeśli wskoczą obok siebie */
+      margin-bottom: 5px;
+      font-size: 11px;
+      color: #333;
+      border: 2px solid #aaa;
+      border-top: none; /* Nawiązanie do klasycznego wyglądu skali Leafleta */
+      background: white;
+    }
+  
   </style>
 </head>
 <body>
@@ -320,6 +334,27 @@
   L.control.zoom({ position: "topleft" }).addTo(mapa);
   L.control.scale({ imperial: false, metric: true, position: 'bottomleft' }).addTo(mapa);
 
+// === KONTROLKA WSPÓŁRZĘDNYCH MYSZKI ===
+  const kontrolkaWspolrzednych = L.control({ position: 'bottomleft' });
+
+  kontrolkaWspolrzednych.onAdd = function() {
+    const div = L.DomUtil.create('div', 'wspolrzedne-myszki');
+    div.innerHTML = "X: - | Y: -";
+    return div;
+  };
+
+  kontrolkaWspolrzednych.addTo(mapa);
+
+  // Aktualizacja współrzędnych przy ruchu myszy
+  mapa.on('mousemove', function(e) {
+    const coords = e.latlng;
+    // W geografii i systemach GIS: X zazwyczaj oznacza długość geogr. (Lng), a Y szerokość geogr. (Lat)
+    const x = coords.lng.toFixed(5);
+    const y = coords.lat.toFixed(5);
+    
+    document.querySelector('.wspolrzedne-myszki').innerHTML = `X: ${x} &nbsp;&nbsp; Y: ${y}`;
+  });
+  
   // === PODKŁADY MAPOWE ===
   const podkladOSM = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     maxZoom: 19,
