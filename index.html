@@ -303,9 +303,12 @@
 <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
 
 <script>
-  // === INICJALIZACJA MAPY ===
-  const mapa = L.map('mapa', { zoomControl: false, zoomSnap: 0.5 })
-                .setView([52.9435, 17.3002], 17.5);
+// === INICJALIZACJA MAPY ===
+const mapa = L.map('mapa', { 
+  zoomControl: false, 
+  zoomSnap: 0.5,
+  renderer: L.canvas() // Ta linia naprawia problem z eksportem PNG wektorów
+}).setView([52.9435, 17.3002], 17.5);
   const aktualnyRok = new Date().getFullYear();
   // === GRANICE MAPY ===
   mapa.setMaxBounds([
