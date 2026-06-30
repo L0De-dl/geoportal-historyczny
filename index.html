@@ -143,7 +143,7 @@
       padding-right: 4px;
     }
 
-    /* === 5. KARUZELA ZDJĘĆ === */
+    /* === 5. KONTENER ZDJĘĆ === */
     .karuzela-kontener {
       display: flex;
       flex-direction: column;
@@ -157,29 +157,6 @@
       border-radius: 6px;
       cursor: pointer;
       border: 1px solid #ddd;
-    }
-    .karuzela-nawigacja {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .karuzela-btn {
-      background: #2196f3;
-      color: white;
-      border: none;
-      padding: 4px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 12px;
-    }
-    .karuzela-btn:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
-    #karuzela-licznik {
-      font-size: 11px;
-      color: #666;
     }
 
     /* Ukrycie starej kontrolki warstw w Leaflet */
@@ -253,17 +230,14 @@
 
   <div id="mapa"></div>
 
-  <!-- NOWY PANEL BOCZNY PO PRAWEJ STRONIE -->
   <div class="panel-boczny">
     
-    <!-- Sekcja 1: Wybór podkładu (Poziomy suwak) -->
     <div class="sekcja-panelu suwak-kontener">
       <h3>Wybór podkładu czasowego</h3>
       <input type="range" id="suwak-czasu" min="0" max="8" value="8" step="1">
       <div id="nazwa-podkladu">Wczytywanie...</div>
     </div>
 
-    <!-- Sekcja 2: Wybór sceny (Układ poziomy) -->
     <div class="sekcja-panelu">
       <h3>Wybór Sceny</h3>
       <div class="kontener-scen-poziom">
@@ -282,34 +256,25 @@
       </div>
     </div>
 
-    <!-- Sekcja 3: Legenda z jednego pliku (Inkscape) -->
     <div class="sekcja-panelu">
       <h3>Legenda</h3>
       <img id="legenda-img" src="" alt="Legenda sceny">
     </div>
 
-    <!-- Sekcja 4: Opis zmian przestrzennych -->
     <div class="sekcja-panelu">
       <h3>Opis zmian przestrzennych</h3>
       <div id="opis-sceny-tekst"></div>
     </div>
 
-    <!-- Sekcja 5: Zdjęcia obiektów (Karuzela) -->
     <div class="sekcja-panelu">
       <h3>Zdjęcia obiektów dla sceny</h3>
       <div class="karuzela-kontener">
         <img id="karuzela-foto" src="" alt="Zdjęcie obiektu" onclick="otworzPelneZdjecie()">
-        <div class="karuzela-nawigacja">
-          <button class="karuzela-btn" onclick="poprzednieZdjecie()">◀</button>
-          <span id="karuzela-licznik">0 / 0</span>
-          <button class="karuzela-btn" onclick="nastepneZdjecie()">▶</button>
-        </div>
       </div>
     </div>
 
   </div>
 
-  <!-- Modal ze zdjęciem (Kliknięcie w karuzeli lub na mapie) -->
   <div id="modal-zdjecie">
     <div class="okno">
       <div class="zamknij" onclick="zamknijModal()">✖</div>
@@ -676,7 +641,6 @@ const nazwyPodkladow = [
 
 
   // === STRUKTURA DANYCH INTERFEJSU DLA PLANSZY (PANELU) ===
-// === STRUKTURA DANYCH INTERFEJSU DLA PLANSZY (PANELU) ===
 const daneScen = {
     1: {
       legenda: "legenda_atrakcje1.png",
@@ -827,6 +791,13 @@ function zmienOpisHistorii(numerPunktu) {
       if (obiektHistorii.warstwaGeoJSON) {
         animujPulsowanieWarstwy(obiektHistorii.warstwaGeoJSON);
       }
+
+      // 3. Płynna zmiana zdjęcia dopasowanego do punktu historii (punkt 1 = zdjecie 0, punkt 2 = zdjecie 1...)
+      const listaZdjec = daneScen[aktualnaScena].zdjecia;
+      if (listaZdjec && listaZdjec[numerPunktu - 1]) {
+        indeksZdjecia = numerPunktu - 1;
+        aktualizujKaruzele();
+      }
     }
   }
   
@@ -863,7 +834,7 @@ function zmienOpisHistorii(numerPunktu) {
     aktualizujKaruzele();
   }
 
-  // === OBSŁUGA POZIOMEJ KARUZELI ZDJĘĆ ===
+  // === OBSŁUGA WYŚWIETLANIA ZDJĘĆ ===
   function aktualizujKaruzele() {
     const listaZdjec = daneScen[aktualnaScena].zdjecia;
     const imgEl = document.getElementById('karuzela-foto');
@@ -872,31 +843,11 @@ function zmienOpisHistorii(numerPunktu) {
     if (listaZdjec && listaZdjec.length > 0) {
       imgEl.src = listaZdjec[indeksZdjecia];
       imgEl.style.display = 'block';
-      licznikEl.textContent = `${indeksZdjecia + 1} / ${listaZdjec.length}`;
+      if (licznikEl) licznikEl.textContent = `${indeksZdjecia + 1} / ${listaZdjec.length}`;
     } else {
       imgEl.style.display = 'none';
-      licznikEl.textContent = "0 / 0";
+      if (licznikEl) licznikEl.textContent = "0 / 0";
     }
-  }
-
-  function nastepneZdjecie() {
-    const listaZdjec = daneScen[aktualnaScena].zdjecia;
-    if (indeksZdjecia < listaZdjec.length - 1) {
-      indeksZdjecia++;
-    } else {
-      indeksZdjecia = 0; // Pętla kołowa (następne z ostatniego wraca na pierwsze)
-    }
-    aktualizujKaruzele();
-  }
-
-  function poprzednieZdjecie() {
-    const listaZdjec = daneScen[aktualnaScena].zdjecia;
-    if (indeksZdjecia > 0) {
-      indeksZdjecia--;
-    } else {
-      indeksZdjecia = listaZdjec.length - 1; // Pętla kołowa (poprzednie z pierwszego skacze na koniec)
-    }
-    aktualizujKaruzele();
   }
 
   // Otwarcie dużego okna modalnego z poziomu karuzeli bocznej
