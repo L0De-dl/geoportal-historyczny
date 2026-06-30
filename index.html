@@ -904,61 +904,96 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
   });
   mapa.addControl(drawControl);
 
-mapa.on(L.Draw.Event.CREATED, function (e) {
-    const layer = e.layer;
-    const type = e.layerType;
+// === NOWA GRUPA DLA RYSOWANYCH ELEMENTÓW ===
+  // Musimy dodać osobną grupę, aby Leaflet Draw wiedział, które obiekty edytować lub usuwać
+  const narysowaneElementy = new L.FeatureGroup();
+  mapa.addLayer(narysowaneElementy);
 
-narysowaneObiekty.addLayer(layer);
-
-    function formatujDlugosc(dystans) {
-      if (dystans >= 1000) return (dystans / 1000).toFixed(2) + ' km';
-      return dystans.toFixed(2) + ' m';
+  // Aktualizacja konfiguracji kontrolki Draw, aby współpracowała z naszą grupą
+  drawControl.setOptions({
+    edit: {
+      featureGroup: narysowaneElementy
     }
+  });
 
-    function formatujPowierzchnie(pole) {
-      if (pole >= 1000000) return (pole / 1000000).toFixed(2) + ' km²';
-      return pole.toFixed(2) + ' m²';
+  // === FUNKCJE POMOCNICZE FORMATOWANIA ===
+  function formatujDlugosc(dystans) {
+    if (dystans >= 1000) return (dystans / 1000).toFixed(2) + ' km';
+    return dystans.toFixed(2) + ' m';
+  }
+
+  function formatujPowierzchnie(pole) {
+    if (pole >= 1000000) return (pole / 1000000).toFixed(2) + ' km²';
+    return pole.toFixed(2) + ' m²';
+  }
+
+  // === FUNKCJA OBLICZANIA I AKTUALIZACJI ETYKIET ===
+  function aktualizujPomiary(layer, type) {
+    // Jeśli obiekt nie ma jeszcze przypisanego Tooltipa, tworzymy go
+    if (!layer.getTooltip()) {
+      layer.bindTooltip("", {
+        permanent: true,
+        direction: "center",
+        className: "etykieta-promienia"
+      });
     }
 
     if (type === 'polyline') {
       const latlngs = layer.getLatLngs();
+      let calkowitaDlugosc = 0;
+      
+      // Sumowanie wszystkich odcinków dla całej linii
       for (let i = 0; i < latlngs.length - 1; i++) {
-        const p1 = latlngs[i];
-        const p2 = latlngs[i+1];
-        const dlugoscOdcinka = p1.distanceTo(p2);
-        
-        const srodekLat = (p1.lat + p2.lat) / 2;
-        const srodekLng = (p1.lng + p2.lng) / 2;
-        const punktSrodkowy = L.latLng(srodekLat, srodekLng);
-        
-        L.circleMarker(punktSrodkowy, { radius: 1, stroke: false, fillColor: 'transparent', interactive: false })
-          .bindTooltip(formatujDlugosc(dlugoscOdcinka), { permanent: true, direction: "center", className: "etykieta-promienia" })
-          .addTo(mapa);
+        calkowitaDlugosc += latlngs[i].distanceTo(latlngs[i+1]);
       }
+      
+      // Nadpisujemy kierunek na "top" lub "auto", żeby linia nie zasłaniała tekstu w środku
+      layer.getTooltip().setOptions({ direction: 'top', offset: [0, -10] });
+      layer.setTooltipContent("Długość: " + formatujDlugosc(calkowitaDlugosc));
+      
     } else if (type === 'polygon' || type === 'rectangle') {
       const latlngs = layer.getLatLngs()[0];
       const pole = L.GeometryUtil.geodesicArea(latlngs);
-
-      layer.bindTooltip("Powierzchnia: " + formatujPowierzchnie(pole), {
-        permanent: true, direction: "center", className: "etykieta-promienia"
-      }).openTooltip();
+      layer.setTooltipContent("Powierzchnia: " + formatujPowierzchnie(pole));
+      
     } else if (type === 'circle') {
       const radius = layer.getRadius();
-      layer.bindTooltip("Promień: " + formatujDlugosc(radius), {
-        permanent: true, direction: "center", className: "etykieta-promienia"
-      }).openTooltip();
-    } else if (type === 'marker') {
-      // === NOWA SEKCJA DLA MARKERA ===
-      const coords = layer.getLatLng();
-      const tekstWspolrzednych = `Lat: ${coords.lat.toFixed(5)}, Lng: ${coords.lng.toFixed(5)}`;
+      layer.setTooltipContent("Promień: " + formatujDlugosc(radius));
       
-      layer.bindTooltip(tekstWspolrzednych, {
-        permanent: true, 
-        direction: "top", 
-        className: "etykieta-promienia",
-        offset: [0, -10] // delikatne przesunięcie w górę, aby etykieta nie nachodziła na ikonę
-      }).openTooltip();
+    } else if (type === 'marker') {
+      const coords = layer.getLatLng();
+      layer.getTooltip().setOptions({ direction: 'top', offset: [0, -10] });
+      layer.setTooltipContent(`Lat: ${coords.lat.toFixed(5)}, Lng: ${coords.lng.toFixed(5)}`);
     }
+  }
+
+  // === REJESTRACJA ZDARZEŃ LEAFLET DRAW ===
+
+  // 1. Tworzenie nowego obiektu
+  mapa.on(L.Draw.Event.CREATED, function (e) {
+    const layer = e.layer;
+    const type = e.layerType;
+
+    // Przechowujemy typ obiektu bezpośrednio w warstwie, by wiedzieć jak go przeliczyć przy edycji
+    layer.bierzacyTypDraw = type;
+
+    // Obliczamy geometrię
+    aktualizujPomiary(layer, type);
+
+    // Dodajemy do grupy (obiekt automatycznie pojawi się na mapie)
+    narysowaneElementy.addLayer(layer);
+    layer.openTooltip();
+  });
+
+  // 2. Edycja istniejącego obiektu (przeciąganie węzłów)
+  mapa.on(L.Draw.Event.EDITED, function (e) {
+    const layers = e.layers;
+    layers.eachLayer(function (layer) {
+      if (layer.bierzacyTypDraw) {
+        // Ponownie przeliczamy wartości po zakończeniu edycji
+        aktualizujPomiary(layer, layer.bierzacyTypDraw);
+      }
+    });
   });
 </script>
 </body>
