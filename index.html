@@ -307,7 +307,7 @@
 const mapa = L.map('mapa', { 
   zoomControl: false, 
   zoomSnap: 0.5,
-  renderer: L.canvas() // Ta linia naprawia problem z eksportem PNG wektorów
+  renderer: L.canvas()
 }).setView([52.9435, 17.3002], 17.5);
   const aktualnyRok = new Date().getFullYear();
   // === GRANICE MAPY ===
@@ -938,7 +938,7 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
     if (!layer.getTooltip()) {
       layer.bindTooltip("", opcjeTooltipa);
     } else {
-      // Jeśli już istnieje, bezpiecznie aktualizujemy jego opcje bezpośrednio w obiekcie Leaflet
+      // Jeśli już istnieje, bezpiecznie aktualizujemy jego opcje bezposrednio w obiekcie Leaflet
       L.extend(layer.getTooltip().options, opcjeTooltipa);
     }
 
