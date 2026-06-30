@@ -513,7 +513,7 @@ const nazwyPodkladow = [
   znacznika33.on('mouseout',  () => znacznika33.setIcon(ikonaaparat));
   znacznika33.on('click', () => { pokazModal("zdjeciekosciol3.jpg"); });
   
-  const wszystkieZnaczniki = [znacznik_his1_scena1, znacznik_his2_scena1, znacznik_his3_scena1, znacznik_his1_scena2, znacznik_his2_scena2, znacznik_his3_scena2, znacznik_his1_scena3, znacznik_his2_scena3, znacznik_his3_scena3, znacznik1, znacznik2, znacznik3, znacznika11, znacznika12, znacznika13, znacznika21, Residential=znacznika22, znacznika23, znacznika31, znacznika32, znacznika33];
+  const wszystkieZnaczniki = [znacznik_his1_scena1, znacznik_his2_scena1, znacznik_his3_scena1, znacznik_his1_scena2, znacznik_his2_scena2, znacznik_his3_scena2, znacznik_his1_scena3, znacznik_his2_scena3, znacznik_his3_scena3, znacznik1, znacznik2, znacznik3, znacznika11, znacznika12, znacznika13, znacznika21, Residential=znacznika22, znacznika23, znacznika31, znacznika32, Residential=znacznika33];
 
   function usunZnaczniki() {
     wszystkieZnaczniki.forEach(z => { if (mapa.hasLayer(z)) mapa.removeLayer(z); });
@@ -805,6 +805,13 @@ function zmienOpisHistorii(numerPunktu) {
   function zmienScene(nr) {
     aktualnaScena = nr;
     indeksZdjecia = 0; // Powrót na początek karuzeli po zmianie sceny
+
+    // Dynamiczna zmiana punktu środkowego oraz poziomu zoomu w zależności od wybranej sceny
+    if (nr === 1 || nr === 2) {
+      mapa.setView([52.94400963676573, 17.30015435448826], 19.5);
+    } else if (nr === 3) {
+      mapa.setView([52.94284493696121, 17.30075259704252], 18.5);
+    }
 
     // Ukrycie wszystkich istniejących warstw i markerów
     usunZnaczniki();
