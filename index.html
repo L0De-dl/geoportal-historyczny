@@ -42,7 +42,7 @@
       align-items: center;
     }
 
-    /* === GŁÓWNY PANEL BOCZNY (Zoptymalizowany pod brak suwaka) === */
+    /* === GŁÓWNY PANEL BOCZNY === */
     .panel-boczny {
       width: 360px;
       height: 100vh;
@@ -51,10 +51,10 @@
       display: flex;
       flex-direction: column;
       z-index: 1000;
-      overflow: hidden; /* Blokujemy główny suwak pionowy */
+      overflow: hidden;
       box-sizing: border-box;
-      padding: 12px; /* Zmniejszony margines wewnętrzny */
-      gap: 12px; /* Mniejsze odstępy między sekcjami */
+      padding: 12px;
+      gap: 12px;
     }
 
     .sekcja-panelu {
@@ -100,7 +100,7 @@
       flex-direction: column;
       align-items: center;
       gap: 3px;
-      padding: 6px; /* Bardziej kompaktowe przyciski */
+      padding: 6px;
       border: 1px solid #ccc;
       border-radius: 6px;
       cursor: pointer;
@@ -109,7 +109,7 @@
       user-select: none;
     }
     .przycisk-sceny-nowy img {
-      width: 24px; /* Mniejsze ikony scen */
+      width: 24px;
       height: 24px;
       object-fit: contain;
     }
@@ -125,21 +125,21 @@
     /* === 3. LEGENDA === */
     #legenda-img {
       width: 100%;
-      max-height: 80px; /* Maksymalna wysokość legendy, by nie rozpychała panelu */
-      object-fit: contain; /* Bezpieczne skalowanie obrazka */
+      max-height: 80px;
+      object-fit: contain;
       display: block;
       border: 1px solid #eee;
       border-radius: 4px;
     }
 
-    /* === 4. OPIS TEKSTOWY (Autonomiczne przewijanie tekstu w razie potrzeby) === */
+    /* === 4. OPIS TEKSTOWY === */
     #opis-sceny-tekst {
       font-size: 12px;
       line-height: 1.4;
       color: #333;
       text-align: justify;
-      max-height: 110px; /* Stały punkt krytyczny wysokości tekstu */
-      overflow-y: auto; /* Jeśli opis będzie wyjątkowo długi, pojawi się suwak tylko w tej małej sekcji */
+      max-height: 110px;
+      overflow-y: auto;
       padding-right: 4px;
     }
 
@@ -152,7 +152,7 @@
     }
     #karuzela-foto {
       width: 100%;
-      max-height: 130px; /* Zredukowano z 220px, co daje ogromną oszczędność miejsca */
+      max-height: 130px;
       object-fit: cover;
       border-radius: 6px;
       cursor: pointer;
@@ -304,7 +304,6 @@
   ]));
 
   // === KONTROLKI MAPY ===
-  // Tytuł mapy
   const kontrolkaTytulu = L.control({ position: "topleft" });
   kontrolkaTytulu.onAdd = function() {
     const div = L.DomUtil.create("div", "tytul-mapy");
@@ -318,10 +317,7 @@
   };
   kontrolkaTytulu.addTo(mapa);
 
-  // Zoom
   L.control.zoom({ position: "topleft" }).addTo(mapa);
-
-  // Skala
   L.control.scale({ imperial: false, metric: true, position: 'bottomleft' }).addTo(mapa);
 
   // === PODKŁADY MAPOWE ===
@@ -341,36 +337,27 @@
   const podklad2002 = L.imageOverlay('2002.jpg', [[52.9490239, 17.3122189], [52.9381943, 17.2852683]]);
   const podklad2025 = L.tileLayer('');
 
-  // Słownik/Array dla obsługi suwaka podkładów
-const tablicaPodkladow = [
-  podklad1890, podklad1911, podklad1934, podklad1940, 
-  podklad1941, podklad1966, podklad1981, podklad2002, podklad2025
-];
-const nazwyPodkladow = [
-  "Mapa z 1890 roku", "Mapa z 1911 roku", "Mapa z 1934 roku", "Mapa z 1940 roku",
-  "Mapa z 1941 roku", "Mapa z 1966 roku", "Mapa z 1981 roku", "Mapa z 2002 roku", `Mapa z ${aktualnyRok} roku`
-];
+  const tablicaPodkladow = [
+    podklad1890, podklad1911, podklad1934, podklad1940, 
+    podklad1941, podklad1966, podklad1981, podklad2002, podklad2025
+  ];
+  const nazwyPodkladow = [
+    "Mapa z 1890 roku", "Mapa z 1911 roku", "Mapa z 1934 roku", "Mapa z 1940 roku",
+    "Mapa z 1941 roku", "Mapa z 1966 roku", "Mapa z 1981 roku", "Mapa z 2002 roku", `Mapa z ${aktualnyRok} roku`
+  ];
 
-  // Dodanie domyślnego podkładu z 2025 na start
   podklad2025.addTo(mapa);
 
-  // Rejestracja zdarzenia dla suwaka podkładów czasowych
   document.getElementById('suwak-czasu').addEventListener('input', function(e) {
     const indeks = parseInt(e.target.value);
-    
-    // Usuń wszystkie nałożone podkłady rastrowe
     tablicaPodkladow.forEach(p => { if (mapa.hasLayer(p)) mapa.removeLayer(p); });
-    
-    // Włącz wybrany podkład
     if (tablicaPodkladow[indeks]) {
       tablicaPodkladow[indeks].addTo(mapa);
     }
-    
-    // Zaktualizuj tekst informacyjny
     document.getElementById('nazwa-podkladu').textContent = nazwyPodkladow[indeks];
   });
 
-  // === MARKERY SCEN (IKONY APARATÓW I SFER) ===
+  // === MARKERY SCEN ===
   const ikonaZolta       = L.icon({ iconUrl: 'scena_sferyczna.png',  iconSize: [25,25] });
   const ikonaZoltaCiemna = L.icon({ iconUrl: 'scena_sferyczna_szare.png', iconSize: [25,25] });
   const ikonaCzerwona    = L.icon({ iconUrl: 'scena_sferyczna.png',  iconSize: [25,25] });
@@ -422,7 +409,7 @@ const nazwyPodkladow = [
   znacznik_his3_scena2.on('mouseout',  () => znacznik_his3_scena2.setIcon(ikonahistoria3));
   znacznik_his3_scena2.on('click',     () => { zmienOpisHistorii(3); });
 
-    const znacznik_his1_scena3 = L.marker([52.94296450263298, 17.300516747752436], { icon: ikonahistoria1 })
+  const znacznik_his1_scena3 = L.marker([52.94296450263298, 17.300516747752436], { icon: ikonahistoria1 })
     .bindTooltip("Kliknij aby poznać historię", {permanent: false, direction: "top"});
   znacznik_his1_scena3.on('mouseover', () => znacznik_his1_scena3.setIcon(ikonahistoria1_szare));
   znacznik_his1_scena3.on('mouseout',  () => znacznik_his1_scena3.setIcon(ikonahistoria1));
@@ -458,7 +445,7 @@ const nazwyPodkladow = [
   znacznik3.on('mouseout',  () => znacznik3.setIcon(ikonaNiebieska));
   znacznik3.on('click',     () => { window.location.href = "https://l0de-dl.github.io/scena3"; });
 
-  // Markery fotograficzne ze zdarzeniami modalnymi
+  // Markery fotograficzne (TE ZOSTAŁY NIERUSZONE)
   const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: ikonaaparat })
     .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
   znacznika11.on('mouseover', () => znacznika11.setIcon(ikonaaparatszara));
@@ -513,14 +500,13 @@ const nazwyPodkladow = [
   znacznika33.on('mouseout',  () => znacznika33.setIcon(ikonaaparat));
   znacznika33.on('click', () => { pokazModal("zdjeciekosciol3.jpg"); });
   
-  const wszystkieZnaczniki = [znacznik_his1_scena1, znacznik_his2_scena1, znacznik_his3_scena1, znacznik_his1_scena2, znacznik_his2_scena2, znacznik_his3_scena2, znacznik_his1_scena3, znacznik_his2_scena3, znacznik_his3_scena3, znacznik1, znacznik2, znacznik3, znacznika11, znacznika12, znacznika13, znacznika21, Residential=znacznika22, znacznika23, znacznika31, znacznika32, Residential=znacznika33];
+  const wszystkieZnaczniki = [znacznik_his1_scena1, znacznik_his2_scena1, znacznik_his3_scena1, znacznik_his1_scena2, znacznik_his2_scena2, znacznik_his3_scena2, znacznik_his1_scena3, znacznik_his2_scena3, znacznik_his3_scena3, znacznik1, znacznik2, znacznik3, znacznika11, znacznika12, znacznika13, znacznika21, znacznika22, znacznika23, znacznika31, znacznika32, znacznika33];
 
   function usunZnaczniki() {
     wszystkieZnaczniki.forEach(z => { if (mapa.hasLayer(z)) mapa.removeLayer(z); });
   }
 
   // === DANE WEKTOROWE GEOJSON ===
-  // Scena 1
   const drzewa_then = {
     "type": "FeatureCollection",
     "name": "scena1_then",
@@ -575,7 +561,6 @@ const nazwyPodkladow = [
     })
   });
 
-  // Scena 2
   const pomnik_then = {
     "type": "FeatureCollection",
     "name": "scena2_then",
@@ -608,7 +593,6 @@ const nazwyPodkladow = [
     })
   });
 
-  // Scena 3
   const kosciol_then = {
     "type": "FeatureCollection",
     "name": "scena3_then",
@@ -641,7 +625,7 @@ const nazwyPodkladow = [
 
 
   // === STRUKTURA DANYCH INTERFEJSU DLA PLANSZY (PANELU) ===
-const daneScen = {
+  const daneScen = {
     1: {
       legenda: "legenda_atrakcje1.png",
       opis: "Pierwotnie plac rynkowy otaczał pas wysokich drzew...",
@@ -650,7 +634,8 @@ const daneScen = {
         2: { tekst: "Scena 1 - Historia punktu 2: Szczegóły dotyczące północnej pierzei rynku...", warstwaGeoJSON: warstwaDrzewaNow },
         3: { tekst: "Scena 1 - Historia punktu 3: Opis zmian w infrastrukturze...", warstwaGeoJSON: warstwaDrzewaNow2 }
       },
-      zdjecia: ["zdjeciedrzewa1.jpg", "zdjeciedrzewa2.jpg", "zdjeciedrzewa3.jpg"],
+      // Tutaj dodajesz nowe zdjęcia przeznaczone TYLKO do panelu bocznego:
+      zdjeciaPanelu: ["panel_drzewa1.jpg", "panel_drzewa2.jpg", "panel_drzewa3.jpg"],
       funkcjaWlaczenia: function() {
         mapa.addLayer(znacznik1); 
         znacznika11.addTo(mapa); znacznika12.addTo(mapa); znacznika13.addTo(mapa); znacznik_his1_scena1.addTo(mapa); znacznik_his2_scena1.addTo(mapa); znacznik_his3_scena1.addTo(mapa);
@@ -665,7 +650,8 @@ const daneScen = {
         2: { tekst: "Scena 2 - Historia punktu 2: Losy monumentu...", warstwaGeoJSON: warstwaPomnikThen1 },
         3: { tekst: "Scena 2 - Historia punktu 3: Szczegóły powojennej odbudowy...", warstwaGeoJSON: warstwaPomnikNow }
       },
-      zdjecia: ["zdjeciepomniki1.jpg", "zdjeciepomniki2.jpg", "zdjeciepomniki3.jpg"],
+      // Nowe zdjęcia panelu bocznego dla Sceny 2:
+      zdjeciaPanelu: ["panel_pomniki1.jpg", "panel_pomniki2.jpg", "panel_pomniki3.jpg"],
       funkcjaWlaczenia: function() {
         mapa.addLayer(znacznik2); 
         znacznika21.addTo(mapa); znacznika22.addTo(mapa); znacznika23.addTo(mapa); znacznik_his1_scena2.addTo(mapa); znacznik_his2_scena2.addTo(mapa); znacznik_his3_scena2.addTo(mapa);
@@ -680,7 +666,8 @@ const daneScen = {
         2: { tekst: "Scena 3 - Historia punktu 2: Informacje o architekturze nowego kościoła...", warstwaGeoJSON: warstwaKosciolNow },
         3: { tekst: "Scena 3 - Historia punktu 3: Dawny przebieg traktu...", warstwaGeoJSON: warstwaKosciolNow1 }
       },
-      zdjecia: ["zdjeciekosciol1.jpg", "zdjeciekosciol2.jpg", "zdjeciekosciol3.jpg"],
+      // Nowe zdjęcia panelu bocznego dla Sceny 3:
+      zdjeciaPanelu: ["panel_kosciol1.jpg", "panel_kosciol2.jpg", "panel_kosciol3.jpg"],
       funkcjaWlaczenia: function() {
         mapa.addLayer(znacznik3); 
         znacznika31.addTo(mapa); znacznika32.addTo(mapa); znacznika33.addTo(mapa);  znacznik_his1_scena3.addTo(mapa); znacznik_his2_scena3.addTo(mapa); znacznik_his3_scena3.addTo(mapa);
@@ -689,21 +676,15 @@ const daneScen = {
     }
   };
 
-  // Zmienne zarządzania stanem panelu
   let aktualnaScena = 1;
   let indeksZdjecia = 0;
 
-// Funkcja animująca pulsowanie (zwiększanie i pomniejszanie) warstwy GeoJSON oraz markerów
 function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 1500) {
-  // Sprawdzamy czy warstwa jest aktualnie wyświetlana na mapie
   if (!mapa.hasLayer(warstwa)) return;
 
   const start = performance.now();
-  
-  // Pobieramy bazowy styl dla linii/poligonów
   let bazowyWeight = 3; 
   
-  // Funkcja pomocnicza do głębokiego przeszukiwania warstw (obsługa MultiPoint/MultiPolygon)
   function wykonajDlaKazdejPodwarstwy(layer, akcja) {
     if (typeof layer.eachLayer === 'function') {
       layer.eachLayer(subLayer => wykonajDlaKazdejPodwarstwy(subLayer, akcja));
@@ -722,15 +703,10 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
     const progres = (timestamp - start) / czasTrwania;
 
     if (progres < 1) {
-      // Funkcja sinus tworzy płynną falę góra-dół (0 -> 1 -> 0)
       const fala = Math.sin(progres * Math.PI); 
-      
-      // 1. Animacja dla linii i poligonów (zwiększanie grubości)
       const nowyWeight = bazowyWeight + (fala * maxDodatkowyWeight);
       warstwa.setStyle({ weight: nowyWeight });
-      
-      // 2. Animacja dla markerów / ikon (skalowanie szerokości i wysokości)
-      const skala = 1 + (fala * 0.6); // Maksymalne powiększenie ikony o 60% (1.6x)
+      const skala = 1 + (fala * 0.6);
       
       wykonajDlaKazdejPodwarstwy(warstwa, layer => {
         if (layer.getElement && layer.options && layer.options.icon) {
@@ -741,11 +717,8 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
             const bazowySize = iconOpts.iconSize;
             const bazowyAnchor = iconOpts.iconAnchor || [bazowySize[0] / 2, bazowySize[1] / 2];
             
-            // Dynamiczne skalowanie wymiarów ikony
             el.style.width = (bazowySize[0] * skala) + 'px';
             el.style.height = (bazowySize[1] * skala) + 'px';
-            
-            // Korekta marginesów, aby ikona nie przesuwała się względem szpilki/punktu na mapie
             el.style.marginLeft = -(bazowyAnchor[0] * skala) + 'px';
             el.style.marginTop = -(bazowyAnchor[1] * skala) + 'px';
           }
@@ -754,10 +727,7 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
 
       requestAnimationFrame(krok);
     } else {
-      // Przywrócenie domyślnego stylu po zakończeniu animacji
       warstwa.setStyle({ weight: bazowyWeight });
-      
-      // Resetowanie wymiarów ikon do stanu początkowego
       wykonajDlaKazdejPodwarstwy(warstwa, layer => {
         if (layer.getElement && layer.options && layer.options.icon) {
           const el = layer.getElement();
@@ -766,7 +736,6 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
           if (el && iconOpts && iconOpts.iconSize) {
             const bazowySize = iconOpts.iconSize;
             const bazowyAnchor = iconOpts.iconAnchor || [bazowySize[0] / 2, bazowySize[1] / 2];
-            
             el.style.width = bazowySize[0] + 'px';
             el.style.height = bazowySize[1] + 'px';
             el.style.marginLeft = -bazowyAnchor[0] + 'px';
@@ -776,24 +745,21 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
       });
     }
   }
-
   requestAnimationFrame(krok);
 }
   
-function zmienOpisHistorii(numerPunktu) {
+  function zmienOpisHistorii(numerPunktu) {
     const obiektHistorii = daneScen[aktualnaScena].opisyHistorii[numerPunktu];
     
     if (obiektHistorii) {
-      // 1. Aktualizacja tekstu w panelu bocznym
       document.getElementById('opis-sceny-tekst').innerHTML = obiektHistorii.tekst;
       
-      // 2. Uruchomienie animacji dla powiązanej warstwy GeoJSON
       if (obiektHistorii.warstwaGeoJSON) {
         animujPulsowanieWarstwy(obiektHistorii.warstwaGeoJSON);
       }
 
-      // 3. Płynna zmiana zdjęcia dopasowanego do punktu historii (punkt 1 = zdjecie 0, punkt 2 = zdjecie 1...)
-      const listaZdjec = daneScen[aktualnaScena].zdjecia;
+      // Tutaj zmieniono: karuzela pobiera teraz pliki z nowej tablicy 'zdjeciaPanelu'
+      const listaZdjec = daneScen[aktualnaScena].zdjeciaPanelu;
       if (listaZdjec && listaZdjec[numerPunktu - 1]) {
         indeksZdjecia = numerPunktu - 1;
         aktualizujKaruzele();
@@ -804,16 +770,14 @@ function zmienOpisHistorii(numerPunktu) {
   // === GŁÓWNA FUNKCJA PRZEŁĄCZANIA SCENY ===
   function zmienScene(nr) {
     aktualnaScena = nr;
-    indeksZdjecia = 0; // Powrót na początek karuzeli po zmianie sceny
+    indeksZdjecia = 0;
 
-    // Dynamiczna zmiana punktu środkowego oraz poziomu zoomu w zależności od wybranej sceny
     if (nr === 1 || nr === 2) {
       mapa.setView([52.94400963676573, 17.30015435448826], 18.5);
     } else if (nr === 3) {
       mapa.setView([52.94284493696121, 17.30075259704252], 18);
     }
 
-    // Ukrycie wszystkich istniejących warstw i markerów
     usunZnaczniki();
     if (mapa.hasLayer(warstwaDrzewaThen)) mapa.removeLayer(warstwaDrzewaThen);
     if (mapa.hasLayer(warstwaDrzewaNow)) mapa.removeLayer(warstwaDrzewaNow);
@@ -825,25 +789,22 @@ function zmienOpisHistorii(numerPunktu) {
     if (mapa.hasLayer(warstwaKosciolNow1)) mapa.removeLayer(warstwaKosciolNow1);
     if (mapa.hasLayer(warstwaKosciolThen)) mapa.removeLayer(warstwaKosciolThen);
 
-    // Wywołanie specyficznych warstw dla wybranej sceny
     daneScen[nr].funkcjaWlaczenia();
 
-    // Aktualizacja zawartości nowego zunifikowanego prawego panelu
     document.getElementById('legenda-img').src = daneScen[nr].legenda;
     document.getElementById('opis-sceny-tekst').innerHTML = daneScen[nr].opis;
 
-    // Przełączenie stylów aktywności poziomych kafelków wyboru sceny
     document.querySelectorAll('.przycisk-sceny-nowy').forEach((btn, idx) => {
       btn.classList.toggle('aktywna', (idx + 1) === nr);
     });
 
-    // Inicjalizacja i odświeżenie paska przewijania zdjęć (karuzeli)
     aktualizujKaruzele();
   }
 
-  // === OBSŁUGA WYŚWIETLANIA ZDJĘĆ ===
+  // === OBSŁUGA WYŚWIETLANIA ZDJĘĆ W PANELU ===
   function aktualizujKaruzele() {
-    const listaZdjec = daneScen[aktualnaScena].zdjecia;
+    // Zmieniono na zdjeciaPanelu
+    const listaZdjec = daneScen[aktualnaScena].zdjcaiPanelu || daneScen[aktualnaScena].zdjeciaPanelu;
     const imgEl = document.getElementById('karuzela-foto');
     const licznikEl = document.getElementById('karuzela-licznik');
 
@@ -857,15 +818,15 @@ function zmienOpisHistorii(numerPunktu) {
     }
   }
 
-  // Otwarcie dużego okna modalnego z poziomu karuzeli bocznej
   function otworzPelneZdjecie() {
-    const listaZdjec = daneScen[aktualnaScena].zdjecia;
+    // Zmieniono na zdjeciaPanelu
+    const listaZdjec = daneScen[aktualnaScena].zdjeciaPanelu;
     if (listaZdjec && listaZdjec[indeksZdjecia]) {
       pokazModal(listaZdjec[indeksZdjecia]);
     }
   }
 
-  // === MODAL GLOBALNY (DLA MAPY I KARUZELI) ===
+  // === MODAL GLOBALNY ===
   function pokazModal(src) {
     document.getElementById('modal-img').src = src;
     document.getElementById('modal-zdjecie').style.display = 'flex';
@@ -875,15 +836,12 @@ function zmienOpisHistorii(numerPunktu) {
     document.getElementById('modal-zdjecie').style.display = 'none';
   }
 
-  // Uruchomienie domyślnej Sceny 1 na starcie aplikacji
   zmienScene(1);
   document.getElementById('nazwa-podkladu').textContent = `Mapa z ${aktualnyRok} roku`;
   
   // === PLUGINY DODATKOWE ===
-  // 1. Lokalizacja użytkownika
   L.control.locate().addTo(mapa);
     
-  // 2. Drukowanie / Zapis do PNG
   const printer = L.easyPrint({
     title: 'Zapisz mapę jako PNG',
     position: 'topleft',
@@ -891,7 +849,6 @@ function zmienOpisHistorii(numerPunktu) {
     exportOnly: true
   }).addTo(mapa);
 
-  // 3. Konfiguracja i dodanie kontrolki rysowania (Leaflet Draw)
   const drawControl = new L.Control.Draw({
     draw: {
       polyline: { showMeasurements: true, showLength: true, metric: true },
@@ -903,7 +860,6 @@ function zmienOpisHistorii(numerPunktu) {
   });
   mapa.addControl(drawControl);
 
-  // 4. Obsługa zdarzenia po zakończeniu rysowania obiektu i etykietowanie pomiarów
   mapa.on(L.Draw.Event.CREATED, function (e) {
     const layer = e.layer;
     const type = e.layerType;
