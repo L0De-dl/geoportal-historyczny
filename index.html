@@ -419,55 +419,55 @@
     .bindTooltip("Kliknij aby poznać historię", {permanent: false, direction: "top"});
   znacznik_his1_scena1.on('mouseover', () => znacznik_his1_scena1.setIcon(ikonahistoria1_szare));
   znacznik_his1_scena1.on('mouseout',  () => znacznik_his1_scena1.setIcon(ikonahistoria1));
-  znacznik_his1_scena1.on('click',     () => { window.location.href = ""; });
+  znacznik_his1_scena1.on('click',     () => { zmienOpisHistorii(1); });
 
   const znacznik_his2_scena1 = L.marker([52.94386195106711, 17.30031065709639], { icon: ikonahistoria2 })
     .bindTooltip("Kliknij aby poznać historię", {permanent: false, direction: "top"});
   znacznik_his2_scena1.on('mouseover', () => znacznik_his2_scena1.setIcon(ikonahistoria2_szare));
   znacznik_his2_scena1.on('mouseout',  () => znacznik_his2_scena1.setIcon(ikonahistoria2));
-  znacznik_his2_scena1.on('click',     () => { window.location.href = ""; });
+  znacznik_his2_scena1.on('click',     () => { zmienOpisHistorii(2); });
 
   const znacznik_his3_scena1 = L.marker([52.94454728963282, 17.299986520469282], { icon: ikonahistoria3 })
     .bindTooltip("Kliknij aby poznać historię", {permanent: false, direction: "top"});
   znacznik_his3_scena1.on('mouseover', () => znacznik_his3_scena1.setIcon(ikonahistoria3_szare));
   znacznik_his3_scena1.on('mouseout',  () => znacznik_his3_scena1.setIcon(ikonahistoria3));
-  znacznik_his3_scena1.on('click',     () => { window.location.href = ""; });
+  znacznik_his3_scena1.on('click',     () => { zmienOpisHistorii(3); });
 
   const znacznik_his1_scena2 = L.marker([52.94412923089142, 17.299395119476557], { icon: ikonahistoria1 })
     .bindTooltip("Kliknij aby poznać historię", {permanent: false, direction: "top"});
   znacznik_his1_scena2.on('mouseover', () => znacznik_his1_scena2.setIcon(ikonahistoria1_szare));
   znacznik_his1_scena2.on('mouseout',  () => znacznik_his1_scena2.setIcon(ikonahistoria1));
-  znacznik_his1_scena2.on('click',     () => { window.location.href = ""; });
+  znacznik_his1_scena2.on('click',     () => { zmienOpisHistorii(1); });
 
   const znacznik_his2_scena2 = L.marker([52.943673484010986, 17.300208298925735], { icon: ikonahistoria2 })
     .bindTooltip("Kliknij aby poznać historię", {permanent: false, direction: "top"});
   znacznik_his2_scena2.on('mouseover', () => znacznik_his2_scena2.setIcon(ikonahistoria2_szare));
   znacznik_his2_scena2.on('mouseout',  () => znacznik_his2_scena2.setIcon(ikonahistoria2));
-  znacznik_his2_scena2.on('click',     () => { window.location.href = ""; });
+  znacznik_his2_scena2.on('click',     () => { zmienOpisHistorii(2); });
 
   const znacznik_his3_scena2 = L.marker([52.943985311166436, 17.300828132807435], { icon: ikonahistoria3 })
     .bindTooltip("Kliknij aby poznać historię", {permanent: false, direction: "top"});
   znacznik_his3_scena2.on('mouseover', () => znacznik_his3_scena2.setIcon(ikonahistoria3_szare));
   znacznik_his3_scena2.on('mouseout',  () => znacznik_his3_scena2.setIcon(ikonahistoria3));
-  znacznik_his3_scena2.on('click',     () => { window.location.href = ""; });
+  znacznik_his3_scena2.on('click',     () => { zmienOpisHistorii(3); });
 
     const znacznik_his1_scena3 = L.marker([52.94296450263298, 17.300516747752436], { icon: ikonahistoria1 })
     .bindTooltip("Kliknij aby poznać historię", {permanent: false, direction: "top"});
   znacznik_his1_scena3.on('mouseover', () => znacznik_his1_scena3.setIcon(ikonahistoria1_szare));
   znacznik_his1_scena3.on('mouseout',  () => znacznik_his1_scena3.setIcon(ikonahistoria1));
-  znacznik_his1_scena3.on('click',     () => { window.location.href = ""; });
+  znacznik_his1_scena3.on('click',     () => { zmienOpisHistorii(1); });
 
   const znacznik_his2_scena3 = L.marker([52.9425239448951, 17.30096765667786], { icon: ikonahistoria2 })
     .bindTooltip("Kliknij aby poznać historię", {permanent: false, direction: "top"});
   znacznik_his2_scena3.on('mouseover', () => znacznik_his2_scena3.setIcon(ikonahistoria2_szare));
   znacznik_his2_scena3.on('mouseout',  () => znacznik_his2_scena3.setIcon(ikonahistoria2));
-  znacznik_his2_scena3.on('click',     () => { window.location.href = ""; });
+  znacznik_his2_scena3.on('click',     () => { zmienOpisHistorii(2); });
 
   const znacznik_his3_scena3 = L.marker([52.94347316137893, 17.30036486582419], { icon: ikonahistoria3 })
     .bindTooltip("Kliknij aby poznać historię", {permanent: false, direction: "top"});
   znacznik_his3_scena3.on('mouseover', () => znacznik_his3_scena3.setIcon(ikonahistoria3_szare));
   znacznik_his3_scena3.on('mouseout',  () => znacznik_his3_scena3.setIcon(ikonahistoria3));
-  znacznik_his3_scena3.on('click',     () => { window.location.href = ""; });
+  znacznik_his3_scena3.on('click',     () => { zmienOpisHistorii(3); });
   
   const znacznik1 = L.marker([52.944121, 17.299766], { icon: ikonaZolta })
     .bindTooltip("Kliknij aby przejść do sceny nr 1", {permanent: false, direction: "top"});
@@ -670,10 +670,16 @@
 
 
   // === STRUKTURA DANYCH INTERFEJSU DLA PLANSZY (PANELU) ===
+// === STRUKTURA DANYCH INTERFEJSU DLA PLANSZY (PANELU) ===
   const daneScen = {
     1: {
-      legenda: "legenda_atrakcje1.png", // Plik graficzny wyeksportowany z Inkscape dla Sceny 1
+      legenda: "legenda_atrakcje1.png",
       opis: "Pierwotnie plac rynkowy otaczał pas wysokich drzew. Z czasem, prawdopodobnie w związku z elektryfikacją, stare drzewa zostały usunięte. Po II wojnie światowej, w ramach prac porządkowych oraz modernizacji przeprowadzonych w latach 70., zmieniono koncepcję układu zieleni. W centrum rynku założono pięcioalejkowy park, w którym ustawiono odrestaurowany pomnik św. Wawrzyńca.",
+      opisyHistorii: {
+        1: "Scena 1 - Historia punktu 1: Tutaj znajdowały się najstarsze drzewa rynkowe...",
+        2: "Scena 1 - Historia punktu 2: Szczegóły dotyczące północnej pierzei rynku w kontekście zieleni...",
+        3: "Scena 1 - Historia punktu 3: Opis zmian w infrastrukturze otaczającej park..."
+      },
       zdjecia: ["zdjeciedrzewa1.jpg", "zdjeciedrzewa2.jpg", "zdjeciedrzewa3.jpg"],
       funkcjaWlaczenia: function() {
         mapa.addLayer(znacznik1); 
@@ -682,8 +688,13 @@
       }
     },
     2: {
-      legenda: "legenda_atrakcje2.png", // Plik graficzny wyeksportowany z Inkscape dla Sceny 2
+      legenda: "legenda_atrakcje2.png",
       opis: "Monument wzniesiono w 1925 roku z inicjatywy lokalnej społeczności. W czasie II wojny światowej został zniszczony, a w jego miejscu po wojnie ustawiono pomnik ku czci poległych w I i II wojnie światowej. W 1999 roku na poddaszu kościoła odnaleziono fragmenty dawnego pomnika, które poddano rekonstrukcji. Rok profesjonalnie odtworzony monument ponownie stanął na rynku, tym razem w jego centralnej części.",
+      opisyHistorii: {
+        1: "Scena 2 - Historia punktu 1: Miejsce pierwotnego posadowienia pomnika z 1925 roku...",
+        2: "Scena 2 - Historia punktu 2: Losy monumentu w trakcie działań wojennych...",
+        3: "Scena 2 - Historia punktu 3: Szczegóły powojennej odbudowy i relokacji..."
+      },
       zdjecia: ["zdjeciepomniki1.jpg", "zdjeciepomniki2.jpg", "zdjeciepomniki3.jpg"],
       funkcjaWlaczenia: function() {
         mapa.addLayer(znacznik2); 
@@ -692,8 +703,13 @@
       }
     },
     3: {
-      legenda: "legenda_atrakcje3.png", // Plik graficzny wyeksportowany z Inkscape dla Sceny 3
+      legenda: "legenda_atrakcje3.png",
       opis: "Na obecnym placu przy ulicy Kościelnej znajdował się drewniany kościół parafialny zbudowany w latach 1781–1785 na miejscu starszej świątyni. Rozebrano go w pierwszej połowie XX wieku z powodu złego stanu technicznego. W 1934 roku jego funkcję przejął nowy, murowany kościół pw. św. Wawrzyńca, wzniesiony po przeciwnej stronie Strugi Gołanieckiej. Dawne położenie świątyni przypomina nazwa ulicy Kościelnej.",
+      opisyHistorii: {
+        1: "Scena 3 - Historia punktu 1: Dokładna lokalizacja starego drewnianego kościoła...",
+        2: "Scena 3 - Historia punktu 2: Informacje o architekturze nowego kościoła murowanego...",
+        3: "Scena 3 - Historia punktu 3: Dawny przebieg traktu i historia nazwy ulicy Kościelnej..."
+      },
       zdjecia: ["zdjeciekosciol1.jpg", "zdjeciekosciol2.jpg", "zdjeciekosciol3.jpg"],
       funkcjaWlaczenia: function() {
         mapa.addLayer(znacznik3); 
@@ -707,6 +723,13 @@
   let aktualnaScena = 1;
   let indeksZdjecia = 0;
 
+function zmienOpisHistorii(numerPunktu) {
+    const nowyOpis = daneScen[aktualnaScena].opisyHistorii[numerPunktu];
+    if (nowyOpis) {
+      document.getElementById('opis-sceny-tekst').innerHTML = nowyOpis;
+    }
+  }
+  
   // === GŁÓWNA FUNKCJA PRZEŁĄCZANIA SCENY ===
   function zmienScene(nr) {
     aktualnaScena = nr;
