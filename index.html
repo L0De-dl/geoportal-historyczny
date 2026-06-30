@@ -671,14 +671,14 @@
 
   // === STRUKTURA DANYCH INTERFEJSU DLA PLANSZY (PANELU) ===
 // === STRUKTURA DANYCH INTERFEJSU DLA PLANSZY (PANELU) ===
-  const daneScen = {
+const daneScen = {
     1: {
       legenda: "legenda_atrakcje1.png",
-      opis: "Pierwotnie plac rynkowy otaczał pas wysokich drzew. Z czasem, prawdopodobnie w związku z elektryfikacją, stare drzewa zostały usunięte. Po II wojnie światowej, w ramach prac porządkowych oraz modernizacji przeprowadzonych w latach 70., zmieniono koncepcję układu zieleni. W centrum rynku założono pięcioalejkowy park, w którym ustawiono odrestaurowany pomnik św. Wawrzyńca.",
+      opis: "Pierwotnie plac rynkowy otaczał pas wysokich drzew...",
       opisyHistorii: {
-        1: "Scena 1 - Historia punktu 1: Tutaj znajdowały się najstarsze drzewa rynkowe...",
-        2: "Scena 1 - Historia punktu 2: Szczegóły dotyczące północnej pierzei rynku w kontekście zieleni...",
-        3: "Scena 1 - Historia punktu 3: Opis zmian w infrastrukturze otaczającej park..."
+        1: { tekst: "Scena 1 - Historia punktu 1: Tutaj znajdowały się najstarsze drzewa rynkowe...", warstwaGeoJSON: warstwaDrzewaThen },
+        2: { tekst: "Scena 1 - Historia punktu 2: Szczegóły dotyczące północnej pierzei rynku...", warstwaGeoJSON: warstwaDrzewaNow },
+        3: { tekst: "Scena 1 - Historia punktu 3: Opis zmian w infrastrukturze...", warstwaGeoJSON: warstwaDrzewaNow2 }
       },
       zdjecia: ["zdjeciedrzewa1.jpg", "zdjeciedrzewa2.jpg", "zdjeciedrzewa3.jpg"],
       funkcjaWlaczenia: function() {
@@ -689,11 +689,11 @@
     },
     2: {
       legenda: "legenda_atrakcje2.png",
-      opis: "Monument wzniesiono w 1925 roku z inicjatywy lokalnej społeczności. W czasie II wojny światowej został zniszczony, a w jego miejscu po wojnie ustawiono pomnik ku czci poległych w I i II wojnie światowej. W 1999 roku na poddaszu kościoła odnaleziono fragmenty dawnego pomnika, które poddano rekonstrukcji. Rok profesjonalnie odtworzony monument ponownie stanął na rynku, tym razem w jego centralnej części.",
+      opis: "Monument wzniesiono w 1925 roku...",
       opisyHistorii: {
-        1: "Scena 2 - Historia punktu 1: Miejsce pierwotnego posadowienia pomnika z 1925 roku...",
-        2: "Scena 2 - Historia punktu 2: Losy monumentu w trakcie działań wojennych...",
-        3: "Scena 2 - Historia punktu 3: Szczegóły powojennej odbudowy i relokacji..."
+        1: { tekst: "Scena 2 - Historia punktu 1: Miejsce pierwotnego posadowienia...", warstwaGeoJSON: warstwaPomnikThen },
+        2: { tekst: "Scena 2 - Historia punktu 2: Losy monumentu...", warstwaGeoJSON: warstwaPomnikThen1 },
+        3: { tekst: "Scena 2 - Historia punktu 3: Szczegóły powojennej odbudowy...", warstwaGeoJSON: warstwaPomnikNow }
       },
       zdjecia: ["zdjeciepomniki1.jpg", "zdjeciepomniki2.jpg", "zdjeciepomniki3.jpg"],
       funkcjaWlaczenia: function() {
@@ -704,11 +704,11 @@
     },
     3: {
       legenda: "legenda_atrakcje3.png",
-      opis: "Na obecnym placu przy ulicy Kościelnej znajdował się drewniany kościół parafialny zbudowany w latach 1781–1785 na miejscu starszej świątyni. Rozebrano go w pierwszej połowie XX wieku z powodu złego stanu technicznego. W 1934 roku jego funkcję przejął nowy, murowany kościół pw. św. Wawrzyńca, wzniesiony po przeciwnej stronie Strugi Gołanieckiej. Dawne położenie świątyni przypomina nazwa ulicy Kościelnej.",
+      opis: "Na obecnym placu przy ulicy Kościelnej...",
       opisyHistorii: {
-        1: "Scena 3 - Historia punktu 1: Dokładna lokalizacja starego drewnianego kościoła...",
-        2: "Scena 3 - Historia punktu 2: Informacje o architekturze nowego kościoła murowanego...",
-        3: "Scena 3 - Historia punktu 3: Dawny przebieg traktu i historia nazwy ulicy Kościelnej..."
+        1: { tekst: "Scena 3 - Historia punktu 1: Dokładna lokalizacja starego kościoła...", warstwaGeoJSON: warstwaKosciolThen },
+        2: { tekst: "Scena 3 - Historia punktu 2: Informacje o architekturze nowego kościoła...", warstwaGeoJSON: warstwaKosciolNow },
+        3: { tekst: "Scena 3 - Historia punktu 3: Dawny przebieg traktu...", warstwaGeoJSON: warstwaKosciolNow1 }
       },
       zdjecia: ["zdjeciekosciol1.jpg", "zdjeciekosciol2.jpg", "zdjeciekosciol3.jpg"],
       funkcjaWlaczenia: function() {
@@ -723,10 +723,63 @@
   let aktualnaScena = 1;
   let indeksZdjecia = 0;
 
+// Funkcja animująca pulsowanie (zwiększanie i pomniejszanie) warstwy GeoJSON
+function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 1500) {
+  // Sprawdzamy czy warstwa jest aktualnie wyświetlana na mapie
+  if (!mapa.hasLayer(warstwa)) return;
+
+  const start = performance.now();
+  
+  // Pobieramy bazowy styl (jeśli warstwa ma zdefiniowany domyślny styl, np. weight)
+  // Jeśli nie ma (np. punkty), ustawiamy domyślny startowy punkt odniesienia
+  let bazowyWeight = 3; 
+  warstwa.eachLayer(layer => {
+    if (layer.options && layer.options.weight) {
+      bazowyWeight = layer.options.weight;
+    }
+  });
+
+  function krok(timestamp) {
+    const progres = (timestamp - start) / czasTrwania;
+
+    if (progres < 1) {
+      // Funkcja sinus tworzy płynną falę góra-dół (0 -> 1 -> 0)
+      const fala = Math.sin(progres * Math.PI); 
+      const nowyWeight = bazowyWeight + (fala * maxDodatkowyWeight);
+
+      // Aktualizujemy styl dla linii/poligonów
+      warstwa.setStyle({ weight: nowyWeight });
+      
+      // Jeśli w GeoJSON są markery/punkty (np. ikony kościoła lub drzew), 
+      // możemy też animować ich przezroczystość dla lepszego efektu:
+      warstwa.eachLayer(layer => {
+        if (layer.setOpacity) {
+          layer.setOpacity(1 - (fala * 0.4)); // Lekkie mruganie ikony
+        }
+      });
+
+      requestAnimationFrame(krok);
+    } else {
+      // Przywrócenie domyślnego stylu po zakończeniu animacji
+      warstwa.setStyle({ weight: bazowyWeight });
+      warstwa.eachLayer(layer => { if (layer.setOpacity) layer.setOpacity(1); });
+    }
+  }
+
+  requestAnimationFrame(krok);
+}
+  
 function zmienOpisHistorii(numerPunktu) {
-    const nowyOpis = daneScen[aktualnaScena].opisyHistorii[numerPunktu];
-    if (nowyOpis) {
-      document.getElementById('opis-sceny-tekst').innerHTML = nowyOpis;
+    const obiektHistorii = daneScen[aktualnaScena].opisyHistorii[numerPunktu];
+    
+    if (obiektHistorii) {
+      // 1. Aktualizacja tekstu w panelu bocznym
+      document.getElementById('opis-sceny-tekst').innerHTML = obiektHistorii.tekst;
+      
+      // 2. Uruchomienie animacji dla powiązanej warstwy GeoJSON
+      if (obiektHistorii.warstwaGeoJSON) {
+        animujPulsowanieWarstwy(obiektHistorii.warstwaGeoJSON);
+      }
     }
   }
   
