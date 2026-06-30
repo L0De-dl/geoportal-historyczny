@@ -883,7 +883,8 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
     title: 'Zapisz mapę jako PNG',
     position: 'topleft',
     filename: 'moja_mapa',
-    exportOnly: true
+    exportOnly: true,
+    sizeModes: ['Current']
   }).addTo(mapa);
 
 // 1. Tworzymy JEDNĄ grupę warstw dla narysowanych obiektów i dodajemy ją do mapy
