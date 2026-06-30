@@ -351,9 +351,8 @@ const mapa = L.map('mapa', {
   // Aktualizacja współrzędnych przy ruchu myszy
   mapa.on('mousemove', function(e) {
     const coords = e.latlng;
-    // W geografii i systemach GIS: X zazwyczaj oznacza długość geogr. (Lng), a Y szerokość geogr. (Lat)
-    const x = coords.lng.toFixed(5);
-    const y = coords.lat.toFixed(5);
+    const y = coords.lng.toFixed(5);
+    const x = coords.lat.toFixed(5);
     
     document.querySelector('.wspolrzedne-myszki').innerHTML = `X: ${x} &nbsp;&nbsp; Y: ${y}`;
   });
