@@ -297,6 +297,7 @@
   </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-measure-path/1.5.0/leaflet-measure-path.min.js"></script>
 <script src="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
 <script src="https://unpkg.com/leaflet-easyprint/dist/bundle.js"></script>
 <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
@@ -839,7 +840,7 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
   // === OBSŁUGA WYŚWIETLANIA ZDJĘĆ W PANELU ===
   function aktualizujKaruzele() {
     // Zmieniono na zdjeciaPanelu
-    const listaZdjec = daneScen[aktualnaScena].zdjcaiPanelu || daneScen[aktualnaScena].zdjeciaPanelu;
+    const listaZdjec = daneScen[aktualnaScena].zdjeciaPanelu;
     const imgEl = document.getElementById('karuzela-foto');
     const licznikEl = document.getElementById('karuzela-licznik');
 
@@ -964,6 +965,26 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
       layer.setTooltipContent(`Lat: ${coords.lat.toFixed(5)}, Lng: ${coords.lng.toFixed(5)}`);
     }
   }
+
+// Wywołanie pomiarów po utworzeniu nowego obiektu
+mapa.on(L.Draw.Event.CREATED, function (e) {
+  const layer = e.layer;
+  narysowaneElementy.addLayer(layer);
+  aktualizujPomiary(layer, e.layerType);
+});
+
+// Aktualizacja pomiarów po edycji obiektów
+mapa.on(L.Draw.Event.EDITED, function (e) {
+  e.layers.eachLayer(function (layer) {
+    let type = 'marker';
+    if (layer instanceof L.Polyline && !(layer instanceof L.Polygon)) type = 'polyline';
+    else if (layer instanceof L.Polygon) type = 'polygon';
+    else if (layer instanceof L.Circle) type = 'circle';
+    
+    aktualizujPomiary(layer, type);
+  });
+});
+  
 </script>
 </body>
 </html>
