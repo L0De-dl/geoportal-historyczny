@@ -884,14 +884,14 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
     exportOnly: true
   }).addTo(mapa);
 
-// 1. Tworzymy grupę warstw dla narysowanych obiektów i dodajemy ją do mapy
-  const narysowaneObiekty = new L.FeatureGroup();
-  mapa.addLayer(narysowaneObiekty);
+// 1. Tworzymy JEDNĄ grupę warstw dla narysowanych obiektów i dodajemy ją do mapy
+  const narysowaneElementy = new L.FeatureGroup();
+  mapa.addLayer(narysowaneElementy);
 
-  // 2. Konfigurujemy kontrolkę rysowania, przekazując naszą grupę do opcji 'edit'
+  // 2. Konfigurujemy kontrolkę rysowania OD RAZU z właściwą grupą
   const drawControl = new L.Control.Draw({
     edit: {
-      featureGroup: narysowaneObiekty, // To pozwala na edycję i usuwanie obiektów z tej grupy
+      featureGroup: narysowaneElementy, // Powiązanie z naszą grupą
       remove: true                     // Włącza ikonę kosza/gumki
     },
     draw: {
@@ -903,18 +903,6 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
     }
   });
   mapa.addControl(drawControl);
-
-// === NOWA GRUPA DLA RYSOWANYCH ELEMENTÓW ===
-  // Musimy dodać osobną grupę, aby Leaflet Draw wiedział, które obiekty edytować lub usuwać
-  const narysowaneElementy = new L.FeatureGroup();
-  mapa.addLayer(narysowaneElementy);
-
-  // Aktualizacja konfiguracji kontrolki Draw, aby współpracowała z naszą grupą
-  drawControl.setOptions({
-    edit: {
-      featureGroup: narysowaneElementy
-    }
-  });
 
   // === FUNKCJE POMOCNICZE FORMATOWANIA ===
   function formatujDlugosc(dystans) {
