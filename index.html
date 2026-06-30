@@ -254,7 +254,7 @@
     <div class="sekcja-panelu suwak-kontener">
       <h3>Wybór podkładu czasowego</h3>
       <input type="range" id="suwak-czasu" min="0" max="8" value="8" step="1">
-      <div id="nazwa-podkladu">Mapa z 2025 roku</div>
+      <div id="nazwa-podkladu">Wczytywanie...</div>
     </div>
 
     <!-- Sekcja 2: Wybór sceny (Układ poziomy) -->
@@ -320,7 +320,7 @@
   // === INICJALIZACJA MAPY ===
   const mapa = L.map('mapa', { zoomControl: false, zoomSnap: 0.5 })
                 .setView([52.9435, 17.3002], 17.5);
-
+  const aktualnyRok = new Date().getFullYear();
   // === GRANICE MAPY ===
   mapa.setMaxBounds([
     [52.9490239, 17.2852683], // NW
@@ -371,14 +371,14 @@
   const podklad2025 = L.tileLayer('');
 
   // Słownik/Array dla obsługi suwaka podkładów
-  const tablicaPodkladow = [
-    podklad1890, podklad1911, podklad1934, podklad1940, 
-    podklad1941, podklad1966, podklad1981, podklad2002, podklad2025
-  ];
-  const nazwyPodkladow = [
-    "Mapa z 1890 roku", "Mapa z 1911 roku", "Mapa z 1934 roku", "Mapa z 1940 roku",
-    "Mapa z 1941 roku", "Mapa z 1966 roku", "Mapa z 1981 roku", "Mapa z 2002 roku", "Mapa z 2025 roku"
-  ];
+const tablicaPodkladow = [
+  podklad1890, podklad1911, podklad1934, podklad1940, 
+  podklad1941, podklad1966, podklad1981, podklad2002, podklad2025
+];
+const nazwyPodkladow = [
+  "Mapa z 1890 roku", "Mapa z 1911 roku", "Mapa z 1934 roku", "Mapa z 1940 roku",
+  "Mapa z 1941 roku", "Mapa z 1966 roku", "Mapa z 1981 roku", "Mapa z 2002 roku", `Mapa z ${aktualnyRok} roku`
+];
 
   // Dodanie domyślnego podkładu z 2025 na start
   podklad2025.addTo(mapa);
@@ -913,7 +913,8 @@ function zmienOpisHistorii(numerPunktu) {
 
   // Uruchomienie domyślnej Sceny 1 na starcie aplikacji
   zmienScene(1);
-
+  document.getElementById('nazwa-podkladu').textContent = `Mapa z ${aktualnyRok} roku`;
+  
   // === PLUGINY DODATKOWE ===
   // 1. Lokalizacja użytkownika
   L.control.locate().addTo(mapa);
