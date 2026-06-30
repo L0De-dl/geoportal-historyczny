@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet-measure-path/leaflet-measure-path.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-measure-path/1.5.0/leaflet-measure-path.min.js"></script>
-  <style>
+<style>
     /* === PODSTAWY STRONY === */
     html, body {
       margin: 0;
@@ -42,63 +42,63 @@
       align-items: center;
     }
 
-    /* === GŁÓWNY PANEL BOCZNY === */
+    /* === GŁÓWNY PANEL BOCZNY (Zoptymalizowany pod brak suwaka) === */
     .panel-boczny {
-      width: 380px;
+      width: 360px;
       height: 100vh;
       background: white;
       box-shadow: -2px 0 10px rgba(0,0,0,0.15);
       display: flex;
       flex-direction: column;
       z-index: 1000;
-      overflow-y: auto;
+      overflow: hidden; /* Blokujemy główny suwak pionowy */
       box-sizing: border-box;
-      padding: 15px;
-      gap: 20px;
+      padding: 12px; /* Zmniejszony margines wewnętrzny */
+      gap: 12px; /* Mniejsze odstępy między sekcjami */
     }
 
     .sekcja-panelu {
       border-bottom: 1px solid #eee;
-      padding-bottom: 15px;
+      padding-bottom: 10px; /* Zmniejszony padding dolny */
     }
 
     .sekcja-panelu h3 {
-      margin: 0 0 10px 0;
-      font-size: 14px;
+      margin: 0 0 6px 0; /* Mniejszy margines pod nagłówkiem */
+      font-size: 12px; /* Mniejsza, zgrabniejsza czcionka nagłówków */
       color: #222;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
-    /* === 1. SUWAK WARSTW (Poziomy pasek przesuwania) === */
+    /* === 1. SUWAK WARSTW === */
     .suwak-kontener {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 4px;
     }
     .suwak-kontener input[type="range"] {
       width: 100%;
     }
     #nazwa-podkladu {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: bold;
       color: #555;
       text-align: center;
     }
 
-    /* === 2. WYBÓR SCEN (Układ poziomy) === */
+    /* === 2. WYBÓR SCEN === */
     .kontener-scen-poziom {
       display: flex;
       justify-content: space-between;
-      gap: 10px;
+      gap: 6px;
     }
     .przycisk-sceny-nowy {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 5px;
-      padding: 8px;
+      gap: 3px;
+      padding: 6px; /* Bardziej kompaktowe przyciski */
       border: 1px solid #ccc;
       border-radius: 6px;
       cursor: pointer;
@@ -107,13 +107,12 @@
       user-select: none;
     }
     .przycisk-sceny-nowy img {
-      width: 32px;
-      height: 32px;
+      width: 24px; /* Mniejsze ikony scen */
+      height: 24px;
       object-fit: contain;
     }
     .przycisk-sceny-nowy span {
-      font-size: 12px;
-      font-weight: bold;
+      font-size: 11px;
     }
     .przycisk-sceny-nowy.aktywna {
       background: #e3f2fd;
@@ -121,21 +120,25 @@
       color: #1565c0;
     }
 
-    /* === 3. LEGENDA (Z jednego obrazka) === */
+    /* === 3. LEGENDA === */
     #legenda-img {
       width: 100%;
-      height: auto;
+      max-height: 80px; /* Maksymalna wysokość legendy, by nie rozpychała panelu */
+      object-fit: contain; /* Bezpieczne skalowanie obrazka */
       display: block;
       border: 1px solid #eee;
       border-radius: 4px;
     }
 
-    /* === 4. OPIS TEKSTOWY === */
+    /* === 4. OPIS TEKSTOWY (Autonomiczne przewijanie tekstu w razie potrzeby) === */
     #opis-sceny-tekst {
-      font-size: 13px;
-      line-height: 1.5;
+      font-size: 12px;
+      line-height: 1.4;
       color: #333;
       text-align: justify;
+      max-height: 110px; /* Stały punkt krytyczny wysokości tekstu */
+      overflow-y: auto; /* Jeśli opis będzie wyjątkowo długi, pojawi się suwak tylko w tej małej sekcji */
+      padding-right: 4px;
     }
 
     /* === 5. KARUZELA ZDJĘĆ === */
@@ -143,11 +146,11 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
     #karuzela-foto {
       width: 100%;
-      max-height: 220px;
+      max-height: 130px; /* Zredukowano z 220px, co daje ogromną oszczędność miejsca */
       object-fit: cover;
       border-radius: 6px;
       cursor: pointer;
@@ -156,23 +159,24 @@
     .karuzela-nawigacja {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 12px;
     }
     .karuzela-btn {
       background: #2196f3;
       color: white;
       border: none;
-      padding: 6px 14px;
+      padding: 4px 12px;
       border-radius: 4px;
       cursor: pointer;
       font-weight: bold;
+      font-size: 12px;
     }
     .karuzela-btn:disabled {
       background: #ccc;
       cursor: not-allowed;
     }
     #karuzela-licznik {
-      font-size: 12px;
+      font-size: 11px;
       color: #666;
     }
 
