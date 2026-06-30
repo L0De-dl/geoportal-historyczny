@@ -253,8 +253,8 @@
     <!-- Sekcja 1: Wybór podkładu (Poziomy suwak) -->
     <div class="sekcja-panelu suwak-kontener">
       <h3>Wybór podkładu czasowego</h3>
-      <input type="range" id="suwak-czasu" min="0" max="8" value="0" step="1">
-      <div id="nazwa-podkladu">Mapa z 1890 roku</div>
+      <input type="range" id="suwak-czasu" min="0" max="8" value="8" step="1">
+      <div id="nazwa-podkladu">Mapa z 2025 roku</div>
     </div>
 
     <!-- Sekcja 2: Wybór sceny (Układ poziomy) -->
@@ -380,8 +380,8 @@
     "Mapa z 1941 roku", "Mapa z 1966 roku", "Mapa z 1981 roku", "Mapa z 2002 roku", "Mapa z 2025 roku"
   ];
 
-  // Dodanie domyślnego podkładu z 1890 na start
-  podklad1890.addTo(mapa);
+  // Dodanie domyślnego podkładu z 2025 na start
+  podklad2025.addTo(mapa);
 
   // Rejestracja zdarzenia dla suwaka podkładów czasowych
   document.getElementById('suwak-czasu').addEventListener('input', function(e) {
