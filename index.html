@@ -723,7 +723,6 @@ const daneScen = {
   let aktualnaScena = 1;
   let indeksZdjecia = 0;
 
-// Funkcja animująca pulsowanie (zwiększanie i pomniejszanie) warstwy GeoJSON
 // Funkcja animująca pulsowanie (zwiększanie i pomniejszanie) warstwy GeoJSON oraz markerów
 function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 1500) {
   // Sprawdzamy czy warstwa jest aktualnie wyświetlana na mapie
@@ -733,7 +732,17 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
   
   // Pobieramy bazowy styl dla linii/poligonów
   let bazowyWeight = 3; 
-  warstwa.eachLayer(layer => {
+  
+  // Funkcja pomocnicza do głębokiego przeszukiwania warstw (obsługa MultiPoint/MultiPolygon)
+  function wykonajDlaKazdejPodwarstwy(layer, akcja) {
+    if (typeof layer.eachLayer === 'function') {
+      layer.eachLayer(subLayer => wykonajDlaKazdejPodwarstwy(subLayer, akcja));
+    } else {
+      akcja(layer);
+    }
+  }
+
+  wykonajDlaKazdejPodwarstwy(warstwa, layer => {
     if (layer.options && layer.options.weight) {
       bazowyWeight = layer.options.weight;
     }
@@ -753,14 +762,13 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
       // 2. Animacja dla markerów / ikon (skalowanie szerokości i wysokości)
       const skala = 1 + (fala * 0.6); // Maksymalne powiększenie ikony o 60% (1.6x)
       
-      warstwa.eachLayer(layer => {
+      wykonajDlaKazdejPodwarstwy(warstwa, layer => {
         if (layer.getElement && layer.options && layer.options.icon) {
           const el = layer.getElement();
           const iconOpts = layer.options.icon.options;
           
           if (el && iconOpts && iconOpts.iconSize) {
             const bazowySize = iconOpts.iconSize;
-            // Jeśli ikona nie ma zdefiniowanego punktu zakotwiczenia, przyjmujemy środek
             const bazowyAnchor = iconOpts.iconAnchor || [bazowySize[0] / 2, bazowySize[1] / 2];
             
             // Dynamiczne skalowanie wymiarów ikony
@@ -780,7 +788,7 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
       warstwa.setStyle({ weight: bazowyWeight });
       
       // Resetowanie wymiarów ikon do stanu początkowego
-      warstwa.eachLayer(layer => {
+      wykonajDlaKazdejPodwarstwy(warstwa, layer => {
         if (layer.getElement && layer.options && layer.options.icon) {
           const el = layer.getElement();
           const iconOpts = layer.options.icon.options;
