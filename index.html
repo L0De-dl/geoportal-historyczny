@@ -884,7 +884,16 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
     exportOnly: true
   }).addTo(mapa);
 
+// 1. Tworzymy grupę warstw dla narysowanych obiektów i dodajemy ją do mapy
+  const narysowaneObiekty = new L.FeatureGroup();
+  mapa.addLayer(narysowaneObiekty);
+
+  // 2. Konfigurujemy kontrolkę rysowania, przekazując naszą grupę do opcji 'edit'
   const drawControl = new L.Control.Draw({
+    edit: {
+      featureGroup: narysowaneObiekty, // To pozwala na edycję i usuwanie obiektów z tej grupy
+      remove: true                     // Włącza ikonę kosza/gumki
+    },
     draw: {
       polyline: { showMeasurements: true, showLength: true, metric: true },
       polygon: { showMeasurements: true, showArea: true, metric: true, allowIntersection: false },
@@ -899,7 +908,7 @@ mapa.on(L.Draw.Event.CREATED, function (e) {
     const layer = e.layer;
     const type = e.layerType;
 
-    mapa.addLayer(layer);
+narysowaneObiekty.addLayer(layer);
 
     function formatujDlugosc(dystans) {
       if (dystans >= 1000) return (dystans / 1000).toFixed(2) + ' km';
