@@ -225,34 +225,37 @@
       text-shadow: 1px 1px 0px white, -1px -1px 0px white, 1px -1px 0px white, -1px 1px 0px white;
     }
 
-/* === STYL WSPÓŁRZĘDNYCH MYSZKI === */
+    /* === STYL WSPÓŁRZĘDNYCH MYSZKI === */
     .wspolrzedne-myszki {
       background: rgba(255, 255, 255, 0.8);
       padding: 2px 6px;
-      margin-left: 10px; /* Odstęp od skali, jeśli wskoczą obok siebie */
+      margin-left: 10px; 
       margin-bottom: 5px;
       font-size: 11px;
       color: #333;
       border: 2px solid #aaa;
-      border-top: none; /* Nawiązanie do klasycznego wyglądu skali Leafleta */
+      border-top: none; 
       background: white;
     }
-  /* Styl dla przycisku drukowania, aby pasował do reszty kontrolek */
-.print-button {
-    background-color: white;
-    width: 30px;
-    height: 30px;
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border-radius: 4px;
-    border: 2px solid rgba(0,0,0,0.2);
-    font-size: 18px;
-}
-.print-button:hover {
-    background-color: #f4f4f4;
-}
+
+    /* Styl dla przycisku drukowania, aby pasował do reszty kontrolek */
+    .print-button {
+        background-color: white;
+        width: 30px;
+        height: 30px;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 4px;
+        border: 2px solid rgba(0,0,0,0.2);
+        font-size: 16px;
+        text-decoration: none;
+        color: black;
+    }
+    .print-button:hover {
+        background-color: #f4f4f4;
+    }
   </style>
 </head>
 <body>
@@ -322,8 +325,9 @@ const mapa = L.map('mapa', {
   zoomControl: false, 
   zoomSnap: 0.5
 }).setView([52.9435, 17.3002], 17.5);
-  const aktualnyRok = new Date().getFullYear();
+const aktualnyRok = new Date().getFullYear();
 
+// === KLASA PRZYCISKU DRUKOWANIA ===
 const PrintControl = L.Control.extend({
     options: { position: 'topleft' },
 
@@ -331,8 +335,7 @@ const PrintControl = L.Control.extend({
         const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
         const button = L.DomUtil.create('a', 'print-button', container);
         
-        // Możesz tutaj wstawić klasę ikony z FontAwesome lub zostawić ikonę Leafleta
-        button.innerHTML = '<span class="leaflet-draw-draw-marker" style="margin-top: 5px;"></span>'; 
+        button.innerHTML = '🖨️'; 
         button.title = "Eksport mapy";
 
         L.DomEvent.disableClickPropagation(container);
@@ -356,7 +359,9 @@ const PrintControl = L.Control.extend({
     [52.9381943, 17.3122189]
   ]));
 
-  // === KONTROLKI MAPY ===
+  // === KONTROLKI MAPY (KOLEJNOŚĆ LEWEJ STRONY) ===
+  
+  // 1. Tytuł na samej górze
   const kontrolkaTytulu = L.control({ position: "topleft" });
   kontrolkaTytulu.onAdd = function() {
     const div = L.DomUtil.create("div", "tytul-mapy");
@@ -370,10 +375,19 @@ const PrintControl = L.Control.extend({
   };
   kontrolkaTytulu.addTo(mapa);
 
+  // 2. Przyciski Zoom pod tytułem
   L.control.zoom({ position: "topleft" }).addTo(mapa);
+
+  // 3. Geolokalizacja pod zoomem
+  L.control.locate({ position: "topleft" }).addTo(mapa);
+
+  // 4. Przycisk drukowania na samym dole lewej sekcji kontrolek
+  new PrintControl().addTo(mapa);
+
+  // Pozostałe kontrolki (Dolny lewy róg)
   L.control.scale({ imperial: false, metric: true, position: 'bottomleft' }).addTo(mapa);
 
-// === KONTROLKA WSPÓŁRZĘDNYCH MYSZKI ===
+  // === KONTROLKA WSPÓŁRZĘDNYCH MYSZKI ===
   const kontrolkaWspolrzednych = L.control({ position: 'bottomleft' });
 
   kontrolkaWspolrzednych.onAdd = function() {
@@ -384,7 +398,6 @@ const PrintControl = L.Control.extend({
 
   kontrolkaWspolrzednych.addTo(mapa);
 
-  // Aktualizacja współrzędnych przy ruchu myszy
   mapa.on('mousemove', function(e) {
     const coords = e.latlng;
     const y = coords.lng.toFixed(5);
@@ -518,7 +531,7 @@ const PrintControl = L.Control.extend({
   znacznik3.on('mouseout',  () => znacznik3.setIcon(ikonaNiebieska));
   znacznik3.on('click',     () => { window.location.href = "https://l0de-dl.github.io/scena3"; });
 
-  // Markery fotograficzne (TE ZOSTAŁY NIERUSZONE)
+  // Markery fotograficzne
   const znacznika11 = L.marker([52.944493557724094, 17.300672245263762], { icon: ikonaaparat })
     .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
   znacznika11.on('mouseover', () => znacznika11.setIcon(ikonaaparatszara));
@@ -527,7 +540,7 @@ const PrintControl = L.Control.extend({
 
   const znacznika12 = L.marker([52.94421555840046, 17.300320873370165], { icon: ikonaaparat })
     .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
-  znacznika12.on('mouseover', () => znacznika12.setIcon(ikonaaparatszara));
+  znacznika12.on('mouseover', () => Hotel = znacznika12.setIcon(ikonaaparatszara));
   znacznika12.on('mouseout',  () => znacznika12.setIcon(ikonaaparat));
   znacznika12.on('click', () => { pokazModal("zdjeciedrzewa2.jpg"); });
 
@@ -546,7 +559,7 @@ const PrintControl = L.Control.extend({
   const znacznika22 = L.marker([52.94410888433341, 17.299856850204417], { icon: ikonaaparat })
     .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
   znacznika22.on('mouseover', () => znacznika22.setIcon(ikonaaparatszara));
-  znacznika22.on('mouseout',  () => znacznika22.setIcon(ikonaaparat));
+  znacznika22.on('mouseout',  () => Hotel = znacznika22.setIcon(ikonaaparat));
   znacznika22.on('click', () => { pokazModal("zdjeciepomniki2.jpg"); });
 
   const znacznika23 = L.marker([52.94381471645432, 17.300897547333577], { icon: ikonaaparat })
@@ -707,7 +720,6 @@ const PrintControl = L.Control.extend({
         2: { tekst: "Scena 1 - Historia punktu 2: Szczegóły dotyczące północnej pierzei rynku...", warstwaGeoJSON: warstwaDrzewaNow },
         3: { tekst: "Scena 1 - Historia punktu 3: Opis zmian w infrastrukturze...", warstwaGeoJSON: warstwaDrzewaNow2 }
       },
-      // Tutaj dodajesz nowe zdjęcia przeznaczone TYLKO do panelu bocznego:
       zdjeciaPanelu: ["panel_drzewa1.jpg", "panel_drzewa2.jpg", "panel_drzewa3.jpg"],
       funkcjaWlaczenia: function() {
         mapa.addLayer(znacznik1); 
@@ -723,7 +735,6 @@ const PrintControl = L.Control.extend({
         2: { tekst: "Scena 2 - Historia punktu 2: Losy monumentu...", warstwaGeoJSON: warstwaPomnikThen1 },
         3: { tekst: "Scena 2 - Historia punktu 3: Szczegóły powojennej odbudowy...", warstwaGeoJSON: warstwaPomnikNow }
       },
-      // Nowe zdjęcia panelu bocznego dla Sceny 2:
       zdjeciaPanelu: ["panel_pomniki1.jpg", "panel_pomniki2.jpg", "panel_pomniki3.jpg"],
       funkcjaWlaczenia: function() {
         mapa.addLayer(znacznik2); 
@@ -739,7 +750,6 @@ const PrintControl = L.Control.extend({
         2: { tekst: "Scena 3 - Historia punktu 2: Informacje o architekturze nowego kościoła...", warstwaGeoJSON: warstwaKosciolNow },
         3: { tekst: "Scena 3 - Historia punktu 3: Dawny przebieg traktu...", warstwaGeoJSON: warstwaKosciolNow1 }
       },
-      // Nowe zdjęcia panelu bocznego dla Sceny 3:
       zdjeciaPanelu: ["panel_kosciol1.jpg", "panel_kosciol2.jpg", "panel_kosciol3.jpg"],
       funkcjaWlaczenia: function() {
         mapa.addLayer(znacznik3); 
@@ -831,7 +841,6 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
         animujPulsowanieWarstwy(obiektHistorii.warstwaGeoJSON);
       }
 
-      // Tutaj zmieniono: karuzela pobiera teraz pliki z nowej tablicy 'zdjeciaPanelu'
       const listaZdjec = daneScen[aktualnaScena].zdjeciaPanelu;
       if (listaZdjec && listaZdjec[numerPunktu - 1]) {
         indeksZdjecia = numerPunktu - 1;
@@ -876,7 +885,6 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
 
   // === OBSŁUGA WYŚWIETLANIA ZDJĘĆ W PANELU ===
   function aktualizujKaruzele() {
-    // Zmieniono na zdjeciaPanelu
     const listaZdjec = daneScen[aktualnaScena].zdjeciaPanelu;
     const imgEl = document.getElementById('karuzela-foto');
     const licznikEl = document.getElementById('karuzela-licznik');
@@ -892,7 +900,6 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
   }
 
   function otworzPelneZdjecie() {
-    // Zmieniono na zdjeciaPanelu
     const listaZdjec = daneScen[aktualnaScena].zdjeciaPanelu;
     if (listaZdjec && listaZdjec[indeksZdjecia]) {
       pokazModal(listaZdjec[indeksZdjecia]);
@@ -913,17 +920,13 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
   document.getElementById('nazwa-podkladu').textContent = `Mapa z ${aktualnyRok} roku`;
   
   // === PLUGINY DODATKOWE ===
-  L.control.locate().addTo(mapa);
-
-// 1. Tworzymy JEDNĄ grupę warstw dla narysowanych obiektów i dodajemy ją do mapy
   const narysowaneElementy = new L.FeatureGroup();
   mapa.addLayer(narysowaneElementy);
 
-  // 2. Konfigurujemy kontrolkę rysowania OD RAZU z właściwą grupą
   const drawControl = new L.Control.Draw({
     edit: {
-      featureGroup: narysowaneElementy, // Powiązanie z naszą grupą
-      remove: true                     // Włącza ikonę kosza/gumki
+      featureGroup: narysowaneElementy, 
+      remove: true                     
     },
     draw: {
       polyline: { showMeasurements: true, showLength: true, metric: true },
@@ -935,7 +938,6 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
   });
   mapa.addControl(drawControl);
 
-  // === FUNKCJE POMOCNICZE FORMATOWANIA ===
   function formatujDlugosc(dystans) {
     if (dystans >= 1000) return (dystans / 1000).toFixed(2) + ' km';
     return dystans.toFixed(2) + ' m';
@@ -946,35 +948,28 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
     return pole.toFixed(2) + ' m²';
   }
 
-// === FUNKCJA OBLICZANIA I AKTUALIZACJI ETYKIET ===
   function aktualizujPomiary(layer, type) {
-    // Definiujemy domyślne opcje dla tooltipa w zależności od typu obiektu
     let opcjeTooltipa = {
       permanent: true,
       direction: "center",
       className: "etykieta-promienia"
     };
 
-    // Dostosowanie pozycji wyświetlania dla linii i markerów, aby tekst ich nie zasłaniał
     if (type === 'polyline' || type === 'marker') {
       opcjeTooltipa.direction = 'top';
       opcjeTooltipa.offset = [0, -10];
     }
 
-    // Jeśli obiekt nie ma przypisanego Tooltipa, tworzymy go z odpowiednimi opcjami
     if (!layer.getTooltip()) {
       layer.bindTooltip("", opcjeTooltipa);
     } else {
-      // Jeśli już istnieje, bezpiecznie aktualizujemy jego opcje bezposrednio w obiekcie Leaflet
       L.extend(layer.getTooltip().options, opcjeTooltipa);
     }
 
-    // Obliczanie wartości tekstowej
     if (type === 'polyline') {
       const latlngs = layer.getLatLngs();
       let calkowitaDlugosc = 0;
       
-      // Sumowanie wszystkich odcinków dla całej linii
       for (let i = 0; i < latlngs.length - 1; i++) {
         calkowitaDlugosc += latlngs[i].distanceTo(latlngs[i+1]);
       }
@@ -996,14 +991,12 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
     }
   }
 
-// Wywołanie pomiarów po utworzeniu nowego obiektu
 mapa.on(L.Draw.Event.CREATED, function (e) {
   const layer = e.layer;
   narysowaneElementy.addLayer(layer);
   aktualizujPomiary(layer, e.layerType);
 });
 
-// Aktualizacja pomiarów po edycji obiektów
 mapa.on(L.Draw.Event.EDITED, function (e) {
   e.layers.eachLayer(function (layer) {
     let type = 'marker';
@@ -1016,30 +1009,19 @@ mapa.on(L.Draw.Event.EDITED, function (e) {
 });
 
 function eksportMapy() {
-
     const element = document.querySelector(".leaflet-container");
-
     html2canvas(element, {
-
         useCORS: true,
         allowTaint: true,
         backgroundColor: "#ffffff",
         scale: 2
-
     }).then(function(canvas) {
-
         const link = document.createElement("a");
-
         link.download = "mapa.png";
-
         link.href = canvas.toDataURL("image/png");
-
         link.click();
-
     });
-
 }
-
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </body>
