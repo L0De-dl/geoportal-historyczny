@@ -782,7 +782,6 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
   if (!mapa.hasLayer(warstwa)) return;
 
   const start = performance.now();
-  let bazowyWeight = 3; 
   
   function wykonajDlaKazdejPodwarstwy(layer, akcja) {
     if (typeof layer.eachLayer === 'function') {
@@ -792,9 +791,12 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
     }
   }
 
+  // Zapamiętaj oryginalną grubość tylko raz – przy pierwszym kliknięciu
   wykonajDlaKazdejPodwarstwy(warstwa, layer => {
-    if (layer.options && layer.options.weight) {
-      bazowyWeight = layer.options.weight;
+    if (layer.options && layer.options.weight !== undefined) {
+      if (layer._originalWeight === undefined) {
+        layer._originalWeight = layer.options.weight;
+      }
     }
   });
 
@@ -803,8 +805,15 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
 
     if (progres < 1) {
       const fala = Math.sin(progres * Math.PI); 
-      const nowyWeight = bazowyWeight + (fala * maxDodatkowyWeight);
-      warstwa.setStyle({ weight: nowyWeight });
+      
+      // Animacja grubości linii na bazie stałej wartości początkowej
+      wykonajDlaKazdejPodwarstwy(warstwa, layer => {
+        if (layer.options && layer._originalWeight !== undefined) {
+          const nowyWeight = layer._originalWeight + (fala * maxDodatkowyWeight);
+          layer.setStyle({ weight: nowyWeight });
+        }
+      });
+
       const skala = 1 + (fala * 0.6);
       
       wykonajDlaKazdejPodwarstwy(warstwa, layer => {
@@ -826,8 +835,12 @@ function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 
 
       requestAnimationFrame(krok);
     } else {
-      warstwa.setStyle({ weight: bazowyWeight });
+      // Powrót do precyzyjnej wartości oryginalnej po zakończeniu animacji
       wykonajDlaKazdejPodwarstwy(warstwa, layer => {
+        if (layer._originalWeight !== undefined) {
+          layer.setStyle({ weight: layer._originalWeight });
+        }
+        
         if (layer.getElement && layer.options && layer.options.icon) {
           const el = layer.getElement();
           const iconOpts = layer.options.icon.options;
