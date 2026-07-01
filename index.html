@@ -778,6 +778,46 @@ const PrintControl = L.Control.extend({
   let aktualnaScena = 1;
   let indeksZdjecia = 0;
 
+// === SKRYPT WSTĘPNEGO ŁADOWANIA GRAFIK (PRELOADING) ===
+const grafikiDoPobrania = [
+  // Podkłady mapowe
+  '1890.jpg', '1911.jpg', '1934.jpg', '1940.jpg', 
+  '1941.jpg', '1966.jpg', '1981.jpg', '2002.jpg', 'logo.png',
+
+  // Miniaturki scen i legendy
+  'legenda1.png', 'legenda2.png', 'legenda3.png',
+  'legenda_atrakcje1.png', 'legenda_atrakcje2.png', 'legenda_atrakcje3.png',
+
+  // Ikony markerów
+  'scena_sferyczna.png', 'scena_sferyczna_szare.png', 
+  'aparat.png', 'aparat_szare.png',
+  'historia1.png', 'historia1_szare.png', 
+  'historia2.png', 'historia2_szare.png', 
+  'historia3.png', 'historia3_szare.png',
+  'drzewa_szare.png', 'drzewa_zielone.png',
+  'pomnik_szary.png', 'pomnik_zly.png', 'pomnik_czerwony.png',
+  'kosciol_szary.png', 'kosciol_niebieski.png',
+
+  // Zdjęcia z paneli bocznych i markerów
+  'zdjeciedrzewa1.jpg', 'zdjeciedrzewa2.jpg', 'zdjeciedrzewa3.jpg',
+  'zdjeciepomniki1.jpg', 'zdjeciepomniki2.jpg', 'zdjeciepomniki3.jpg',
+  'zdjeciekosciol1.jpg', 'zdjeciekosciol2.jpg', 'zdjeciekosciol3.jpg',
+  'panel_drzewa1.jpg', 'panel_drzewa2.jpg', 'panel_drzewa3.jpg',
+  'panel_pomniki1.jpg', 'panel_pomniki2.jpg', 'panel_pomniki3.jpg',
+  'panel_kosciol1.jpg', 'panel_kosciol2.jpg', 'panel_kosciol3.jpg'
+];
+
+// Funkcja pobierająca pliki w tle do pamięci przeglądarki
+function preloadGrafik(tablicaZdjec) {
+  tablicaZdjec.forEach(url => {
+    const img = new Image();
+    img.src = url;
+  });
+}
+
+// Uruchomienie pobierania natychmiast po załadowaniu skryptu
+preloadGrafik(grafikiDoPobrania);
+  
 function animujPulsowanieWarstwy(warstwa, maxDodatkowyWeight = 6, czasTrwania = 1500) {
   if (!mapa.hasLayer(warstwa)) return;
 
