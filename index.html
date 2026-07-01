@@ -323,7 +323,8 @@
 // === INICJALIZACJA MAPY ===
 const mapa = L.map('mapa', { 
   zoomControl: false, 
-  zoomSnap: 0.5
+  zoomSnap: 0.5,
+  preferCanvas: true
 }).setView([52.9435, 17.3002], 17.5);
 const aktualnyRok = new Date().getFullYear();
 
@@ -1009,18 +1010,35 @@ mapa.on(L.Draw.Event.EDITED, function (e) {
 });
 
 function eksportMapy() {
+    // 1. Zabezpieczenie: Wyłączamy chwilowo animacje i przesunięcia Leafleta
+    const starePrzesuniecie = mapa.options.fadeAnimation;
+    mapa.options.fadeAnimation = false;
+
     const element = document.querySelector(".leaflet-container");
-    html2canvas(element, {
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: "#ffffff",
-        scale: 2
-    }).then(function(canvas) {
-        const link = document.createElement("a");
-        link.download = "mapa.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-    });
+
+    // 2. Opcjonalnie: dajemy 100ms na upewnienie się, że mapa nie jest w trakcie mikro-przesunięcia
+    setTimeout(() => {
+        html2canvas(element, {
+            useCORS: true,
+            allowTaint: false, // Zmienione na false dla bezpieczeństwa CORS
+            backgroundColor: "#ffffff",
+            scale: 2,
+            logging: false,
+            // Wymuszenie poprawnego scrolla i pozycji wektora
+            scrollX: 0,
+            scrollY: 0,
+            windowWidth: document.documentElement.offsetWidth,
+            windowHeight: document.documentElement.offsetHeight
+        }).then(function(canvas) {
+            const link = document.createElement("a");
+            link.download = "mapa.png";
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+
+            // Przywracamy stare ustawienia animacji
+            mapa.options.fadeAnimation = starePrzesuniecie;
+        });
+    }, 100);
 }
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
