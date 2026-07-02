@@ -733,11 +733,11 @@ const PrintControl = L.Control.extend({
   const daneScen = {
     1: {
       legenda: "legenda_atrakcje1.png",
-      opis: "Pierwotnie plac rynkowy otaczał pas wysokich drzew...",
+      opis: "Pierwotnie plac rynkowy otaczał pas zadrzewień...",
       opisyHistorii: {
-        1: { tekst: "Scena 1 - Historia punktu 1: Tutaj znajdowały się najstarsze drzewa rynkowe...", warstwaGeoJSON: warstwaDrzewaThen },
-        2: { tekst: "Scena 1 - Historia punktu 2: Szczegóły dotyczące północnej pierzei rynku...", warstwaGeoJSON: warstwaDrzewaNow },
-        3: { tekst: "Scena 1 - Historia punktu 3: Opis zmian w infrastrukturze...", warstwaGeoJSON: warstwaDrzewaNow2 }
+        1: { tekst: "Pierwotnie plac rynkowy otaczał pas zadrzewień, który stanowił jego charakterystyczny element. Z czasem, prawdopodobnie w związku z elektryfikacją miasta, stare drzewa zostały wycięte. Początkowo na miejsce wyciętych okazów dokonywano nowych nasadzeń, jednak z czasem nasadzenia obejmowały coraz mniejszą ich liczę.", warstwaGeoJSON: warstwaDrzewaThen },
+        2: { tekst: "Po II wojnie światowej, w ramach prac porządkowych przestrzeni rynku w latach 70., zmieniono koncepcję układu zieleni. W centralnej części placu założono pięcioalejkowy park, który miał nadać rynkowi nowoczesny charakter. To właśnie w tym miejscu z czasem wyeksponowano odrestaurowany pomnik św. Wawrzyńca.", warstwaGeoJSON: warstwaDrzewaNow },
+        3: { tekst: "Dzisiaj po dawnej linii drzew pozostały jedynie nieliczne drzewa zlokalizowane w północnej części rynku. Współczesna roślinność jest wynikiem późniejszych nasadzeń, które znacząco różnią się od dawnego układu.", warstwaGeoJSON: warstwaDrzewaNow2 }
       },
       zdjeciaPanelu: ["panel_drzewa1.jpg", "panel_drzewa2.jpg", "panel_drzewa3.jpg"],
       funkcjaWlaczenia: function() {
@@ -748,11 +748,11 @@ const PrintControl = L.Control.extend({
     },
     2: {
       legenda: "legenda_atrakcje2.png",
-      opis: "Monument wzniesiono w 1925 roku...",
+      opis: "Na miejscu dawnego pominika stoi obecne inny monument...",
       opisyHistorii: {
-        1: { tekst: "Scena 2 - Historia punktu 1: Miejsce pierwotnego posadowienia...", warstwaGeoJSON: warstwaPomnikThen },
-        2: { tekst: "Scena 2 - Historia punktu 2: Losy monumentu...", warstwaGeoJSON: warstwaPomnikThen1 },
-        3: { tekst: "Scena 2 - Historia punktu 3: Szczegóły powojennej odbudowy...", warstwaGeoJSON: warstwaPomnikNow }
+        1: { tekst: "Pomnik św. Wawrzyńca wzniesiono w 1925 roku z inicjatywy lokalnej społeczności, pragnącej uczcić patrona miasta. W czasie II wojny światowej obiekt został całkowicie zniszczony w ramach działań wojennych. Przez wiele lat miejsce to pozostawało puste.", warstwaGeoJSON: warstwaPomnikThen },
+        2: { tekst: "Podczas II wojny światowej Niemcy wybudowali własny pomnik w południowo-wschodniej części rynku, który miał symbolizować ich panowanie. Po wyzwoleniu miasta konstrukcja ta została rozebrana. W latach 70., na miejscu dawnego pomnika św. Wawrzyńca  postawiono pomnik ku czci poległych w I i II wojnie światowej.", warstwaGeoJSON: warstwaPomnikThen1 },
+        3: { tekst: "Przełom nastąpił w 1999 roku, gdy na poddaszu kościoła odnaleziono fragmenty dawnego pomnika z 1925 roku. Znalezisko poddano starannej rekonstrukcji, przywracając mu dawny blask. Rok później odtworzony monument stanął ponownie na rynku, jednak już w innym miejscu.", warstwaGeoJSON: warstwaPomnikNow }
       },
       zdjeciaPanelu: ["panel_pomniki1.jpg", "panel_pomniki2.jpg", "panel_pomniki3.jpg"],
       funkcjaWlaczenia: function() {
@@ -763,11 +763,11 @@ const PrintControl = L.Control.extend({
     },
     3: {
       legenda: "legenda_atrakcje3.png",
-      opis: "Na obecnym placu przy ulicy Kościelnej...",
+      opis: "Obecnie przy ulicy Kościelnej nie ma żadnego kościoła...",
       opisyHistorii: {
-        1: { tekst: "Scena 3 - Historia punktu 1: Dokładna lokalizacja starego kościoła...", warstwaGeoJSON: warstwaKosciolThen },
-        2: { tekst: "Scena 3 - Historia punktu 2: Informacje o architekturze nowego kościoła...", warstwaGeoJSON: warstwaKosciolNow },
-        3: { tekst: "Scena 3 - Historia punktu 3: Dawny przebieg traktu...", warstwaGeoJSON: warstwaKosciolNow1 }
+        1: { tekst: "Na obecnym placu przy ulicy Kościelnej znajdował się drewniany kościół parafialny, wzniesiony w latach 1781–1785 na fundamentach znacznie starszej świątyni. Obiekt przez pokolenia był centrum życia duchowego mieszkańców miasta. Budowlę rozebrano w pierwszej połowie XX wieku z powodu bardzo złego stanu technicznego.", warstwaGeoJSON: warstwaKosciolThen },
+        2: { tekst: "W 1934 roku funkcję głównej świątyni przejął nowy, murowany kościół pw. św. Wawrzyńca. Budynek ten wzniesiono w zupełnie nowej lokalizacji, po przeciwnej stronie Strugi Gołanieckiej. Zmiana ta wpłynęła na kierunek rozwoju miasta.", warstwaGeoJSON: warstwaKosciolNow },
+        3: { tekst: "Nazwa ulicy Kościelnej, przy której obecnie nie stoi już żaden budynek sakralny, stanowi dziś jedyną pamiątkę po dawnej świątyni. Przypomina ona o historycznym znaczeniu tego miejsca oraz o budowie nowego kościoła. Dzięki tej nazwie pamięć o drewnianym zabytku przetrwała do czasów współczesnych.", warstwaGeoJSON: warstwaKosciolNow1 }
       },
       zdjeciaPanelu: ["panel_kosciol1.jpg", "panel_kosciol2.jpg", "panel_kosciol3.jpg"],
       funkcjaWlaczenia: function() {
