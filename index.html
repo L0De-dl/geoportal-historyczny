@@ -567,6 +567,18 @@ const PrintControl = L.Control.extend({
   znacznika13.on('mouseout',  () => znacznika13.setIcon(ikonaaparat));
   znacznika13.on('click', () => { pokazModal("zdjeciedrzewa3.jpg"); });
 
+    const znacznika14 = L.marker([52.94375484315489, 17.300047140899494], { icon: ikonaaparat })
+    .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
+  znacznika14.on('mouseover', () => znacznika14.setIcon(ikonaaparatszara));
+  znacznika14.on('mouseout',  () => znacznika14.setIcon(ikonaaparat));
+  znacznika14.on('click', () => { pokazModal("zdjeciedrzewa4.jpg"); });
+
+    const znacznika15 = L.marker([52.943977583276336, 17.29972517055154], { icon: ikonaaparat })
+    .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
+  znacznika15.on('mouseover', () => znacznika15.setIcon(ikonaaparatszara));
+  znacznika15.on('mouseout',  () => znacznika15.setIcon(ikonaaparat));
+  znacznika15.on('click', () => { pokazModal("zdjeciedrzewa5.jpg"); });
+
   const znacznika21 = L.marker([52.94390523172963, 17.299907813117944], { icon: ikonaaparat })
     .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
   znacznika21.on('mouseover', () => znacznika21.setIcon(ikonaaparatszara));
@@ -585,6 +597,18 @@ const PrintControl = L.Control.extend({
   znacznika23.on('mouseout',  () => znacznika23.setIcon(ikonaaparat));
   znacznika23.on('click', () => { pokazModal("zdjeciepomniki3.jpg"); });
 
+    const znacznika24 = L.marker([52.944176468987365, 17.300239612230616], { icon: ikonaaparat })
+    .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
+  znacznika24.on('mouseover', () => znacznika24.setIcon(ikonaaparatszara));
+  znacznika24.on('mouseout',  () => znacznika24.setIcon(ikonaaparat));
+  znacznika24.on('click', () => { pokazModal("zdjeciepomniki4.jpg"); });
+
+    const znacznika25 = L.marker([52.944024246485895, 17.300018576900822], { icon: ikonaaparat })
+    .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
+  znacznika25.on('mouseover', () => znacznika25.setIcon(ikonaaparatszara));
+  znacznika25.on('mouseout',  () => znacznika25.setIcon(ikonaaparat));
+  znacznika25.on('click', () => { pokazModal("zdjeciepomniki5.jpg"); });
+
   const znacznika31 = L.marker([52.94205599178503, 17.300511080962853], { icon: ikonaaparat })
     .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
   znacznika31.on('mouseover', () => znacznika31.setIcon(ikonaaparatszara));
@@ -602,8 +626,20 @@ const PrintControl = L.Control.extend({
   znacznika33.on('mouseover', () => znacznika33.setIcon(ikonaaparatszara));
   znacznika33.on('mouseout',  () => znacznika33.setIcon(ikonaaparat));
   znacznika33.on('click', () => { pokazModal("zdjeciekosciol3.jpg"); });
+
+    const znacznika34 = L.marker([52.942268865619376, 17.30039747241794], { icon: ikonaaparat })
+    .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
+  znacznika34.on('mouseover', () => znacznika34.setIcon(ikonaaparatszara));
+  znacznika34.on('mouseout',  () => znacznika34.setIcon(ikonaaparat));
+  znacznika34.on('click', () => { pokazModal("zdjeciekosciol4.jpg"); });
+
+    const znacznika35 = L.marker([52.94258011762376, 17.300320786644853], { icon: ikonaaparat })
+    .bindTooltip("Kliknij aby zobaczyć zdjęcie", {permanent: false, direction: "top"});
+  znacznika35.on('mouseover', () => znacznika35.setIcon(ikonaaparatszara));
+  znacznika35.on('mouseout',  () => znacznika35.setIcon(ikonaaparat));
+  znacznika35.on('click', () => { pokazModal("zdjeciekosciol5.jpg"); });
   
-  const wszystkieZnaczniki = [znacznik_his1_scena1, znacznik_his2_scena1, znacznik_his3_scena1, znacznik_his1_scena2, znacznik_his2_scena2, znacznik_his3_scena2, znacznik_his1_scena3, znacznik_his2_scena3, znacznik_his3_scena3, znacznik1, znacznik2, znacznik3, znacznika11, znacznika12, znacznika13, znacznika21, znacznika22, znacznika23, znacznika31, znacznika32, znacznika33];
+  const wszystkieZnaczniki = [znacznik_his1_scena1, znacznik_his2_scena1, znacznik_his3_scena1, znacznik_his1_scena2, znacznik_his2_scena2, znacznik_his3_scena2, znacznik_his1_scena3, znacznik_his2_scena3, znacznik_his3_scena3, znacznik1, znacznik2, znacznik3, znacznika11, znacznika12, znacznika13, znacznik14, znacznik15, znacznika21, znacznika22, znacznika23, znacznik24, znacznik25, znacznika31, znacznika32, znacznika33, znacznik34, znacznik35];
 
   function usunZnaczniki() {
     wszystkieZnaczniki.forEach(z => { if (mapa.hasLayer(z)) mapa.removeLayer(z); });
@@ -742,7 +778,7 @@ const PrintControl = L.Control.extend({
       zdjeciaPanelu: ["panel_drzewa1.jpg", "panel_drzewa2.jpg", "panel_drzewa3.jpg"],
       funkcjaWlaczenia: function() {
         mapa.addLayer(znacznik1); 
-        znacznika11.addTo(mapa); znacznika12.addTo(mapa); znacznika13.addTo(mapa); znacznik_his1_scena1.addTo(mapa); znacznik_his2_scena1.addTo(mapa); znacznik_his3_scena1.addTo(mapa);
+        znacznika11.addTo(mapa); znacznika12.addTo(mapa); znacznika13.addTo(mapa); znacznika14.addTo(mapa); znacznika15.addTo(mapa); znacznik_his1_scena1.addTo(mapa); znacznik_his2_scena1.addTo(mapa); znacznik_his3_scena1.addTo(mapa);
         warstwaDrzewaNow.addTo(mapa); warstwaDrzewaNow2.addTo(mapa); warstwaDrzewaThen.addTo(mapa);
       }
     },
@@ -757,7 +793,7 @@ const PrintControl = L.Control.extend({
       zdjeciaPanelu: ["panel_pomniki1.jpg", "panel_pomniki2.jpg", "panel_pomniki3.jpg"],
       funkcjaWlaczenia: function() {
         mapa.addLayer(znacznik2); 
-        znacznika21.addTo(mapa); znacznika22.addTo(mapa); znacznika23.addTo(mapa); znacznik_his1_scena2.addTo(mapa); znacznik_his2_scena2.addTo(mapa); znacznik_his3_scena2.addTo(mapa);
+        znacznika21.addTo(mapa); znacznika22.addTo(mapa); znacznika23.addTo(mapa); znacznika24.addTo(mapa); znacznika25.addTo(mapa); znacznik_his1_scena2.addTo(mapa); znacznik_his2_scena2.addTo(mapa); znacznik_his3_scena2.addTo(mapa);
         warstwaPomnikNow.addTo(mapa); warstwaPomnikThen.addTo(mapa); warstwaPomnikThen1.addTo(mapa);
       }
     },
@@ -772,7 +808,7 @@ const PrintControl = L.Control.extend({
       zdjeciaPanelu: ["panel_kosciol1.jpg", "panel_kosciol2.jpg", "panel_kosciol3.jpg"],
       funkcjaWlaczenia: function() {
         mapa.addLayer(znacznik3); 
-        znacznika31.addTo(mapa); znacznika32.addTo(mapa); znacznika33.addTo(mapa);  znacznik_his1_scena3.addTo(mapa); znacznik_his2_scena3.addTo(mapa); znacznik_his3_scena3.addTo(mapa);
+        znacznika31.addTo(mapa); znacznika32.addTo(mapa); znacznika33.addTo(mapa); znacznika34.addTo(mapa); znacznika35.addTo(mapa); znacznik_his1_scena3.addTo(mapa); znacznik_his2_scena3.addTo(mapa); znacznik_his3_scena3.addTo(mapa);
         warstwaKosciolNow.addTo(mapa); warstwaKosciolNow1.addTo(mapa); warstwaKosciolThen.addTo(mapa);
       }
     }
@@ -802,9 +838,9 @@ const grafikiDoPobrania = [
   'kosciol_szary.png', 'kosciol_niebieski.png',
 
   // Zdjęcia z paneli bocznych i markerów
-  'zdjeciedrzewa1.jpg', 'zdjeciedrzewa2.jpg', 'zdjeciedrzewa3.jpg',
-  'zdjeciepomniki1.jpg', 'zdjeciepomniki2.jpg', 'zdjeciepomniki3.jpg',
-  'zdjeciekosciol1.jpg', 'zdjeciekosciol2.jpg', 'zdjeciekosciol3.jpg',
+  'zdjeciedrzewa1.jpg', 'zdjeciedrzewa2.jpg', 'zdjeciedrzewa3.jpg', 'zdjeciedrzewa4.jpg', 'zdjeciedrzewa5.jpg',
+  'zdjeciepomniki1.jpg', 'zdjeciepomniki2.jpg', 'zdjeciepomniki3.jpg', 'zdjeciepomniki4.jpg', 'zdjeciepomniki5.jpg',
+  'zdjeciekosciol1.jpg', 'zdjeciekosciol2.jpg', 'zdjeciekosciol3.jpg', 'zdjeciekosciol4.jpg', 'zdjeciekosciol5.jpg',
   'panel_drzewa1.jpg', 'panel_drzewa2.jpg', 'panel_drzewa3.jpg',
   'panel_pomniki1.jpg', 'panel_pomniki2.jpg', 'panel_pomniki3.jpg',
   'panel_kosciol1.jpg', 'panel_kosciol2.jpg', 'panel_kosciol3.jpg'
