@@ -424,7 +424,7 @@ function switchScene(id) {
     currentScene = id;
     sidePanel[id].funkcjaWlaczenia();
     document.getElementById('legenda-img').src = sidePanel[id].legenda;
-    document.getElementById('opis-tekstowy').innerHTML = sidePanel[id].opis;
+    document.getElementById('opis-sceny-tekst').innerHTML = sidePanel[id].opis;
 }
 
 /* --- Obsługa Modali --- */
