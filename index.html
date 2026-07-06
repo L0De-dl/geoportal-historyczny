@@ -1,90 +1,79 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Geoportal Historyczny Gołańczy</title>
-    
-    <!-- Ikona -->
-    <link rel="icon" type="image/png" href="assets/icon/logo-main.png">
-    
-    <!-- Style CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-measure-path/leaflet-measure-path.css" />
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="utf-8" />
+  <title>Geoportal Historyczny Gołańczy</title>
+  <link rel="icon" type="image/png" href="assets/icon/logo-main.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-measure-path/leaflet-measure-path.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-measure-path/1.5.0/leaflet-measure-path.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <!-- Główna mapa -->
-    <div id="map"></div>
+  <div id="map"></div>
 
-    <!-- Panel boczny -->
-    <div class="panel-boczny">
-        
-        <!-- Wybór podkładu -->
-        <div class="sekcja-panelu suwak-kontener">
-            <h3>Wybór podkładu mapowego</h3>
-            <input type="range" id="suwak-czasu" min="0" max="8" value="8" step="1">
-            <div id="nazwa-podkladu">Wczytywanie...</div>
-        </div>
-
-        <!-- Wybór Sceny -->
-        <div class="sekcja-panelu">
-            <h3>Wybór Sceny</h3>
-            <div class="kontener-scen-poziom">
-                <div class="przycisk-sceny-nowy" onclick="changeScene(1)" id="btn-scena-1">
-                    <img src="assets/legend/legend-tree-02.png" alt="Scena 1">
-                    <span>Scena 1</span>
-                </div>
-                <div class="przycisk-sceny-nowy" onclick="changeScene(2)" id="btn-scena-2">
-                    <img src="assets/legend/legend-monument-02.png" alt="Scena 2">
-                    <span>Scena 2</span>
-                </div>
-                <div class="przycisk-sceny-nowy" onclick="changeScene(3)" id="btn-scena-3">
-                    <img src="assets/legend/legend-church-02.png" alt="Scena 3">
-                    <span>Scena 3</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Legenda -->
-        <div class="sekcja-panelu">
-            <h3>Legenda</h3>
-            <img id="legenda-img" src="" alt="Legenda sceny">
-        </div>
-
-        <!-- Opis -->
-        <div class="sekcja-panelu">
-            <h3>Opis zmian</h3>
-            <div id="opis-sceny-tekst"></div>
-        </div>
-
-        <!-- Zdjęcia -->
-        <div class="sekcja-panelu">
-            <h3>Zdjęcia</h3>
-            <div class="karuzela-kontener">
-                <img id="karuzela-foto" src="" alt="Zdjęcie obiektu" onclick="openFullPhoto()">
-            </div>
-        </div>
+  <div class="panel-boczny">
+    
+    <div class="sekcja-panelu suwak-kontener">
+      <h3>Wybór podkładu mapowego</h3>
+      <input type="range" id="suwak-czasu" min="0" max="8" value="8" step="1">
+      <div id="nazwa-podkladu">Wczytywanie...</div>
     </div>
 
-    <!-- Modal zdjęcia -->
-    <div id="modal-zdjecie">
-        <div class="okno">
-            <div class="zamknij" onclick="closeModal()">✖</div>
-            <img id="modal-img" src="" alt="Zdjęcie obiektu">
+    <div class="sekcja-panelu">
+      <h3>Wybór Sceny</h3>
+      <div class="kontener-scen-poziom">
+        <div class="przycisk-sceny-nowy" onclick="changeScene(1)" id="btn-scena-1">
+          <img src="assets/legend/legend-tree-02.png" alt="Scena 1">
+          <span>Scena 1</span>
         </div>
+        <div class="przycisk-sceny-nowy" onclick="changeScene(2)" id="btn-scena-2">
+          <img src="assets/legend/legend-monument-02.png" alt="Scena 2">
+          <span>Scena 2</span>
+        </div>
+        <div class="przycisk-sceny-nowy" onclick="changeScene(3)" id="btn-scena-3">
+          <img src="assets/legend/legend-church-02.png" alt="Scena 3">
+          <span>Scena 3</span>
+        </div>
+      </div>
     </div>
 
-    <!-- Skrypty JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet-measure-path/leaflet-measure-path.js"></script>
-    <script src="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
-    <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="js/script.js"></script>
+    <div class="sekcja-panelu">
+      <h3>Legenda</h3>
+      <img id="legenda-img" src="" alt="Legenda sceny">
+    </div>
 
+    <div class="sekcja-panelu">
+      <h3>Opis zmian</h3>
+      <div id="opis-sceny-tekst"></div>
+    </div>
+
+    <div class="sekcja-panelu">
+      <h3>Zdjęcia</h3>
+      <div class="karuzela-kontener">
+        <img id="karuzela-foto" src="" alt="Zdjęcie obiektu" onclick="openFullPhoto()">
+      </div>
+    </div>
+
+  </div>
+
+  <div id="modal-zdjecie">
+    <div class="okno">
+      <div class="zamknij" onclick="closeModal()">✖</div>
+      <img id="modal-img" src="" alt="Zdjęcie obiektu">
+    </div>
+  </div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-measure-path/1.5.0/leaflet-measure-path.min.js"></script>
+<script src="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
+<script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script src="js/script.js"></script>
 </body>
 </html>
