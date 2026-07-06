@@ -406,7 +406,7 @@ function animateLayerPulse(warstwa, maxDodatkowyWeight = 6, czasTrwania = 1500) 
 /* --- Obsługa Panelu Bocznego i Scen --- */
 function updateHistoryDescription(idSceny) {
     const dane = sidePanel[currentScene].opisyHistorii[idSceny];
-    document.getElementById('opis-tekstowy').innerHTML = dane.tekst;
+    document.getElementById('opis-sceny-tekst').innerHTML = dane.tekst;
     
     // Animate and highlight selected layer
     animateLayerPulse(dane.warstwaGeoJSON);
@@ -435,8 +435,8 @@ function showModal(url) {
     modal.style.display = "block";
 }
 
-document.querySelector('.close-button').addEventListener('click', () => {
-    document.getElementById('modal').style.display = "none";
+document.querySelector('.zamknij').addEventListener('click', () => {
+    document.getElementById('modal-zdjecie').style.display = "none";
 });
 
 /* --- Eksport Mapy --- */
@@ -454,7 +454,7 @@ document.addEventListener('DOMContentLoaded', () => {
     switchScene(1); // Uruchomienie domyślnej sceny
     
     // Przyciski zmiany scen w interfejsie
-    document.querySelectorAll('.scene-btn').forEach((btn, index) => {
-        btn.addEventListener('click', () => switchScene(index + 1));
-    });
+document.querySelectorAll('.przycisk-sceny-nowy').forEach((btn, index) => {
+    btn.addEventListener('click', () => switchScene(index + 1));
+});
 });
