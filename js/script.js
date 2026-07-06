@@ -412,7 +412,7 @@ function updateHistoryDescription(idSceny) {
     animateLayerPulse(dane.warstwaGeoJSON);
 }
 
-function switchScene(id) {
+function changeScene(id) {
     // Czyszczenie mapy
     clearMarkers();
     Object.values(sidePanel).forEach(s => {
@@ -451,10 +451,10 @@ function exportMap() {
 
 /* --- Inicjalizacja Początkowa --- */
 document.addEventListener('DOMContentLoaded', () => {
-    switchScene(1); // Uruchomienie domyślnej sceny
+    changeScene(1); // Uruchomienie domyślnej sceny
     
     // Przyciski zmiany scen w interfejsie
 document.querySelectorAll('.przycisk-sceny-nowy').forEach((btn, index) => {
-    btn.addEventListener('click', () => switchScene(index + 1));
+    btn.addEventListener('click', () => changeScene(index + 1));
 });
 });
