@@ -895,13 +895,13 @@ function pobierzWynikiBadania(format = 'csv') {
     rozszerzenie = 'json';
   } else {
     // Domyślnie CSV
-    const naglowki = ['Nr', 'Zdarzenie', 'Czas_Od_Ostatniego_Sec', 'Czas_Od_Startu_Sec', 'Timestamp'];
-    const wiersze = logiBadania.map(l => 
-      `"${l.nr}","${l.zdarzenie.replace(/"/g, '""')}","${l.czasOdOstatniegoKliknieciaSec}","${l.czasOdStartuSec}","${l.timestamp}"`
-    );
-    tresc = [naglowki.join(';'), ...wiersze].join('\n');
-    mimeType = 'text/csv;charset=utf-8;';
-    rozszerzenie = 'csv';
+const naglowki = ['Nr', 'Zdarzenie', 'Czas_Od_Ostatniego_Sec', 'Czas_Od_Startu_Sec', 'Timestamp'];
+  const wiersze = logiBadania.map(l => 
+    `"${l.nr}";"${l.zdarzenie.replace(/"/g, '""')}";"${l.czasOdOstatniegoKliknieciaSec}";"${l.czasOdStartuSec}";"${l.timestamp}"`
+  );
+tresc = '\uFEFF' + [naglowki.join(';'), ...wiersze].join('\n');
+  mimeType = 'text/csv;charset=utf-8;';
+  rozszerzenie = 'csv';
   }
 
   const blob = new Blob([tresc], { type: mimeType });
