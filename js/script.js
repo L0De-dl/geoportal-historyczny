@@ -774,3 +774,143 @@ function exportMap() {
         });
     }, 100);
 }
+
+/* =========================================================
+   SYSTEM REJESTRACJI INTERAKCJI DLA BADANIA UŻYTECZNOŚCI
+   ========================================================= */
+
+// Tablica do przechowywania zdarzeń
+const logiBadania = [];
+let czasOstatniegoKlikniecia = Date.now();
+const czasStartuBadania = Date.now();
+
+// Funkcja pomocnicza do rejestrowania pojedynczego kliknięcia
+function zarejestrujKlikniecie(nazwaOpisowa, szczegoly = {}) {
+  const teraz = Date.now();
+  const odOstatniego = ((teraz - czasOstatniegoKlikniecia) / 1000).toFixed(2);
+  const odStartu = ((teraz - czasStartuBadania) / 1000).toFixed(2);
+  
+  czasOstatniegoKlikniecia = teraz;
+
+  const wpis = {
+    nr: logiBadania.length + 1,
+    zdarzenie: nazwaOpisowa,
+    czasOdOstatniegoKliknieciaSec: parseFloat(odOstatniego),
+    czasOdStartuSec: parseFloat(odStartu),
+    timestamp: new Date(teraz).toISOString(),
+    ...szczegoly
+  };
+
+  logiBadania.push(wpis);
+  console.log('[LOG BADANIA]:', wpis); // Podgląd w konsoli przeglądarki
+}
+
+// 1. Rejestracja kliknięć w całe okno (z wyłapywaniem id/klas/znaczka)
+document.addEventListener('click', function(e) {
+  // Ignoruj kliknięcie w sam przycisk pobierania logów
+  if (e.target.closest('#btn-pobierz-logi')) return;
+
+  const target = e.target;
+  let opis = 'Kliknięcie elementu';
+
+  // Rozpoznawanie konkretnych interakcji z UI
+  if (target.closest('.przycisk-sceny-nowy')) {
+    const btn = target.closest('.przycisk-sceny-nowy');
+    opis = `Przełączenie sceny (Przycisk: ${btn.id || btn.textContent.trim()})`;
+  } else if (target.closest('#suwak-czasu')) {
+    opis = `Zmiana podkładu mapowego (Suwak: wartość ${target.value})`;
+  } else if (target.closest('.print-button')) {
+    opis = 'Eksport mapy (Przycisk drukowania)';
+  } else if (target.closest('.leaflet-control-zoom-in')) {
+    opis = 'Powiększenie mapy (+)';
+  } else if (target.closest('.leaflet-control-zoom-out')) {
+    opis = 'Pomniejszenie mapy (-)';
+  } else if (target.closest('.leaflet-control-locate')) {
+    opis = 'Geolokalizacja (Przycisk lokalizacji)';
+  } else if (target.closest('.leaflet-draw-draw-polyline')) {
+    opis = 'Narzędzie: Rysowanie linii';
+  } else if (target.closest('.leaflet-draw-draw-polygon')) {
+    opis = 'Narzędzie: Pomiar/Rysowanie powierzchni';
+  } else if (target.closest('.leaflet-draw-draw-rectangle')) {
+    opis = 'Narzędzie: Rysowanie prostokąta';
+  } else if (target.closest('.leaflet-draw-draw-circle')) {
+    opis = 'Narzędzie: Rysowanie okręgu';
+  } else if (target.closest('.leaflet-draw-draw-marker')) {
+    opis = 'Narzędzie: Dodawanie markera';
+  } else if (target.closest('.leaflet-draw-edit-edit')) {
+    opis = 'Narzędzie: Edycja rysunku';
+  } else if (target.closest('.leaflet-draw-edit-remove')) {
+    opis = 'Narzędzie: Usuwanie rysunku';
+  } else if (target.closest('#karuzela-foto')) {
+    opis = 'Otwarcie zdjęcia w oknie modalnym';
+  } else if (target.closest('#modal-zdjecie .zamknij')) {
+    opis = 'Zamknięcie zdjęcia w oknie modalnym';
+  } else if (target.closest('#map')) {
+    opis = 'Kliknięcie w obszar mapy';
+  } else {
+    // Opis domyślny dla pozostałych elementów
+    const tag = target.tagName.toLowerCase();
+    const id = target.id ? `#${target.id}` : '';
+    const klasa = target.className ? `.${target.className.toString().split(' ')[0]}` : '';
+    opis = `Kliknięcie: ${tag}${id}${klasa}`;
+  }
+
+  zarejestrujKlikniecie(opis);
+}, true);
+
+// 2. Podpięcie śledzenia do markerów na mapie Leaflet
+function PodpnijSledzenieMarkerow() {
+  markerTable.forEach((marker, idx) => {
+    marker.off('click', marker._logHandler); // unikaj dublowania eventów
+    marker._logHandler = () => {
+      zarejestrujKlikniecie(`Kliknięcie w marker na mapie (ID/Indeks: ${idx + 1})`);
+    };
+    marker.on('click', marker._logHandler);
+  });
+}
+// Wywołaj po inicjalizacji markerów
+PodpnijSledzenieMarkerow();
+
+// Overwrite/Rozszerzenie funkcji changeScene, aby po dodaniu nowych markerów też je śledziła
+const oryginalneChangeScene = changeScene;
+changeScene = function(nr) {
+  oryginalneChangeScene(nr);
+  PodpnijSledzenieMarkerow();
+};
+
+// 3. Eksport danych do pliku CSV/JSON dla badacza
+function pobierzWynikiBadania(format = 'csv') {
+  if (logiBadania.length === 0) {
+    alert('Brak zarejestrowanych kliknięć do pobrania!');
+    return;
+  }
+
+  let tresc = '';
+  let mimeType = '';
+  let rozszerzenie = '';
+
+  if (format === 'json') {
+    tresc = JSON.stringify(logiBadania, null, 2);
+    mimeType = 'application/json';
+    rozszerzenie = 'json';
+  } else {
+    // Domyślnie CSV
+    const naglowki = ['Nr', 'Zdarzenie', 'Czas_Od_Ostatniego_Sec', 'Czas_Od_Startu_Sec', 'Timestamp'];
+    const wiersze = logiBadania.map(l => 
+      `"${l.nr}","${l.zdarzenie.replace(/"/g, '""')}","${l.czasOdOstatniegoKliknieciaSec}","${l.czasOdStartuSec}","${l.timestamp}"`
+    );
+    tresc = [naglowki.join(';'), ...wiersze].join('\n');
+    mimeType = 'text/csv;charset=utf-8;';
+    rozszerzenie = 'csv';
+  }
+
+  const blob = new Blob([tresc], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `badanie_uzytkownik_${new Date().toISOString().slice(0,19).replace(/[:T]/g, '-')}.${rozszerzenie}`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}

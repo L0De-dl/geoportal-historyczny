@@ -247,3 +247,26 @@
   align-items: center;
   height: 11px; 
 }
+
+/* Dyskretny przycisk dla badacza */
+.panel-badacza {
+  border-bottom: none !important;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+  padding: 2px !important;
+}
+
+#btn-pobierz-logi {
+  background: transparent;
+  border: none;
+  font-size: 11px;
+  opacity: 0.15; /* Słabo widoczny dla badanego */
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  padding: 2px 4px;
+}
+
+#btn-pobierz-logi:hover {
+  opacity: 1; /* Pełna widoczność po najechaniu przez badacza */
+}
