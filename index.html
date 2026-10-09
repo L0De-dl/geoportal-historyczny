@@ -17,7 +17,7 @@
   <div id="map"></div>
 
   <div class="panel-boczny">
-
+<br>
     <div class="sekcja-panelu suwak-kontener">
       <h3>Wybór podkładu mapowego</h3>
       <div class="suwak-z-przyciskami">
@@ -51,16 +51,16 @@
       <div id="nazwa-komunikacja">Brak / Wczytywanie...</div>
     </div>
     <br>
-    <div class="sekcja-panelu suwak-kontener">
-      <h3>Wybór warstwy - zdjęcia</h3>
-      <div class="suwak-z-przyciskami">
-        <button id="btn-toggle-zdjecia" class="btn-toggle active" title="Włącz/Wyłącz widoczność zdjęć">👁️</button>
-        <button id="btn-zdjecia-lewy" title="Poprzedni rok">◀</button>
-        <input type="range" id="suwak-zdjecia" min="0" max="26" value="26" step="1">
-        <button id="btn-zdjecia-prawy" title="Następny rok">▶</button>
-      </div>
-      <div id="nazwa-zdjecia">Brak / Wczytywanie...</div>
-    </div>
+<div class="sekcja-panelu suwak-kontener">
+  <h3>Wybór warstwy - zdjęcia</h3>
+  <div class="suwak-z-przyciskami">
+    <button id="btn-toggle-zdjecia" class="btn-toggle active" title="Włącz/Wyłącz widoczność zdjęć">👁️</button>
+    <button id="btn-zdjecia-lewy" title="Poprzedni rok">◀</button>
+    <input type="range" id="suwak-zdjecia" min="0" max="26" value="26" step="1">
+    <button id="btn-zdjecia-prawy" title="Następny rok">▶</button>
+  </div>
+  <div id="nazwa-zdjecia">Brak / Wczytywanie...</div> <!-- Ten identyfikator jest kluczowy -->
+</div>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
