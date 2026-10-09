@@ -498,13 +498,13 @@ let aktualnaWarstwaZdjec = null;
 // Indeks 0 = 1890, indeks 26 = 2026 (lub możesz posługiwać się bezpośrednio stringami lat)
 const bazyZdjecDlaLat = {
   "1890": [
-    { lat: 52.9517, lng: 17.3004, tytul: "Rynek w 1890 roku", url: "assets/foto/foto-tree-03.jpg" }
+    { lat: 52.944261876482926, lng: 17.30158736604386, tytul: "Rynek w 1890 roku", url: "assets/foto/foto-tree-03.jpg" }
   ],
   "1933": [
-    { lat: 52.9530, lng: 17.3020, tytul: "Kościół w 1933 r.", url: "assets/foto/foto-tree-03.jpg" }
+    { lat: 52.94517663490059, lng: 17.296904305527395, tytul: "Kościół w 1933 r.", url: "assets/foto/foto-tree-03.jpg" }
   ],
   "2026": [
-    { lat: 52.9510, lng: 17.2980, tytul: "Współczesny widok", url: "assets/foto/foto-tree-03.jpg" }
+    { lat: 52.93885922952326, lng: 17.301544402185915, tytul: "Współczesny widok", url: "assets/foto/foto-tree-03.jpg" }
   ]
 };
 
