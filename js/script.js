@@ -481,3 +481,105 @@ document.getElementById('btn-toggle-komunikacja').addEventListener('click', func
 // Uruchomienie domyślne na najnowszy rok (indeks 26 / 2026)
 wczytajZabudowę(26);
 wczytajKomunikację(26);
+
+
+//oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+//oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+//oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+//oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+//oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+
+// --- OBSŁUGA WARSTWY ZE ZDJĘCIAMI DLA RÓŻNYCH LAT ---
+
+let widoczneZdjecia = true;
+let aktualnaWarstwaZdjec = null;
+
+// Przykładowa baza markerów dla konkretnych indeksów lat (odpowiadających tablicy wektoroweLata / layerTable)
+// Indeks 0 = 1890, indeks 26 = 2026 (lub możesz posługiwać się bezpośrednio stringami lat)
+const bazyZdjecDlaLat = {
+  "1890": [
+    { lat: 52.9517, lng: 17.3004, tytul: "Rynek w 1890 roku", url: "assets/foto/foto-tree-03.jpg" }
+  ],
+  "1933": [
+    { lat: 52.9530, lng: 17.3020, tytul: "Kościół w 1933 r.", url: "assets/foto/foto-tree-03.jpg" }
+  ],
+  "2026": [
+    { lat: 52.9510, lng: 17.2980, tytul: "Współczesny widok", url: "assets/foto/foto-tree-03.jpg" }
+  ]
+};
+
+function wczytajZdjeciaDla Roku(indeks) {
+  if (aktualnaWarstwaZdjec) {
+    map.removeLayer(aktualnaWarstwaZdjec);
+    aktualnaWarstwaZdjec = null;
+  }
+
+  const rokStr = wektoroweLata[indeks];
+  const etykieta = `Zdjęcia z roku ${layerNames[indeks].replace('Mapa z ', '')}`;
+
+  document.getElementById('nazwa-zdjecia').textContent = etykieta;
+  document.getElementById('suwak-zdjecia').value = indeks;
+
+  const group = L.layerGroup();
+  let znalezionoMarkerow = false;
+
+  // Sprawdzamy czy dla danego roku zdefiniowano zdjęcia w bazie
+  if (bazyZdjecDlaLat[rokStr]) {
+    bazyZdjecDlaLat[rokStr].forEach(item => {
+      // Tworzymy marker (możesz użyć niestandardowej ikony aparatu)
+      const marker = L.marker([item.lat, item.lng]);
+      
+      // Popup ze zdjęciem i tytułem
+      const popupContent = `
+        <div style="text-align: center; max-width: 220px;">
+          <b>${item.tytul}</b><br><br>
+          <img src="${item.url}" alt="${item.tytul}" style="width:100%; max-height:150px; object-fit: cover; border-radius: 4px;" onerror="this.onerror=null; this.src='assets/icon/logo.png';">
+        </div>
+      `;
+      
+      marker.bindPopup(popupContent);
+      group.addLayer(marker);
+      znalezionoMarkerow = true;
+    });
+  }
+
+  aktualnaWarstwaZdjec = group;
+  if (widoczneZdjecia) {
+    map.addLayer(aktualnaWarstwaZdjec);
+  }
+
+  if (!znalezionoMarkerow) {
+    document.getElementById('nazwa-zdjecia').textContent = `Brak zdjęć (${rokStr})`;
+  }
+}
+
+// Event Listeners: Suwak Zdjęć
+document.getElementById('suwak-zdjecia').addEventListener('input', function(e) {
+  wczytajZdjeciaDlaRoku(parseInt(e.target.value));
+});
+document.getElementById('btn-zdjecia-lewy').addEventListener('click', function() {
+  let idx = parseInt(document.getElementById('suwak-zdjecia').value);
+  if (idx > 0) wczytajZdjeciaDlaRoku(--idx);
+});
+document.getElementById('btn-zdjecia-prawy').addEventListener('click', function() {
+  let idx = parseInt(document.getElementById('suwak-zdjecia').value);
+  if (idx < wektoroweLata.length - 1) wczytajZdjeciaDlaRoku(++idx);
+});
+
+// Przycisk toggle dla zdjęć (👁️)
+document.getElementById('btn-toggle-zdjecia').addEventListener('click', function() {
+  widoczneZdjecia = !widoczneZdjecia;
+  this.classList.toggle('inactive', !widoczneZdjecia);
+  this.classList.toggle('active', widoczneZdjecia);
+
+  if (aktualnaWarstwaZdjec) {
+    if (widoczneZdjecia) {
+      map.addLayer(aktualnaWarstwaZdjec);
+    } else {
+      map.removeLayer(aktualnaWarstwaZdjec);
+    }
+  }
+});
+
+// Uruchomienie domyślne suwaka zdjęć na najnowszy rok (indeks 26 / 2026)
+wczytajZdjeciaDlaRoku(26);
