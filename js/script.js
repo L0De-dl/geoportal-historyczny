@@ -508,7 +508,7 @@ const bazyZdjecDlaLat = {
   ]
 };
 
-function wczytajZdjeciaDla Roku(indeks) {
+function wczytajZdjeciaDlaRoku(indeks) {
   if (aktualnaWarstwaZdjec) {
     map.removeLayer(aktualnaWarstwaZdjec);
     aktualnaWarstwaZdjec = null;
