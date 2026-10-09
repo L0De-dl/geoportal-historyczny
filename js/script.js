@@ -537,12 +537,12 @@ if (bazyZdjecDlaLat[rokStr]) {
       const marker = L.marker([item.lat, item.lng], { icon: ikonaZdjecia });
       
       // Popup ze zdjęciem i tytułem
-      const popupContent = `
-        <div style="text-align: center; max-width: 220px;">
-          <b>${item.tytul}</b><br><br>
-          <img src="${item.url}" alt="${item.tytul}" style="width:100%; max-height:150px; object-fit: cover; border-radius: 4px;" onerror="this.onerror=null; this.src='assets/icon/logo.png';">
-        </div>
-      `;
+const popupContent = `
+  <div style="text-align: center; max-width: 350px;">
+    <b>${item.tytul}</b><br><br>
+    <img src="${item.url}" alt="${item.tytul}" style="width:100%; max-height:300px; object-fit: cover; border-radius: 4px;" onerror="this.onerror=null; this.src='assets/icon/logo.png';">
+  </div>
+`;
       
       marker.bindPopup(popupContent);
       group.addLayer(marker);
