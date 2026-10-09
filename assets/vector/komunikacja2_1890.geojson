@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "komunikacja2_1890",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3857" } },
+"features": [
+
+]
+}
