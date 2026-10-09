@@ -392,7 +392,7 @@ function wczytajKomunikację(indeks) {
   Promise.all([
     cacheGeoJSON[plikDrogi] ? Promise.resolve(cacheGeoJSON[plikDrogi]) : fetch(plikDrogi).then(r => r.ok ? r.json() : null).catch(() => null),
     cacheGeoJSON[plikKolej] ? Promise.resolve(cacheGeoJSON[plikKolej]) : fetch(plikKolej).then(r => r.ok ? r.json() : null).catch(() => null)
-  ]).then(([daneDrogi, daneKolej]) => {
+  ]).then(([daneDrogi, daneKolej]) => {bazyZdjecDlaLat[rokStr].forEach(item => {
     const group = L.layerGroup();
     let hasData = false;
 
@@ -507,6 +507,13 @@ const bazyZdjecDlaLat = {
   ]
 };
 
+const customPhotoIcon = L.icon({
+  iconUrl: 'assets/icon/icon-01.png',
+  iconSize: [30, 30],
+  iconAnchor: [15, 15],
+  popupAnchor: [0, -15]
+});
+
 function wczytajZdjeciaDlaRoku(indeks) {
   if (aktualnaWarstwaZdjec) {
     map.removeLayer(aktualnaWarstwaZdjec);
@@ -526,7 +533,7 @@ function wczytajZdjeciaDlaRoku(indeks) {
   if (bazyZdjecDlaLat[rokStr]) {
     bazyZdjecDlaLat[rokStr].forEach(item => {
       // Tworzymy marker (możesz użyć niestandardowej ikony aparatu)
-      const marker = L.marker([item.lat, item.lng]);
+      const marker = L.marker([item.lat, item.lng], { icon: customPhotoIcon });
       
       // Popup ze zdjęciem i tytułem
       const popupContent = `
