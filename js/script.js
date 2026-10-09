@@ -103,12 +103,18 @@ const layerNames = [
   "Mapa z 2022 roku", "Mapa z 2023 roku", "Mapa z 2026 roku"
 ];
 
+// Stany widoczności poszczególnych warstw
+let widocznyPodklad = true;
+let widocznaZabudowa = true;
+let widocznaKomunikacja = true;
+
 let ostatniaZmiana = 0;
 const opoznienieMs = 120;
 
 function zmienPodkladMapy(indeks) {
   layerTable.forEach(p => { if (map.hasLayer(p)) map.removeLayer(p); });
-  if (layerTable[indeks]) {
+  
+  if (widocznyPodklad && layerTable[indeks]) {
     layerTable[indeks].addTo(map);
   }
   document.getElementById('nazwa-podkladu').textContent = layerNames[indeks];
@@ -123,7 +129,7 @@ document.getElementById('suwak-czasu').addEventListener('input', function(e) {
   if (teraz - ostatniaZmiana > opoznienieMs) {
     ostatniaZmiana = teraz;
     layerTable.forEach(p => { if (map.hasLayer(p)) map.removeLayer(p); });
-    if (layerTable[indeks]) {
+    if (widocznyPodklad && layerTable[indeks]) {
       layerTable[indeks].addTo(map);
     }
   }
@@ -147,6 +153,19 @@ document.getElementById('btn-suwak-prawy').addEventListener('click', function() 
   if (aktualnyIndeks < layerTable.length - 1) {
     aktualnyIndeks++;
     zmienPodkladMapy(aktualnyIndeks);
+  }
+});
+
+// Przycisk toggle dla podkładu
+document.getElementById('btn-toggle-podklad').addEventListener('click', function() {
+  widocznyPodklad = !widocznyPodklad;
+  this.classList.toggle('inactive', !widocznyPodklad);
+  this.classList.toggle('active', widocznyPodklad);
+  
+  const indeks = parseInt(document.getElementById('suwak-czasu').value);
+  layerTable.forEach(p => { if (map.hasLayer(p)) map.removeLayer(p); });
+  if (widocznyPodklad && layerTable[indeks]) {
+    layerTable[indeks].addTo(map);
   }
 });
 
@@ -323,7 +342,6 @@ function wczytajZabudowę(indeks) {
   }
 
   const rokStr = wektoroweLata[indeks];
-  // Załóżmy, że pliki znajdują się w folderze assets/vector/
   const nazwaPliku = `assets/vector/zabudowa_${rokStr}.geojson`;
   const etykieta = `Zabudowa z roku ${layerNames[indeks].replace('Mapa z ', '')}`;
 
@@ -332,7 +350,9 @@ function wczytajZabudowę(indeks) {
 
   if (cacheGeoJSON[nazwaPliku]) {
     aktualnaWarstwaZabudowy = cacheGeoJSON[nazwaPliku];
-    map.addLayer(aktualnaWarstwaZabudowy);
+    if (widocznaZabudowa) {
+      map.addLayer(aktualnaWarstwaZabudowy);
+    }
   } else {
     fetch(nazwaPliku)
       .then(response => {
@@ -344,7 +364,9 @@ function wczytajZabudowę(indeks) {
         cacheGeoJSON[nazwaPliku] = layer;
         if (parseInt(document.getElementById('suwak-zabudowa').value) === indeks) {
           aktualnaWarstwaZabudowy = layer;
-          map.addLayer(aktualnaWarstwaZabudowy);
+          if (widocznaZabudowa) {
+            map.addLayer(aktualnaWarstwaZabudowy);
+          }
         }
       })
       .catch(() => {
@@ -353,7 +375,7 @@ function wczytajZabudowę(indeks) {
   }
 }
 
-// Funkcja wczytująca komunikację (drogi + koleje) dla danego indeksu
+// Funkcja wczytująca komunikację dla danego indeksu
 function wczytajKomunikację(indeks) {
   if (aktualnaWarstwaKomunikacji) {
     map.removeLayer(aktualnaWarstwaKomunikacji);
@@ -391,7 +413,9 @@ function wczytajKomunikację(indeks) {
 
     if (hasData && parseInt(document.getElementById('suwak-komunikacja').value) === indeks) {
       aktualnaWarstwaKomunikacji = group;
-      map.addLayer(aktualnaWarstwaKomunikacji);
+      if (widocznaKomunikacja) {
+        map.addLayer(aktualnaWarstwaKomunikacji);
+      }
     } else if (!hasData) {
       document.getElementById('nazwa-komunikacja').textContent = `Brak komunikacji (${rokStr})`;
     }
@@ -411,6 +435,21 @@ document.getElementById('btn-zabudowa-prawy').addEventListener('click', function
   if (idx < wektoroweLata.length - 1) wczytajZabudowę(++idx);
 });
 
+// Przycisk toggle dla zabudowy
+document.getElementById('btn-toggle-zabudowa').addEventListener('click', function() {
+  widocznaZabudowa = !widocznaZabudowa;
+  this.classList.toggle('inactive', !widocznaZabudowa);
+  this.classList.toggle('active', widocznaZabudowa);
+
+  if (aktualnaWarstwaZabudowy) {
+    if (widocznaZabudowa) {
+      map.addLayer(aktualnaWarstwaZabudowy);
+    } else {
+      map.removeLayer(aktualnaWarstwaZabudowy);
+    }
+  }
+});
+
 // Event Listeners: Suwak Komunikacji
 document.getElementById('suwak-komunikacja').addEventListener('input', function(e) {
   wczytajKomunikację(parseInt(e.target.value));
@@ -422,6 +461,21 @@ document.getElementById('btn-komunikacja-lewy').addEventListener('click', functi
 document.getElementById('btn-komunikacja-prawy').addEventListener('click', function() {
   let idx = parseInt(document.getElementById('suwak-komunikacja').value);
   if (idx < wektoroweLata.length - 1) wczytajKomunikację(++idx);
+});
+
+// Przycisk toggle dla komunikacji
+document.getElementById('btn-toggle-komunikacja').addEventListener('click', function() {
+  widocznaKomunikacja = !widocznaKomunikacja;
+  this.classList.toggle('inactive', !widocznaKomunikacja);
+  this.classList.toggle('active', widocznaKomunikacja);
+
+  if (aktualnaWarstwaKomunikacji) {
+    if (widocznaKomunikacja) {
+      map.addLayer(aktualnaWarstwaKomunikacji);
+    } else {
+      map.removeLayer(aktualnaWarstwaKomunikacji);
+    }
+  }
 });
 
 // Uruchomienie domyślne na najnowszy rok (indeks 26 / 2026)
