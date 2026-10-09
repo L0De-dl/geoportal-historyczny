@@ -523,10 +523,18 @@ function wczytajZdjeciaDlaRoku(indeks) {
   let znalezionoMarkerow = false;
 
   // Sprawdzamy czy dla danego roku zdefiniowano zdjęcia w bazie
-  if (bazyZdjecDlaLat[rokStr]) {
+if (bazyZdjecDlaLat[rokStr]) {
+    // Definicja własnej ikony (możesz dostosować rozmiar iconSize oraz iconAnchor w razie potrzeby)
+    const ikonaZdjecia = L.icon({
+      iconUrl: 'assets/icon/icon-01.png',
+      iconSize: [32, 32],      // Szerokość i wysokość ikony w pikselach
+      iconAnchor: [16, 32],    // Punkt ikony odpowiadający współrzędnym markera (zazwyczaj środek dołu)
+      popupAnchor: [0, -32]    // Miejsce, nad którym otwiera się popup względem ikony
+    });
+
     bazyZdjecDlaLat[rokStr].forEach(item => {
-      // Tworzymy marker (możesz użyć niestandardowej ikony aparatu)
-      const marker = L.marker([item.lat, item.lng]);
+      // Tworzymy marker z przekazaną opcją icon
+      const marker = L.marker([item.lat, item.lng], { icon: ikonaZdjecia });
       
       // Popup ze zdjęciem i tytułem
       const popupContent = `
