@@ -268,32 +268,31 @@ function exportMap() {
     const starePrzesuniecie = map.options.fadeAnimation;
     map.options.fadeAnimation = false;
 
-    const element = document.querySelector(".leaflet-container");
+    // Pobieramy bezpośrednio kontener mapy
+    const element = document.getElementById('map');
 
     setTimeout(() => {
         html2canvas(element, {
-            useCORS: false,
-            allowTaint: true,
+            useCORS: true,       // Zmieniono na true, aby obsługiwało zasoby
+            allowTaint: false,   // Wyłączone taint, wymaga CORS dla obrazków
             backgroundColor: "#ffffff",
             scale: 2,
-            logging: false,
+            logging: true,       // Włącz konsolę, jeśli chcesz zobaczyć ewentualne błędy w F12
             scrollX: 0,
-            scrollY: 0,
-            windowWidth: document.documentElement.offsetWidth,
-            windowHeight: document.documentElement.offsetHeight
+            scrollY: 0
         }).then(function(canvas) {
             const link = document.createElement("a");
-            link.download = "map.png";
+            link.download = "mapa-golancza.png";
             link.href = canvas.toDataURL("image/png");
             link.click();
 
             map.options.fadeAnimation = starePrzesuniecie;
         }).catch(function(error) {
             console.error("Błąd podczas eksportu mapy:", error);
-            alert("Nie udało się wyeksportować mapy.");
+            alert("Nie udało się wyeksportować mapy. Sprawdź konsolę przeglądarki.");
             map.options.fadeAnimation = starePrzesuniecie;
         });
-    }, 100);
+    }, 250); // Zwiększono lekko opóźnienie, aby upewnić się, że warstwy się wyrenderowały
 }
 
 // --- OBSŁUGA WARSTW WEKTOROWYCH (Zabudowa i Komunikacja) ---
