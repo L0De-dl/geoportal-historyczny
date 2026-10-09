@@ -179,3 +179,13 @@ body {
 .suwak-z-przyciskami button.btn-toggle.inactive:hover {
   opacity: 1;
 }
+
+/* Zwiększenie maksymalnej szerokości dymka Leafleta i usunięcie ciasnego paddingu */
+.leaflet-popup-content-wrapper {
+  padding: 4px;
+}
+
+.leaflet-popup-content {
+  max-width: 400px !important; /* Pozwala na szerszy dymek */
+  margin: 12px 16px;
+}

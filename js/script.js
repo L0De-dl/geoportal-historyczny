@@ -538,9 +538,9 @@ if (bazyZdjecDlaLat[rokStr]) {
       
       // Popup ze zdjęciem i tytułem
 const popupContent = `
-  <div style="text-align: center; max-width: 350px;">
+  <div style="text-align: center; max-width: 320px;">
     <b>${item.tytul}</b><br><br>
-    <img src="${item.url}" alt="${item.tytul}" style="width:100%; max-height:600px; object-fit: cover; border-radius: 4px;" onerror="this.onerror=null; this.src='assets/icon/logo.png';">
+    <img src="${item.url}" alt="${item.tytul}" style="width: 100%; max-height: 280px; object-fit: cover; border-radius: 4px;" onerror="this.onerror=null; this.src='assets/icon/logo.png';">
   </div>
 `;
       
