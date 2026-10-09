@@ -392,7 +392,7 @@ function wczytajKomunikację(indeks) {
   Promise.all([
     cacheGeoJSON[plikDrogi] ? Promise.resolve(cacheGeoJSON[plikDrogi]) : fetch(plikDrogi).then(r => r.ok ? r.json() : null).catch(() => null),
     cacheGeoJSON[plikKolej] ? Promise.resolve(cacheGeoJSON[plikKolej]) : fetch(plikKolej).then(r => r.ok ? r.json() : null).catch(() => null)
-  ]).then(([daneDrogi, daneKolej]) => {bazyZdjecDlaLat[rokStr].forEach(item => {
+  ]).then(([daneDrogi, daneKolej]) => {
     const group = L.layerGroup();
     let hasData = false;
 
@@ -415,7 +415,9 @@ function wczytajKomunikację(indeks) {
       if (widocznaKomunikacja) {
         map.addLayer(aktualnaWarstwaKomunikacji);
       }
-    } else if (!hasData) {
+    }
+    
+    if (!hasData) {
       document.getElementById('nazwa-komunikacja').textContent = `Brak komunikacji (${rokStr})`;
     }
   });
