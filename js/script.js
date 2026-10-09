@@ -415,9 +415,7 @@ function wczytajKomunikację(indeks) {
       if (widocznaKomunikacja) {
         map.addLayer(aktualnaWarstwaKomunikacji);
       }
-    }
-    
-    if (!hasData) {
+    } else if (!hasData) {
       document.getElementById('nazwa-komunikacja').textContent = `Brak komunikacji (${rokStr})`;
     }
   });
@@ -509,13 +507,6 @@ const bazyZdjecDlaLat = {
   ]
 };
 
-const customPhotoIcon = L.icon({
-  iconUrl: 'assets/icon/icon-01.png',
-  iconSize: [30, 30],
-  iconAnchor: [15, 15],
-  popupAnchor: [0, -15]
-});
-
 function wczytajZdjeciaDlaRoku(indeks) {
   if (aktualnaWarstwaZdjec) {
     map.removeLayer(aktualnaWarstwaZdjec);
@@ -535,7 +526,7 @@ function wczytajZdjeciaDlaRoku(indeks) {
   if (bazyZdjecDlaLat[rokStr]) {
     bazyZdjecDlaLat[rokStr].forEach(item => {
       // Tworzymy marker (możesz użyć niestandardowej ikony aparatu)
-      const marker = L.marker([item.lat, item.lng], { icon: customPhotoIcon });
+      const marker = L.marker([item.lat, item.lng]);
       
       // Popup ze zdjęciem i tytułem
       const popupContent = `
