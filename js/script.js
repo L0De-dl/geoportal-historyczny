@@ -60,7 +60,7 @@ map.on('mousemove', function(e) {
 const layer1890 = L.imageOverlay('assets/map/1890.png', [[52.970939, 17.265868], [52.929265, 17.343682]]);
 const layer1911 = L.imageOverlay('assets/map/1911.png', [[52.970939, 17.265868], [52.929265, 17.343682]]);
 const layer1924 = L.imageOverlay('assets/map/1924.png', [[52.970939, 17.265868], [52.929265, 17.343682]]);
-const layer1933_a = L.imageOverlay('assets/map/1933-a.png', [[52.970939, 17.265868], [52.929265, 17.343682]]);
+const layer1933 = L.imageOverlay('assets/map/1933-a.png', [[52.970939, 17.265868], [52.929265, 17.343682]]);
 const layer1934 = L.imageOverlay('assets/map/1934.png', [[52.970939, 17.265868], [52.929265, 17.343682]]);
 const layer1935 = L.imageOverlay('assets/map/1935.png', [[52.970939, 17.265868], [52.929265, 17.343682]]);
 const layer1940 = L.imageOverlay('assets/map/1940.png', [[52.970939, 17.265868], [52.929265, 17.343682]]);
@@ -86,7 +86,7 @@ const layer2023 = L.imageOverlay('assets/map/2023.png', [[52.970939, 17.265868],
 const layer2026 = L.imageOverlay('assets/map/2026.png', [[52.970939, 17.265868], [52.929265, 17.343682]]);
 
 const layerTable = [
-  layer1890, layer1911, layer1924, layer1933_a, layer1934, layer1935, 
+  layer1890, layer1911, layer1924, layer1933, layer1934, layer1935, 
   layer1940, layer1941, layer1942_a, layer1942_b, layer1944, layer1966, 
   layer1976, layer1981, layer2000, layer2002, layer2014, layer2015, 
   layer2016, layer2017, layer2018, layer2019, layer2020, layer2021, 
@@ -94,9 +94,9 @@ const layerTable = [
 ];
 
 const layerNames = [
-  "Mapa z 1890 roku", "Mapa z 1911 roku", "Mapa z 1924 roku", "Mapa z 1933 roku (A)", 
+  "Mapa z 1890 roku", "Mapa z 1911 roku", "Mapa z 1924 roku", "Mapa z 1933 roku", 
   "Mapa z 1934 roku", "Mapa z 1935 roku", "Mapa z 1940 roku", "Mapa z 1941 roku", 
-  "Mapa z 1942 roku (A)", "Mapa z 1942 roku (B)", "Mapa z 1944 roku", "Mapa z 1966 roku", 
+  "Mapa z 1942_a roku", "Mapa z 1942_b roku", "Mapa z 1944 roku", "Mapa z 1966 roku", 
   "Mapa z 1976 roku", "Mapa z 1981 roku", "Mapa z 2000 roku", "Mapa z 2002 roku", 
   "Mapa z 2014 roku", "Mapa z 2015 roku", "Mapa z 2016 roku", "Mapa z 2017 roku", 
   "Mapa z 2018 roku", "Mapa z 2019 roku", "Mapa z 2020 roku", "Mapa z 2021 roku", 
@@ -281,7 +281,7 @@ function exportMap() {
 
 // Tablica lat odpowiadająca indeksom suwaków (tak sama jak przy podkładach)
 const wektoroweLata = [
-  "1890", "1911", "1924", "1933_a", "1934", "1935", 
+  "1890", "1911", "1924", "1933", "1934", "1935", 
   "1940", "1941", "1942_a", "1942_b", "1944", "1966", 
   "1976", "1981", "2000", "2002", "2014", "2015", 
   "2016", "2017", "2018", "2019", "2020", "2021", 
