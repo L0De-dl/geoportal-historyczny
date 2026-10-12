@@ -597,6 +597,9 @@ const startTime = Date.now();
 let lastClickTime = startTime;
 const userLogs = [];
 
+// Obiekt do zliczania kliknięć w poszczególne elementy (np. "Przycisk X": 3)
+const elementClickCounts = {};
+
 function logEvent(actionType, targetName, additionalInfo = '') {
   const now = Date.now();
   const timeFromStart = ((now - startTime) / 1000).toFixed(2);
@@ -604,16 +607,24 @@ function logEvent(actionType, targetName, additionalInfo = '') {
   
   lastClickTime = now;
 
+  // Inkremencje licznika kliknięć dla danego elementu
+  if (!elementClickCounts[targetName]) {
+    elementClickCounts[targetName] = 0;
+  }
+  elementClickCounts[targetName]++;
+  const clickCountForElement = elementClickCounts[targetName];
+
   userLogs.push({
     czas_od_startu_s: timeFromStart,
     czas_od_poprzedniego_s: timeFromPrev,
+    numer_klikniecia_w_element: clickCountForElement,
     typ_akcji: actionType,
     obiekt_cel: targetName,
     szczegoly: additionalInfo
   });
 }
 
-// 1. Ogólne nasłuchiwanie kliknięć w interfejsie (bezpieczne dla null)
+// 1. Ogólne nasłuchiwanie kliknięć w interfejsie
 document.addEventListener('click', function(e) {
   const target = e.target.closest('button, input, a, .leaflet-control');
   if (!target) return;
@@ -627,7 +638,7 @@ document.addEventListener('click', function(e) {
   logEvent('KLIKNIĘCIE', nazwa, target.title || '');
 });
 
-// 2. Bezpieczne przechwytywanie kontrolek Leafleta
+// 2. Przechwytywanie kontrolek Leafleta
 const leafletButtons = document.querySelectorAll('.leaflet-control button, .leaflet-bar a, .print-button');
 if (leafletButtons && leafletButtons.length > 0) {
   leafletButtons.forEach(el => {
@@ -637,7 +648,7 @@ if (leafletButtons && leafletButtons.length > 0) {
   });
 }
 
-// 3. Bezpieczne śledzenie zmian na suwakach
+// 3. Śledzenie zmian na suwakach
 const rangeInputs = document.querySelectorAll('input[type="range"]');
 if (rangeInputs && rangeInputs.length > 0) {
   rangeInputs.forEach(suwak => {
@@ -663,7 +674,7 @@ if (typeof map !== 'undefined' && map) {
     });
   }
 
-  // 5. Tworzenie dyskretnego przycisku jako kontrolki Leaflet w prawym dolnym rogu
+  // 5. Tworzenie dyskretnego przycisku w prawym dolnym rogu (bez obramowania)
   const LogControl = L.Control.extend({
       options: { position: 'bottomright' },
 
@@ -675,6 +686,8 @@ if (typeof map !== 'undefined' && map) {
           button.innerHTML = '📊'; 
           button.title = "Pobierz logi badawcze (CSV)";
           button.style.backgroundColor = 'white';
+          button.style.border = 'none'; // Usunięcie obramowania
+          button.style.boxShadow = 'none'; // Usunięcie domyślnego cienia Leafleta jeśli przeszkadza
           button.style.width = '24px';
           button.style.height = '24px';
           button.style.display = 'flex';
@@ -683,7 +696,7 @@ if (typeof map !== 'undefined' && map) {
           button.style.fontSize = '12px';
           button.style.textDecoration = 'none';
           button.style.color = 'black';
-          button.style.opacity = '0.08'; // Niemal niewidoczny dla użytkownika
+          button.style.opacity = '0.08'; // Niemal niewidoczny
           button.style.cursor = 'pointer';
 
           button.addEventListener('mouseenter', () => { button.style.opacity = '1'; });
@@ -698,13 +711,14 @@ if (typeof map !== 'undefined' && map) {
                 return;
               }
 
+              // Używamy średnika (;) jako separatora, żeby Excel poprawnie rozbił kolumny
               let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
-              csvContent += "Czas od startu (s),Czas od poprzedniego (s),Typ akcji,Obiekt / Cel,Szczegóły\n";
+              csvContent += "Czas od startu (s);Czas od poprzedniego (s);Nr kliknięcia w element;Typ akcji;Obiekt / Cel;Szczegóły\n";
 
               userLogs.forEach(row => {
                 const escapedSzczegoly = `"${(row.szczegoly || '').replace(/"/g, '""')}"`;
                 const escapedCel = `"${(row.obiekt_cel || '').replace(/"/g, '""')}"`;
-                csvContent += `${row.czas_od_startu_s},${row.czas_od_poprzedniego_s},${row.typ_akcji},${escapedCel},${escapedSzczegoly}\n`;
+                csvContent += `${row.czas_od_startu_s};${row.czas_od_poprzedniego_s};${row.numer_klikniecia_w_element};${row.typ_akcji};${escapedCel};${escapedSzczegoly}\n`;
               });
 
               const encodedUri = encodeURI(csvContent);
