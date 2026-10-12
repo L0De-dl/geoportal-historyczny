@@ -590,3 +590,87 @@ document.getElementById('btn-toggle-zdjecia').addEventListener('click', function
 
 // Uruchomienie domyślne suwaka zdjęć na najnowszy rok (indeks 26 / 2026)
 wczytajZdjeciaDlaRoku(26);
+
+
+// --- SYSTEM LOGOWANIA AKTYWNOŚCI UŻYTKOWNIKA ---
+const czasStartu = Date.now();
+let ostatniCzasKlikniecia = czasStartu;
+const tablicaLogow = [];
+
+// Funkcja rejestrująca zdarzenie
+function zapiszLog(typAkcji, szczegoly) {
+  const teraz = Date.now();
+  const czasOdStartuMs = teraz - czasStartu;
+  const czasOdPoprzedniegoMs = teraz - ostatniCzasKlikniecia;
+  
+  tablicaLogow.push({
+    czasAbsolutny: new Date(teraz).toISOString(),
+    czasOdStartuSek: (czasOdStartuMs / 1000).toFixed(3),
+    czasOdPoprzedniegoSek: (czasOdPoprzedniegoMs / 1000).toFixed(3),
+    typAkcji: typAkcji,
+    szczegoly: szczegoly.replace(/[\r\n]+/g, " ") // Usunięcie enterów ze szczegółów ze względu na CSV
+  });
+
+  ostatniCzasKlikniecia = teraz;
+}
+
+// Zapisz start aplikacji
+zapiszLog("START_APLIKACJI", "Otwarcie geoportalu");
+
+// 1. Nasłuchiwanie kliknięć w mapę (współrzędne)
+map.on('click', function(e) {
+  zapiszLog("KLIKNIECIE_MAPY", `Lat: ${e.latlng.lat.toFixed(5)}, Lng: ${e.latlng.lng.toFixed(5)}`);
+});
+
+// 2. Nasłuchiwanie suwaka podkładu
+document.getElementById('suwak-czasu').addEventListener('change', function(e) {
+  const idx = e.target.value;
+  zapiszLog("ZMIANA_PODKLADU", `Wybrano indeks: ${idx} (${layerNames[idx]})`);
+});
+
+// 3. Nasłuchiwanie przycisków widoczności warstw
+document.getElementById('btn-toggle-podklad').addEventListener('click', function() {
+  zapiszLog("TOGGLE_PODKLAD", `Stan: ${widocznyPodklad ? 'widoczny' : 'ukryty'}`);
+});
+document.getElementById('btn-toggle-zabudowa').addEventListener('click', function() {
+  zapiszLog("TOGGLE_ZABUDOWA", `Stan: ${widocznaZabudowa ? 'widoczna' : 'ukryta'}`);
+});
+document.getElementById('btn-toggle-komunikacja').addEventListener('click', function() {
+  zapiszLog("TOGGLE_KOMUNIKACJA", `Stan: ${widocznaKomunikacja ? 'widoczna' : 'ukryta'}`);
+});
+document.getElementById('btn-toggle-zdjecia').addEventListener('click', function() {
+  zapiszLog("TOGGLE_ZDJECIA", `Stan: ${widoczneZdjecia ? 'widoczne' : 'ukryte'}`);
+});
+
+// 4. Nasłuchiwanie eksportu mapy (print)
+// (Możesz dopisać wywołanie zapiszLog("EKSPORT_MAPY", "Pobrano PNG") wewnątrz funkcji exportMap())
+
+// Obsługa przycisku pobierania CSV
+document.getElementById('btn-pobierz-logi').addEventListener('click', function() {
+  zapiszLog("POBRANIE_LOGOW", "Użytkownik pobrał plik CSV z logami");
+  
+  if (tablicaLogow.length === 0) {
+    alert("Brak logów do pobrania.");
+    return;
+  }
+
+  // Nagłówki CSV (używamy średnika jako separatora, przyjaznego dla Excela w Polsce)
+  let csvContent = "\uFEFF"; // BOM dla poprawnego kodowania polskich znaków w Excelu
+  csvContent += "Czas absolutny;Czas od startu (s);Czas od poprzedniej akcji (s);Typ akcji;Szczegóły\n";
+
+  tablicaLogow.forEach(log => {
+    csvContent += `"${log.czasAbsolutny}";"${log.czasOdStartuSek}";"${log.czasOdPoprzedniegoSek}";"${log.typAkcji}";"${log.szczegoly}"\n`;
+  });
+
+  // Tworzenie pliku blob i inicjowanie pobierania
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  
+  const dataStr = new Date().toISOString().slice(0, 10);
+  link.setAttribute("href", url);
+  link.setAttribute("download", `logi_uzytkownika_${dataStr}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+});
