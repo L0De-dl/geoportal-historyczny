@@ -603,7 +603,6 @@ const elementClickCounts = {};
 function logEvent(actionType, targetName, additionalInfo = '') {
   const now = performance.now();
   
-  // Tworzymy liczby i zamieniamy kropkę na przecinek (dla polskiego Excela)
   const timeFromStart = ((now - startTime) / 1000).toFixed(2).replace('.', ',');
   const timeFromPrev = ((now - lastClickTime) / 1000).toFixed(2).replace('.', ',');
   
@@ -693,7 +692,6 @@ if (typeof map !== 'undefined' && map) {
           button.style.height = '24px';
           button.style.display = 'flex';
           button.style.alignItems = 'center';
-          button.style.justifyContent.bind = 'center';
           button.style.justifyContent = 'center';
           button.style.fontSize = '12px';
           button.style.textDecoration = 'none';
@@ -719,7 +717,12 @@ if (typeof map !== 'undefined' && map) {
               userLogs.forEach(row => {
                 const escapedSzczegoly = `"${(row.szczegoly || '').replace(/"/g, '""')}"`;
                 const escapedCel = `"${(row.obiekt_cel || '').replace(/"/g, '""')}"`;
-                csvContent += `${row.czas_od_startu_s};${row.czas_od_poprzedniego_s};${row.numer_klikniecia_w_element};${row.typ_akcji};${escapedCel};${escapedSzczegoly}\n`;
+                
+                // Użycie formatu ="" wymusza na Excelu traktowanie wartości jako czysty tekst/liczba bez zgadywania dat
+                const formatCzasStart = `="${row.czas_od_startu_s}"`;
+                const formatCzasPrev = `="${row.czas_od_poprzedniego_s}"`;
+
+                csvContent += `${formatCzasStart};${formatCzasPrev};${row.numer_klikniecia_w_element};${row.typ_akcji};${escapedCel};${escapedSzczegoly}\n`;
               });
 
               const encodedUri = encodeURI(csvContent);
