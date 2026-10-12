@@ -593,7 +593,7 @@ wczytajZdjeciaDlaRoku(26);
 
 // --- SYSTEM LOGOWANIA AKTYWNOŚCI UŻYTKOWNIKA DO CSV ---
 
-const startTime = performance.now(); // Używamy high-resolution timer od momentu startu
+const startTime = performance.now();
 let lastClickTime = startTime;
 const userLogs = [];
 
@@ -603,9 +603,9 @@ const elementClickCounts = {};
 function logEvent(actionType, targetName, additionalInfo = '') {
   const now = performance.now();
   
-  // Obliczamy czas w sekundach z dokładnością do 2 miejsc po przecinku
-  const timeFromStart = ((now - startTime) / 1000).toFixed(2);
-  const timeFromPrev = ((now - lastClickTime) / 1000).toFixed(2);
+  // Tworzymy liczby i zamieniamy kropkę na przecinek (dla polskiego Excela)
+  const timeFromStart = ((now - startTime) / 1000).toFixed(2).replace('.', ',');
+  const timeFromPrev = ((now - lastClickTime) / 1000).toFixed(2).replace('.', ',');
   
   lastClickTime = now;
 
@@ -662,7 +662,7 @@ if (rangeInputs && rangeInputs.length > 0) {
 // 4. Kliknięcia w mapę i rysowanie
 if (typeof map !== 'undefined' && map) {
   map.on('click', function(e) {
-    logEvent('MAPA_KLIKNIĘCIE', 'Mapa', `Lat: ${e.latlng.lat.toFixed(5)}, Lng: ${e.latlng.lng.toFixed(5)}`);
+    logEvent('MAPA_KLIKNIĘCIE', 'Mapa', `Lat: ${e.latlng.lat.toFixed(5).replace('.', ',')}, Lng: ${e.latlng.lng.toFixed(5).replace('.', ',')}`);
   });
 
   if (typeof L !== 'undefined' && L.Draw && L.Draw.Event) {
@@ -693,6 +693,7 @@ if (typeof map !== 'undefined' && map) {
           button.style.height = '24px';
           button.style.display = 'flex';
           button.style.alignItems = 'center';
+          button.style.justifyContent.bind = 'center';
           button.style.justifyContent = 'center';
           button.style.fontSize = '12px';
           button.style.textDecoration = 'none';
@@ -712,7 +713,6 @@ if (typeof map !== 'undefined' && map) {
                 return;
               }
 
-              // Używamy średnika jako separatora kolumn, a kropka zostaje w liczbach sekund jako separator dziesiętny
               let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
               csvContent += "Czas od startu (s);Czas od poprzedniego (s);Nr kliknięcia w element;Typ akcji;Obiekt / Cel;Szczegóły\n";
 
