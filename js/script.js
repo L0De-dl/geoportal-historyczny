@@ -613,13 +613,13 @@ function logEvent(actionType, targetName, additionalInfo = '') {
   });
 }
 
-// 1. Ogólne nasłuchiwanie kliknięć w interfejsie
+// 1. Ogólne nasłuchiwanie kliknięć w interfejsie (bezpieczne dla null)
 document.addEventListener('click', function(e) {
   const target = e.target.closest('button, input, a, .leaflet-control');
   if (!target) return;
   if (target.id === 'btn-pobierz-logi') return;
 
-  let nazwa = target.id || target.className || target.innerText.trim() || 'Element UI';
+  let nazwa = target.id || target.className || (target.innerText ? target.innerText.trim() : '') || 'Element UI';
   if (target.tagName === 'INPUT') {
     nazwa = `Input (${target.id || target.type}): ${target.value}`;
   }
@@ -627,90 +627,98 @@ document.addEventListener('click', function(e) {
   logEvent('KLIKNIĘCIE', nazwa, target.title || '');
 });
 
-// 2. Specjalne przechwytywanie kontrolek i przycisków Leafleta
-document.querySelectorAll('.leaflet-control button, .leaflet-bar a, .print-button').forEach(el => {
-  el.addEventListener('click', function() {
-    logEvent('KONTROLKA_MAPY', this.title || this.className || 'Przycisk mapy', '');
+// 2. Bezpieczne przechwytywanie kontrolek Leafleta
+const leafletButtons = document.querySelectorAll('.leaflet-control button, .leaflet-bar a, .print-button');
+if (leafletButtons && leafletButtons.length > 0) {
+  leafletButtons.forEach(el => {
+    el.addEventListener('click', function() {
+      logEvent('KONTROLKA_MAPY', this.title || this.className || 'Przycisk mapy', '');
+    });
   });
-});
+}
 
-// 3. Zmiany na suwakach
-document.querySelectorAll('input[type="range"]').forEach(suwak => {
-  suwak.addEventListener('change', function(e) {
-    logEvent('ZMIANA_SUWAKA', e.target.id, `Wartość: ${e.target.value}`);
+// 3. Bezpieczne śledzenie zmian na suwakach
+const rangeInputs = document.querySelectorAll('input[type="range"]');
+if (rangeInputs && rangeInputs.length > 0) {
+  rangeInputs.forEach(suwak => {
+    suwak.addEventListener('change', function(e) {
+      logEvent('ZMIANA_SUWAKA', e.target.id, `Wartość: ${e.target.value}`);
+    });
   });
-});
+}
 
 // 4. Kliknięcia w mapę i rysowanie
-map.on('click', function(e) {
-  logEvent('MAPA_KLIKNIĘCIE', 'Mapa', `Lat: ${e.latlng.lat.toFixed(5)}, Lng: ${e.latlng.lng.toFixed(5)}`);
-});
+if (typeof map !== 'undefined' && map) {
+  map.on('click', function(e) {
+    logEvent('MAPA_KLIKNIĘCIE', 'Mapa', `Lat: ${e.latlng.lat.toFixed(5)}, Lng: ${e.latlng.lng.toFixed(5)}`);
+  });
 
-map.on(L.Draw.Event.CREATED, function(e) {
-  logEvent('NARZĘDZIE_DRAW', `Utworzono: ${e.layerType}`, '');
-});
+  if (typeof L !== 'undefined' && L.Draw && L.Draw.Event) {
+    map.on(L.Draw.Event.CREATED, function(e) {
+      logEvent('NARZĘDZIE_DRAW', `Utworzono: ${e.layerType}`, '');
+    });
 
-map.on(L.Draw.Event.DELETED, function(e) {
-  logEvent('NARZĘDZIE_DRAW', 'Usunięto elementy rysunku', '');
-});
+    map.on(L.Draw.Event.DELETED, function(e) {
+      logEvent('NARZĘDZIE_DRAW', 'Usunięto elementy rysunku', '');
+    });
+  }
 
-// 5. Tworzenie dyskretnego przycisku jako kontrolki Leaflet w prawym dolnym rogu
-const LogControl = L.Control.extend({
-    options: { position: 'bottomright' },
+  // 5. Tworzenie dyskretnego przycisku jako kontrolki Leaflet w prawym dolnym rogu
+  const LogControl = L.Control.extend({
+      options: { position: 'bottomright' },
 
-    onAdd: function () {
-        const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
-        const button = L.DomUtil.create('a', '', container);
-        
-        button.id = 'btn-pobierz-logi';
-        button.innerHTML = '📊'; 
-        button.title = "Pobierz logi badawcze (CSV)";
-        button.style.backgroundColor = 'white';
-        button.style.width = '24px';
-        button.style.height = '24px';
-        button.style.display = 'flex';
-        button.style.alignItems = 'center';
-        button.style.justifyContent = 'center';
-        button.style.fontSize = '12px';
-        button.style.textDecoration = 'none';
-        button.style.color = 'black';
-        button.style.opacity = '0.08'; // Bardzo słaba widoczność dla użytkownika (badacz zauważy po najechaniu)
-        button.style.cursor = 'pointer';
+      onAdd: function () {
+          const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+          const button = L.DomUtil.create('a', '', container);
+          
+          button.id = 'btn-pobierz-logi';
+          button.innerHTML = '📊'; 
+          button.title = "Pobierz logi badawcze (CSV)";
+          button.style.backgroundColor = 'white';
+          button.style.width = '24px';
+          button.style.height = '24px';
+          button.style.display = 'flex';
+          button.style.alignItems = 'center';
+          button.style.justifyContent = 'center';
+          button.style.fontSize = '12px';
+          button.style.textDecoration = 'none';
+          button.style.color = 'black';
+          button.style.opacity = '0.08'; // Niemal niewidoczny dla użytkownika
+          button.style.cursor = 'pointer';
 
-        // Efekt pełnej widoczności po najechaniu myszką przez badacza
-        button.addEventListener('mouseenter', () => { button.style.opacity = '1'; });
-        button.addEventListener('mouseleave', () => { button.style.opacity = '0.08'; });
+          button.addEventListener('mouseenter', () => { button.style.opacity = '1'; });
+          button.addEventListener('mouseleave', () => { button.style.opacity = '0.08'; });
 
-        L.DomEvent.disableClickPropagation(container);
-        L.DomEvent.on(button, 'click', (e) => {
-            L.DomEvent.stop(e);
-            
-            if (userLogs.length === 0) {
-              alert("Brak zebranych logów do pobrania.");
-              return;
-            }
+          L.DomEvent.disableClickPropagation(container);
+          L.DomEvent.on(button, 'click', (e) => {
+              L.DomEvent.stop(e);
+              
+              if (userLogs.length === 0) {
+                alert("Brak zebranych logów do pobrania.");
+                return;
+              }
 
-            let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
-            csvContent += "Czas od startu (s),Czas od poprzedniego (s),Typ akcji,Obiekt / Cel,Szczegóły\n";
+              let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+              csvContent += "Czas od startu (s),Czas od poprzedniego (s),Typ akcji,Obiekt / Cel,Szczegóły\n";
 
-            userLogs.forEach(row => {
-              const escapedSzczegoly = `"${(row.szczegoly || '').replace(/"/g, '""')}"`;
-              const escapedCel = `"${(row.obiekt_cel || '').replace(/"/g, '""')}"`;
-              csvContent += `${row.czas_od_startu_s},${row.czas_od_poprzedniego_s},${row.typ_akcji},${escapedCel},${escapedSzczegoly}\n`;
-            });
+              userLogs.forEach(row => {
+                const escapedSzczegoly = `"${(row.szczegoly || '').replace(/"/g, '""')}"`;
+                const escapedCel = `"${(row.obiekt_cel || '').replace(/"/g, '""')}"`;
+                csvContent += `${row.czas_od_startu_s},${row.czas_od_poprzedniego_s},${row.typ_akcji},${escapedCel},${escapedSzczegoly}\n`;
+              });
 
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `geoportal_logi_${Date.now()}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        });
+              const encodedUri = encodeURI(csvContent);
+              const link = document.createElement("a");
+              link.setAttribute("href", encodedUri);
+              link.setAttribute("download", `geoportal_logi_${Date.now()}.csv`);
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+          });
 
-        return container;
-    }
-});
+          return container;
+      }
+  });
 
-// Dodanie kontrolki logów na mapę w prawym dolnym rogu
-new LogControl().addTo(map);
+  new LogControl().addTo(map);
+}
