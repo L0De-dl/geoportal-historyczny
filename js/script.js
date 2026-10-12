@@ -679,15 +679,18 @@ if (typeof map !== 'undefined' && map) {
       options: { position: 'bottomright' },
 
       onAdd: function () {
-          const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+          const container = L.DomUtil.create('div', 'leaflet-control');
+		  container.style.border = 'none';
+container.style.boxShadow = 'none';
+container.style.background = 'transparent';
           const button = L.DomUtil.create('a', '', container);
           
           button.id = 'btn-pobierz-logi';
           button.innerHTML = '📊'; 
           button.title = "Pobierz logi badawcze (CSV)";
-          button.style.backgroundColor = 'none';
-          button.style.border = 'none';
-          button.style.boxShadow = 'none';
+button.style.backgroundColor = 'transparent';
+button.style.border = 'none';
+button.style.boxShadow = 'none';
           button.style.width = '24px';
           button.style.height = '24px';
           button.style.display = 'flex';
