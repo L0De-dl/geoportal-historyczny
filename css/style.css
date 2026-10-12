@@ -193,19 +193,24 @@ body {
 /* Dyskretny przycisk badawczy w prawym dolnym rogu */
 #btn-pobierz-logi {
   position: fixed;
-  bottom: 10px;
-  right: 10px;
-  width: 16px;
-  height: 16px;
-  background-color: #000;
+  bottom: 5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  background-color: #333;
+  color: white;
+  font-size: 10px;
   border: none;
   border-radius: 50%;
-  opacity: 0.05; /* Bardzo słaba widoczność dla użytkownika */
-  z-index: 99999;
+  opacity: 0.05; /* Prawie całkowicie niewidoczny dla użytkownika */
+  z-index: 999999;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: opacity 0.3s ease;
 }
 
 #btn-pobierz-logi:hover {
-  opacity: 0.8; /* Widoczny po najechaniu myszką przez badacza */
+  opacity: 1; /* Pełna widoczność, gdy najedziesz myszką */
 }

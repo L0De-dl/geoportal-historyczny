@@ -597,11 +597,10 @@ const startTime = Date.now();
 let lastClickTime = startTime;
 const userLogs = [];
 
-// Funkcja pomocnicza do rejestrowania zdarzeń
 function logEvent(actionType, targetName, additionalInfo = '') {
   const now = Date.now();
-  const timeFromStart = ((now - startTime) / 1000).toFixed(2); // w sekundach
-  const timeFromPrev = ((now - lastClickTime) / 1000).toFixed(2); // w sekundach
+  const timeFromStart = ((now - startTime) / 1000).toFixed(2);
+  const timeFromPrev = ((now - lastClickTime) / 1000).toFixed(2);
   
   lastClickTime = now;
 
@@ -612,17 +611,17 @@ function logEvent(actionType, targetName, additionalInfo = '') {
     obiekt_cel: targetName,
     szczegoly: additionalInfo
   });
+  
+  console.log("Log zarejestrowany:", actionType, targetName, additionalInfo);
 }
 
-// 1. Logowanie kliknięć w dowolne przyciski i suwaki w interfejsie
+// 1. Ogólne nasłuchiwanie kliknięć w dokumencie
 document.addEventListener('click', function(e) {
-  const target = e.target.closest('button, input, a');
+  const target = e.target.closest('button, input, a, .leaflet-control');
   if (!target) return;
-
-  // Ignorujemy nasz ukryty przycisk pobierania logów, żeby nie śmiecić w statystykach
   if (target.id === 'btn-pobierz-logi') return;
 
-  let nazwa = target.id || target.className || target.innerText || 'Nieznany element';
+  let nazwa = target.id || target.className || target.innerText.trim() || 'Element UI';
   if (target.tagName === 'INPUT') {
     nazwa = `Input (${target.id || target.type}): ${target.value}`;
   }
@@ -630,14 +629,21 @@ document.addEventListener('click', function(e) {
   logEvent('KLIKNIĘCIE', nazwa, target.title || '');
 });
 
-// 2. Logowanie zmian suwaków (czasu, zabudowy, komunikacji, zdjęć) w locie
+// 2. Specjalne przechwytywanie kontrolek i warstw Leafleta (Zoom, Locate, Draw, Drukuj)
+document.querySelectorAll('.leaflet-control button, .leaflet-bar a, .print-button').forEach(el => {
+  el.addEventListener('click', function(e) {
+    logEvent('KONTROLKA_MAPY', this.title || this.className || 'Przycisk mapy', '');
+  });
+});
+
+// 3. Zmiany na suwakach
 document.querySelectorAll('input[type="range"]').forEach(suwak => {
   suwak.addEventListener('change', function(e) {
     logEvent('ZMIANA_SUWAKA', e.target.id, `Wartość: ${e.target.value}`);
   });
 });
 
-// 3. Logowanie interakcji z mapą (np. kliknięcia, użycie narzędzi rysowania Leaflet Draw)
+// 4. Kliknięcia bezpośrednio w mapę i rysowanie
 map.on('click', function(e) {
   logEvent('MAPA_KLIKNIĘCIE', 'Mapa', `Lat: ${e.latlng.lat.toFixed(5)}, Lng: ${e.latlng.lng.toFixed(5)}`);
 });
@@ -650,27 +656,24 @@ map.on(L.Draw.Event.DELETED, function(e) {
   logEvent('NARZĘDZIE_DRAW', 'Usunięto elementy rysunku', '');
 });
 
-// 4. Obsługa pobierania CSV po kliknięciu ukrytego przycisku
-document.getElementById('btn-pobierz-logi').addEventListener('click', function() {
+// 5. Obsługa pobierania CSV po kliknięciu ukrytego przycisku w rogu
+document.getElementById('btn-pobierz-logi').addEventListener('click', function(e) {
+  e.stopPropagation();
+  
   if (userLogs.length === 0) {
     alert("Brak zebranych logów do pobrania.");
     return;
   }
 
-  // Nagłówki pliku CSV
-  let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; // \uFEFF zapewnia poprawne kodowanie polskich znaków w Excelu
+  let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
   csvContent += "Czas od startu (s),Czas od poprzedniego (s),Typ akcji,Obiekt / Cel,Szczegóły\n";
 
-  // Wiersze danych
   userLogs.forEach(row => {
-    // Zabezpieczamy tekst przed przecinkami w środku, owijając w cudzysłowy
     const escapedSzczegoly = `"${(row.szczegoly || '').replace(/"/g, '""')}"`;
     const escapedCel = `"${(row.obiekt_cel || '').replace(/"/g, '""')}"`;
-    
     csvContent += `${row.czas_od_startu_s},${row.czas_od_poprzedniego_s},${row.typ_akcji},${escapedCel},${escapedSzczegoly}\n`;
   });
 
-  // Tworzenie linku do pobrania pliku
   const encodedUri = encodeURI(csvContent);
   const link = document.createElement("a");
   link.setAttribute("href", encodedUri);
