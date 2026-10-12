@@ -591,86 +591,92 @@ document.getElementById('btn-toggle-zdjecia').addEventListener('click', function
 // Uruchomienie domyślne suwaka zdjęć na najnowszy rok (indeks 26 / 2026)
 wczytajZdjeciaDlaRoku(26);
 
+// --- SYSTEM LOGOWANIA AKTYWNOŚCI UŻYTKOWNIKA DO CSV ---
 
-// --- SYSTEM LOGOWANIA AKTYWNOŚCI UŻYTKOWNIKA ---
-const czasStartu = Date.now();
-let ostatniCzasKlikniecia = czasStartu;
-const tablicaLogow = [];
+const startTime = Date.now();
+let lastClickTime = startTime;
+const userLogs = [];
 
-// Funkcja rejestrująca zdarzenie
-function zapiszLog(typAkcji, szczegoly) {
-  const teraz = Date.now();
-  const czasOdStartuMs = teraz - czasStartu;
-  const czasOdPoprzedniegoMs = teraz - ostatniCzasKlikniecia;
+// Funkcja pomocnicza do rejestrowania zdarzeń
+function logEvent(actionType, targetName, additionalInfo = '') {
+  const now = Date.now();
+  const timeFromStart = ((now - startTime) / 1000).toFixed(2); // w sekundach
+  const timeFromPrev = ((now - lastClickTime) / 1000).toFixed(2); // w sekundach
   
-  tablicaLogow.push({
-    czasAbsolutny: new Date(teraz).toISOString(),
-    czasOdStartuSek: (czasOdStartuMs / 1000).toFixed(3),
-    czasOdPoprzedniegoSek: (czasOdPoprzedniegoMs / 1000).toFixed(3),
-    typAkcji: typAkcji,
-    szczegoly: szczegoly.replace(/[\r\n]+/g, " ") // Usunięcie enterów ze szczegółów ze względu na CSV
-  });
+  lastClickTime = now;
 
-  ostatniCzasKlikniecia = teraz;
+  userLogs.push({
+    czas_od_startu_s: timeFromStart,
+    czas_od_poprzedniego_s: timeFromPrev,
+    typ_akcji: actionType,
+    obiekt_cel: targetName,
+    szczegoly: additionalInfo
+  });
 }
 
-// Zapisz start aplikacji
-zapiszLog("START_APLIKACJI", "Otwarcie geoportalu");
+// 1. Logowanie kliknięć w dowolne przyciski i suwaki w interfejsie
+document.addEventListener('click', function(e) {
+  const target = e.target.closest('button, input, a');
+  if (!target) return;
 
-// 1. Nasłuchiwanie kliknięć w mapę (współrzędne)
-map.on('click', function(e) {
-  zapiszLog("KLIKNIECIE_MAPY", `Lat: ${e.latlng.lat.toFixed(5)}, Lng: ${e.latlng.lng.toFixed(5)}`);
-});
+  // Ignorujemy nasz ukryty przycisk pobierania logów, żeby nie śmiecić w statystykach
+  if (target.id === 'btn-pobierz-logi') return;
 
-// 2. Nasłuchiwanie suwaka podkładu
-document.getElementById('suwak-czasu').addEventListener('change', function(e) {
-  const idx = e.target.value;
-  zapiszLog("ZMIANA_PODKLADU", `Wybrano indeks: ${idx} (${layerNames[idx]})`);
-});
-
-// 3. Nasłuchiwanie przycisków widoczności warstw
-document.getElementById('btn-toggle-podklad').addEventListener('click', function() {
-  zapiszLog("TOGGLE_PODKLAD", `Stan: ${widocznyPodklad ? 'widoczny' : 'ukryty'}`);
-});
-document.getElementById('btn-toggle-zabudowa').addEventListener('click', function() {
-  zapiszLog("TOGGLE_ZABUDOWA", `Stan: ${widocznaZabudowa ? 'widoczna' : 'ukryta'}`);
-});
-document.getElementById('btn-toggle-komunikacja').addEventListener('click', function() {
-  zapiszLog("TOGGLE_KOMUNIKACJA", `Stan: ${widocznaKomunikacja ? 'widoczna' : 'ukryta'}`);
-});
-document.getElementById('btn-toggle-zdjecia').addEventListener('click', function() {
-  zapiszLog("TOGGLE_ZDJECIA", `Stan: ${widoczneZdjecia ? 'widoczne' : 'ukryte'}`);
-});
-
-// 4. Nasłuchiwanie eksportu mapy (print)
-// (Możesz dopisać wywołanie zapiszLog("EKSPORT_MAPY", "Pobrano PNG") wewnątrz funkcji exportMap())
-
-// Obsługa przycisku pobierania CSV
-document.getElementById('btn-pobierz-logi').addEventListener('click', function() {
-  zapiszLog("POBRANIE_LOGOW", "Użytkownik pobrał plik CSV z logami");
+  let nazwa = target.id || target.className || target.innerText || 'Nieznany element';
+  if (target.tagName === 'INPUT') {
+    nazwa = `Input (${target.id || target.type}): ${target.value}`;
+  }
   
-  if (tablicaLogow.length === 0) {
-    alert("Brak logów do pobrania.");
+  logEvent('KLIKNIĘCIE', nazwa, target.title || '');
+});
+
+// 2. Logowanie zmian suwaków (czasu, zabudowy, komunikacji, zdjęć) w locie
+document.querySelectorAll('input[type="range"]').forEach(suwak => {
+  suwak.addEventListener('change', function(e) {
+    logEvent('ZMIANA_SUWAKA', e.target.id, `Wartość: ${e.target.value}`);
+  });
+});
+
+// 3. Logowanie interakcji z mapą (np. kliknięcia, użycie narzędzi rysowania Leaflet Draw)
+map.on('click', function(e) {
+  logEvent('MAPA_KLIKNIĘCIE', 'Mapa', `Lat: ${e.latlng.lat.toFixed(5)}, Lng: ${e.latlng.lng.toFixed(5)}`);
+});
+
+map.on(L.Draw.Event.CREATED, function(e) {
+  logEvent('NARZĘDZIE_DRAW', `Utworzono: ${e.layerType}`, '');
+});
+
+map.on(L.Draw.Event.DELETED, function(e) {
+  logEvent('NARZĘDZIE_DRAW', 'Usunięto elementy rysunku', '');
+});
+
+// 4. Obsługa pobierania CSV po kliknięciu ukrytego przycisku
+document.getElementById('btn-pobierz-logi').addEventListener('click', function() {
+  if (userLogs.length === 0) {
+    alert("Brak zebranych logów do pobrania.");
     return;
   }
 
-  // Nagłówki CSV (używamy średnika jako separatora, przyjaznego dla Excela w Polsce)
-  let csvContent = "\uFEFF"; // BOM dla poprawnego kodowania polskich znaków w Excelu
-  csvContent += "Czas absolutny;Czas od startu (s);Czas od poprzedniej akcji (s);Typ akcji;Szczegóły\n";
+  // Nagłówki pliku CSV
+  let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; // \uFEFF zapewnia poprawne kodowanie polskich znaków w Excelu
+  csvContent += "Czas od startu (s),Czas od poprzedniego (s),Typ akcji,Obiekt / Cel,Szczegóły\n";
 
-  tablicaLogow.forEach(log => {
-    csvContent += `"${log.czasAbsolutny}";"${log.czasOdStartuSek}";"${log.czasOdPoprzedniegoSek}";"${log.typAkcji}";"${log.szczegoly}"\n`;
+  // Wiersze danych
+  userLogs.forEach(row => {
+    // Zabezpieczamy tekst przed przecinkami w środku, owijając w cudzysłowy
+    const escapedSzczegoly = `"${(row.szczegoly || '').replace(/"/g, '""')}"`;
+    const escapedCel = `"${(row.obiekt_cel || '').replace(/"/g, '""')}"`;
+    
+    csvContent += `${row.czas_od_startu_s},${row.czas_od_poprzedniego_s},${row.typ_akcji},${escapedCel},${escapedSzczegoly}\n`;
   });
 
-  // Tworzenie pliku blob i inicjowanie pobierania
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
+  // Tworzenie linku do pobrania pliku
+  const encodedUri = encodeURI(csvContent);
   const link = document.createElement("a");
-  
-  const dataStr = new Date().toISOString().slice(0, 10);
-  link.setAttribute("href", url);
-  link.setAttribute("download", `logi_uzytkownika_${dataStr}.csv`);
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `geoportal_logi_${Date.now()}.csv`);
   document.body.appendChild(link);
+  
   link.click();
   document.body.removeChild(link);
 });
