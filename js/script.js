@@ -593,21 +593,22 @@ wczytajZdjeciaDlaRoku(26);
 
 // --- SYSTEM LOGOWANIA AKTYWNOŚCI UŻYTKOWNIKA DO CSV ---
 
-const startTime = Date.now();
+const startTime = performance.now(); // Używamy high-resolution timer od momentu startu
 let lastClickTime = startTime;
 const userLogs = [];
 
-// Obiekt do zliczania kliknięć w poszczególne elementy (np. "Przycisk X": 3)
+// Obiekt do zliczania kliknięć w poszczególne elementy
 const elementClickCounts = {};
 
 function logEvent(actionType, targetName, additionalInfo = '') {
-  const now = Date.now();
+  const now = performance.now();
+  
+  // Obliczamy czas w sekundach z dokładnością do 2 miejsc po przecinku
   const timeFromStart = ((now - startTime) / 1000).toFixed(2);
   const timeFromPrev = ((now - lastClickTime) / 1000).toFixed(2);
   
   lastClickTime = now;
 
-  // Inkremencje licznika kliknięć dla danego elementu
   if (!elementClickCounts[targetName]) {
     elementClickCounts[targetName] = 0;
   }
@@ -686,8 +687,8 @@ if (typeof map !== 'undefined' && map) {
           button.innerHTML = '📊'; 
           button.title = "Pobierz logi badawcze (CSV)";
           button.style.backgroundColor = 'white';
-          button.style.border = 'none'; // Usunięcie obramowania
-          button.style.boxShadow = 'none'; // Usunięcie domyślnego cienia Leafleta jeśli przeszkadza
+          button.style.border = 'none';
+          button.style.boxShadow = 'none';
           button.style.width = '24px';
           button.style.height = '24px';
           button.style.display = 'flex';
@@ -696,7 +697,7 @@ if (typeof map !== 'undefined' && map) {
           button.style.fontSize = '12px';
           button.style.textDecoration = 'none';
           button.style.color = 'black';
-          button.style.opacity = '0.08'; // Niemal niewidoczny
+          button.style.opacity = '0.08';
           button.style.cursor = 'pointer';
 
           button.addEventListener('mouseenter', () => { button.style.opacity = '1'; });
@@ -711,7 +712,7 @@ if (typeof map !== 'undefined' && map) {
                 return;
               }
 
-              // Używamy średnika (;) jako separatora, żeby Excel poprawnie rozbił kolumny
+              // Używamy średnika jako separatora kolumn, a kropka zostaje w liczbach sekund jako separator dziesiętny
               let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
               csvContent += "Czas od startu (s);Czas od poprzedniego (s);Nr kliknięcia w element;Typ akcji;Obiekt / Cel;Szczegóły\n";
 
