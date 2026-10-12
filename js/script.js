@@ -685,7 +685,7 @@ if (typeof map !== 'undefined' && map) {
           button.id = 'btn-pobierz-logi';
           button.innerHTML = '📊'; 
           button.title = "Pobierz logi badawcze (CSV)";
-          button.style.backgroundColor = 'white';
+          button.style.backgroundColor = 'none';
           button.style.border = 'none';
           button.style.boxShadow = 'none';
           button.style.width = '24px';
