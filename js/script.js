@@ -495,14 +495,27 @@ let aktualnaWarstwaZdjec = null;
 
 // Baza markerów przypisana do konkretnych lat
 const bazyZdjecDlaLat = {
-  1890: [
-    { lat: 52.944261876482926, lng: 17.30158736604386, tytul: "Rynek w 1890 roku", url: "assets/foto/foto-tree-03.jpg" }
-  ],
-  1933: [
-    { lat: 52.94517663490059, lng: 17.296904305527395, tytul: "Kościół w 1933 r.", url: "assets/foto/foto-tree-03.jpg" }
-  ],
-  2026: [
-    { lat: 52.93885922952326, lng: 17.301544402185915, tytul: "Współczesny widok", url: "assets/foto/foto-tree-03.jpg" }
+	// dworzec
+    1910: [
+    { lat: 52.94732122181164, lng: 17.30609284386365, tytul: "Dworzec", url: "assets/foto/dworzec-1910.jpg" }
+  ]
+      1911: [
+    { lat: 52.94732122181164, lng: 17.30609284386365, tytul: "Dworzec", url: "assets/foto/dworzec-1911.jpg" }
+  ]
+      1927: [
+    { lat: 52.94732122181164, lng: 17.30609284386365, tytul: "Dworzec", url: "assets/foto/dworzec-1927.jpg" }
+  ]
+      2010: [
+    { lat: 52.94732122181164, lng: 17.30609284386365, tytul: "Dworzec", url: "assets/foto/dworzec-2010.jpg" }
+  ]
+      2014: [
+    { lat: 52.94732122181164, lng: 17.30609284386365, tytul: "Dworzec", url: "assets/foto/dworzec-2014.jpg" }
+  ]
+        2020: [
+    { lat: 52.94732122181164, lng: 17.30609284386365, tytul: "Dworzec", url: "assets/foto/dworzec-2020.jpg" }
+  ]
+          2024: [
+    { lat: 52.94732122181164, lng: 17.30609284386365, tytul: "Dworzec", url: "assets/foto/dworzec-2024.jpg" }
   ]
 };
 
