@@ -488,61 +488,55 @@ wczytajKomunikację(26);
 //oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 //oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 
-// --- OBSŁUGA WARSTWY ZE ZDJĘCIAMI DLA RÓŻNYCH LAT ---
+// --- OBSŁUGA WARSTWY ZE ZDJĘCIAMI DLA KAŻDEGO ROKU (1890 - 2026) ---
 
 let widoczneZdjecia = true;
 let aktualnaWarstwaZdjec = null;
 
-// Przykładowa baza markerów dla konkretnych indeksów lat (odpowiadających tablicy wektoroweLata / layerTable)
-// Indeks 0 = 1890, indeks 26 = 2026 (lub możesz posługiwać się bezpośrednio stringami lat)
+// Baza markerów przypisana do konkretnych lat
 const bazyZdjecDlaLat = {
-  "1890": [
+  1890: [
     { lat: 52.944261876482926, lng: 17.30158736604386, tytul: "Rynek w 1890 roku", url: "assets/foto/foto-tree-03.jpg" }
   ],
-  "1933": [
+  1933: [
     { lat: 52.94517663490059, lng: 17.296904305527395, tytul: "Kościół w 1933 r.", url: "assets/foto/foto-tree-03.jpg" }
   ],
-  "2026": [
+  2026: [
     { lat: 52.93885922952326, lng: 17.301544402185915, tytul: "Współczesny widok", url: "assets/foto/foto-tree-03.jpg" }
   ]
 };
 
-function wczytajZdjeciaDlaRoku(indeks) {
+function wczytajZdjeciaDlaRoku(rok) {
   if (aktualnaWarstwaZdjec) {
     map.removeLayer(aktualnaWarstwaZdjec);
     aktualnaWarstwaZdjec = null;
   }
 
-  const rokStr = wektoroweLata[indeks];
-  const etykieta = `Zdjęcia z roku ${layerNames[indeks].replace('Mapa z ', '')}`;
-
+  const etykieta = `Zdjęcia z roku ${rok}`;
   document.getElementById('nazwa-zdjecia').textContent = etykieta;
-  document.getElementById('suwak-zdjecia').value = indeks;
+  document.getElementById('suwak-zdjecia').value = rok;
 
   const group = L.layerGroup();
   let znalezionoMarkerow = false;
 
-  // Sprawdzamy czy dla danego roku zdefiniowano zdjęcia w bazie
-if (bazyZdjecDlaLat[rokStr]) {
-    // Definicja własnej ikony (możesz dostosować rozmiar iconSize oraz iconAnchor w razie potrzeby)
+  // Sprawdzamy, czy dla podanego roku istnieją zdjęcia w bazie
+  if (bazyZdjecDlaLat[rok]) {
     const ikonaZdjecia = L.icon({
       iconUrl: 'assets/icon/icon-01.png',
-      iconSize: [32, 32],      // Szerokość i wysokość ikony w pikselach
-      iconAnchor: [16, 32],    // Punkt ikony odpowiadający współrzędnym markera (zazwyczaj środek dołu)
-      popupAnchor: [0, -32]    // Miejsce, nad którym otwiera się popup względem ikony
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32]
     });
 
-    bazyZdjecDlaLat[rokStr].forEach(item => {
-      // Tworzymy marker z przekazaną opcją icon
+    bazyZdjecDlaLat[rok].forEach(item => {
       const marker = L.marker([item.lat, item.lng], { icon: ikonaZdjecia });
       
-      // Popup ze zdjęciem i tytułem
-const popupContent = `
-  <div style="text-align: center; max-width: 320px;">
-    <b>${item.tytul}</b><br><br>
-    <img src="${item.url}" alt="${item.tytul}" style="width: 100%; max-height: 280px; object-fit: cover; border-radius: 4px;" onerror="this.onerror=null; this.src='assets/icon/logo.png';">
-  </div>
-`;
+      const popupContent = `
+        <div style="text-align: center; max-width: 320px;">
+          <b>${item.tytul}</b><br><br>
+          <img src="${item.url}" alt="${item.tytul}" style="width: 100%; max-height: 280px; object-fit: cover; border-radius: 4px;" onerror="this.onerror=null; this.src='assets/icon/logo.png';">
+        </div>
+      `;
       
       marker.bindPopup(popupContent);
       group.addLayer(marker);
@@ -556,7 +550,7 @@ const popupContent = `
   }
 
   if (!znalezionoMarkerow) {
-    document.getElementById('nazwa-zdjecia').textContent = `Brak zdjęć (${rokStr})`;
+    document.getElementById('nazwa-zdjecia').textContent = `Brak zdjęć (${rok})`;
   }
 }
 
@@ -564,13 +558,19 @@ const popupContent = `
 document.getElementById('suwak-zdjecia').addEventListener('input', function(e) {
   wczytajZdjeciaDlaRoku(parseInt(e.target.value));
 });
+
 document.getElementById('btn-zdjecia-lewy').addEventListener('click', function() {
-  let idx = parseInt(document.getElementById('suwak-zdjecia').value);
-  if (idx > 0) wczytajZdjeciaDlaRoku(--idx);
+  let rok = parseInt(document.getElementById('suwak-zdjecia').value);
+  if (rok > 1890) {
+    wczytajZdjeciaDlaRoku(rok - 1);
+  }
 });
+
 document.getElementById('btn-zdjecia-prawy').addEventListener('click', function() {
-  let idx = parseInt(document.getElementById('suwak-zdjecia').value);
-  if (idx < wektoroweLata.length - 1) wczytajZdjeciaDlaRoku(++idx);
+  let rok = parseInt(document.getElementById('suwak-zdjecia').value);
+  if (rok < 2026) {
+    wczytajZdjeciaDlaRoku(rok + 1);
+  }
 });
 
 // Przycisk toggle dla zdjęć (👁️)
@@ -588,8 +588,8 @@ document.getElementById('btn-toggle-zdjecia').addEventListener('click', function
   }
 });
 
-// Uruchomienie domyślne suwaka zdjęć na najnowszy rok (indeks 26 / 2026)
-wczytajZdjeciaDlaRoku(26);
+// Uruchomienie domyślne suwaka zdjęć na rok 2026
+wczytajZdjeciaDlaRoku(2026);
 
 // --- SYSTEM LOGOWANIA AKTYWNOŚCI UŻYTKOWNIKA DO CSV ---
 
