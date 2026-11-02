@@ -498,22 +498,22 @@ const bazyZdjecDlaLat = {
 	// dworzec
     1910: [
     { lat: 52.94732122181164, lng: 17.30609284386365, tytul: "Dworzec", url: "assets/foto/dworzec-1910.jpg" }
-  ]
+  ],
       1911: [
     { lat: 52.94732122181164, lng: 17.30609284386365, tytul: "Dworzec", url: "assets/foto/dworzec-1911.jpg" }
-  ]
+  ],
       1927: [
     { lat: 52.94732122181164, lng: 17.30609284386365, tytul: "Dworzec", url: "assets/foto/dworzec-1927.jpg" }
-  ]
+  ],
       2010: [
     { lat: 52.94732122181164, lng: 17.30609284386365, tytul: "Dworzec", url: "assets/foto/dworzec-2010.jpg" }
-  ]
+  ],
       2014: [
     { lat: 52.94732122181164, lng: 17.30609284386365, tytul: "Dworzec", url: "assets/foto/dworzec-2014.jpg" }
-  ]
+  ],
         2020: [
     { lat: 52.94732122181164, lng: 17.30609284386365, tytul: "Dworzec", url: "assets/foto/dworzec-2020.jpg" }
-  ]
+  ],
           2024: [
     { lat: 52.94732122181164, lng: 17.30609284386365, tytul: "Dworzec", url: "assets/foto/dworzec-2024.jpg" }
   ]
