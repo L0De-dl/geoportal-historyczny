@@ -180,12 +180,12 @@ body {
   opacity: 1;
 }
 
-/* Zwiększenie maksymalnej szerokości dymka Leafleta i usunięcie ciasnego paddingu */
+/* Zwiększenie maksymalnej szerokości dymka Leafleta */
 .leaflet-popup-content-wrapper {
   padding: 4px;
 }
 
 .leaflet-popup-content {
-  max-width: 400px !important; /* Pozwala na szerszy dymek */
+  max-width: 600px !important; /* Zwiększ z 400px na np. 600px lub więcej */
   margin: 12px 16px;
 }
