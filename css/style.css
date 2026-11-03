@@ -180,12 +180,18 @@ body {
   opacity: 1;
 }
 
-/* Zwiększenie maksymalnej szerokości dymka Leafleta */
+/* Zwiększenie domyślnego limitu szerokości dymku w Leaflecie */
+.leaflet-popup {
+  max-width: none !important;
+}
+
 .leaflet-popup-content-wrapper {
-  padding: 4px;
+  padding: 8px;
 }
 
 .leaflet-popup-content {
-  max-width: 600px !important; /* Zwiększ z 400px na np. 600px lub więcej */
-  margin: 12px 16px;
+  width: auto !important;
+  max-width: 700px !important; /* Tutaj ustawiasz maksymalną szerokość dymka, np. 700px */
+  margin: 10px 14px;
+}
 }
