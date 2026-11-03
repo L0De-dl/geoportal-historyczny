@@ -545,9 +545,9 @@ function wczytajZdjeciaDlaRoku(rok) {
       const marker = L.marker([item.lat, item.lng], { icon: ikonaZdjecia });
       
 const popupContent = `
-  <div style="text-align: center; max-width: 320px;">
+  <div style="text-align: center; max-width: 500px;">
     <b>${item.tytul}</b><br><br>
-    <img src="${item.url}" alt="${item.tytul}" loading="lazy" style="width: 100%; max-height: 280px; object-fit: cover; border-radius: 4px;" onerror="this.onerror=null; this.src='assets/icon/logo.png';">
+    <img src="${item.url}" alt="${item.tytul}" loading="lazy" style="width: 100%; max-height: 400px; object-fit: cover; border-radius: 4px;" onerror="this.onerror=null; this.src='assets/icon/logo.png';">
   </div>
 `;
       
