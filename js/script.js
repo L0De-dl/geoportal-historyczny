@@ -516,17 +516,15 @@ const bazyZdjecDlaLat = {
     ],
     2024: [
       { lat: 52.94732122181164, lng: 17.30609284386365, tytul: "Dworzec", url: "assets/foto/dworzec-2024.jpg" }
+    ],
+    // damlyn
+    2021: [
+      { lat: 52.94376581050108, lng: 17.296246066673323, tytul: "Damłyn", url: "assets/foto/damlyn-2021.jpg" }
+    ],
+    1900: [
+      { lat: 52.94376581050108, lng: 17.296246066673323, tytul: "Damłyn", url: "assets/foto/damlyn-1900.jpg" }
     ]
 };
-
-   // damlyn
-   2021: [
-     { lat: 52.94376581050108, lng: 17.296246066673323, tytul: "Damłyn", url: "assets/foto/damlyn-2021.jpg" }
-    ],
-   1900: [
-     { lat: 52.94376581050108, lng: 17.296246066673323, tytul: "Damłyn", url: "assets/foto/damlyn-1900.jpg" }
-    ],
-	
 
 function wczytajZdjeciaDlaRoku(rok) {
   if (aktualnaWarstwaZdjec) {
