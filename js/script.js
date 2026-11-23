@@ -523,39 +523,39 @@ const bazyZdjecDlaLat = {
     ],
     1900: [
       { lat: 52.94376581050108, lng: 17.296246066673323, tytul: "Damłyn", url: "assets/foto/damlyn-1900.jpg" }
-    ]
+    ],
     // eden
 	2011: [
       { lat: 52.94322586802413, lng: 17.287084238761473, tytul: "Eden", url: "assets/foto/eden-2011.jpg" }
-    ]
+    ],
 	// klasztor
     1904: [
       { lat: 52.94534467790994, lng: 17.302452921638945, tytul: "Klasztor", url: "assets/foto/klasztor-1904.jpg" }
-    ]	
+    ],	
     1905: [
       { lat: 52.94534467790994, lng: 17.302452921638945, tytul: "Klasztor", url: "assets/foto/klasztor-1905.jpg" }
-    ]
+    ],
 	// kosciol stary
     1913: [
       { lat: 52.94306734226453, lng: 17.30029338759628, tytul: "Stary Kościół", url: "assets/foto/kosciol-stary-1913.jpg" }
-    ]
+    ],
 	1926: [
       { lat: 52.94306734226453, lng: 17.30029338759628, tytul: "Stary Kościół", url: "assets/foto/kosciol-stary--1926.jpg" }
-    ]
+    ],
 	//plebania
     1911: [
       { lat: 52.942166156456175, lng: 17.299605161321917, tytul: "Plebania", url: "assets/foto/plebania-1911.jpg" }
-    ]
+    ],
     1913: [
       { lat: 52.942166156456175, lng: 17.299605161321917, tytul: "Plebania", url: "assets/foto/plebania-1913.jpg" }
-    ]
+    ],
     2003: [
       { lat: 52.942166156456175, lng: 17.299605161321917, tytul: "Plebania", url: "assets/foto/plebania-2003.jpg" }
-    ]	
+    ],	
 	//policja
     1909: [
       { lat: 52.94521914208285, lng: 17.303300196807143, tytul: "Policja", url: "assets/foto/policja-1909.jpg" }
-    ]
+    ],
 	//przychodnia
 	1986: [
       { lat: 52.940286941205315, lng: 17.30106645245918, tytul: "Przychodnia", url: "assets/foto/przychodnia-1986.jpg" }
